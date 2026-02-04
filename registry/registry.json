@@ -1,0 +1,76 @@
+{
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "components": [
+        {
+            "id": "range-slider",
+            "path": "components/range-slider",
+            "category": "Input",
+            "difficulty": "Easy",
+            "version": "1.0.0"
+        },
+        {
+            "id": "animated-tab-bar",
+            "path": "components/animated-tab-bar",
+            "category": "Navigation",
+            "difficulty": "Easy",
+            "version": "1.0.0"
+        },
+        {
+            "id": "skeleton-loader",
+            "path": "components/skeleton-loader",
+            "category": "Loading",
+            "difficulty": "Easy",
+            "version": "1.0.0"
+        },
+        {
+            "id": "rainbow-button",
+            "path": "components/rainbow-button",
+            "category": "Button",
+            "difficulty": "Medium",
+            "version": "1.0.0"
+        },
+        {
+            "id": "bottom-sheet",
+            "path": "components/bottom-sheet",
+            "category": "Modal",
+            "difficulty": "Medium",
+            "version": "1.0.0"
+        },
+        {
+            "id": "switch-toggle",
+            "path": "components/switch-toggle",
+            "category": "Input",
+            "difficulty": "Easy",
+            "version": "1.0.0"
+        },
+        {
+            "id": "bottom-navigation",
+            "path": "components/bottom-navigation",
+            "category": "Navigation",
+            "difficulty": "Medium",
+            "version": "1.0.0"
+        },
+        {
+            "id": "floating-speed-dial",
+            "path": "components/floating-speed-dial",
+            "category": "Button",
+            "difficulty": "Advanced",
+            "version": "1.0.0"
+        },
+        {
+            "id": "date-picker",
+            "path": "components/date-picker",
+            "category": "Input",
+            "difficulty": "Medium",
+            "version": "1.0.0"
+        },
+        {
+            "id": "native-haptics",
+            "path": "components/native-haptics",
+            "category": "Utility",
+            "difficulty": "Advanced",
+            "version": "1.0.0"
+        }
+    ]
+}

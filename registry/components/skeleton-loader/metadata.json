@@ -1,0 +1,71 @@
+{
+    "id": "skeleton-loader",
+    "name": "Skeleton Loader",
+    "category": "Loading",
+    "description": "Shimmer effect with pre-built variants for cards and lists",
+    "longDescription": "A versatile skeleton loader component with shimmer animation. Includes pre-built variants for common UI patterns like cards, list items, and text blocks.",
+    "gradient": "from-slate-500 to-slate-700",
+    "emoji": "⚡",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "features": [
+        "Smooth shimmer animation",
+        "Pre-built variants (Card, ListItem, Text, Avatar)",
+        "Fully customizable dimensions",
+        "Group multiple skeletons",
+        "Zero dependencies",
+        "Light and dark mode support"
+    ],
+    "props": [
+        {
+            "name": "width",
+            "type": "DimensionValue",
+            "required": true,
+            "description": "Width of the skeleton"
+        },
+        {
+            "name": "height",
+            "type": "DimensionValue",
+            "required": true,
+            "description": "Height of the skeleton"
+        },
+        {
+            "name": "borderRadius",
+            "type": "number",
+            "required": false,
+            "default": "8",
+            "description": "Border radius"
+        },
+        {
+            "name": "backgroundColor",
+            "type": "string",
+            "required": false,
+            "default": "#E5E7EB",
+            "description": "Background color"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Skeleton",
+            "description": "Simple skeleton placeholder",
+            "code": "<SkeletonLoader width={200} height={20} />"
+        },
+        {
+            "title": "Using Variants",
+            "description": "Pre-built skeleton patterns",
+            "code": "<SkeletonVariants.Card width={350} imageHeight={200} />\n<SkeletonVariants.ListItem avatarSize={48} />"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Easy",
+    "codePreview": "<SkeletonLoader\n  width={200}\n  height={100}\n  borderRadius={12}\n/>",
+    "installation": {
+        "steps": [
+            "Copy SkeletonLoader.tsx to your components folder",
+            "Import and use"
+        ]
+    }
+}

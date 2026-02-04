@@ -68,7 +68,7 @@ export const components: ComponentData[] = [
         difficulty: 'Easy',
         codePreview: `<RangeSlider\n  value={value}\n  onValueChange={setValue}\n  min={0}\n  max={100}\n/>`,
         fullCode: { typescript: '// Full TypeScript implementation available in docs', javascript: '// Full JavaScript implementation available in docs' },
-        installation: { steps: ['Copy RangeSlider.tsx to your components folder', 'Copy responsive.ts utility file', 'Import and use in your screen'], nativeSetup: ['npm install react-native-haptic-feedback (optional)', 'cd ios && pod install (for iOS haptics)'] },
+        installation: { steps: ['Copy RangeSlider.tsx to your components folder', 'Import and use in your screen'], nativeSetup: ['npm install react-native-haptic-feedback (optional)', 'cd ios && pod install (for iOS haptics)'] },
     },
     {
         id: 'animated-tab-bar',
@@ -94,7 +94,7 @@ export const components: ComponentData[] = [
         difficulty: 'Easy',
         codePreview: `<AnimatedTabBar\n  tabs={['Tab 1', 'Tab 2', 'Tab 3']}\n  activeTab={activeTab}\n  onTabChange={setActiveTab}\n/>`,
         fullCode: { typescript: '// Full TypeScript implementation available in docs', javascript: '// Full JavaScript implementation available in docs' },
-        installation: { steps: ['Copy AnimatedTabBar.tsx to your components folder', 'Copy responsive.ts and haptics.ts utilities', 'Import and use'] },
+        installation: { steps: ['Copy AnimatedTabBar.tsx to your components folder', 'Copy haptics.ts utility', 'Import and use'] },
     },
     {
         id: 'skeleton-loader',
@@ -121,7 +121,7 @@ export const components: ComponentData[] = [
         difficulty: 'Easy',
         codePreview: `<SkeletonLoader\n  width={200}\n  height={100}\n  borderRadius={12}\n/>`,
         fullCode: { typescript: '// Full TypeScript implementation available in docs', javascript: '// Full JavaScript implementation available in docs' },
-        installation: { steps: ['Copy SkeletonLoader.tsx to your components folder', 'Copy responsive.ts utility', 'Import and use'] },
+        installation: { steps: ['Copy SkeletonLoader.tsx to your components folder', 'Import and use'] },
     },
     {
         id: 'rainbow-button',
@@ -174,7 +174,7 @@ export const components: ComponentData[] = [
         difficulty: 'Medium',
         codePreview: `const sheetRef = useRef<BottomSheetRef>(null);\n\n<DynamicBottomSheet ref={sheetRef}>\n  <Content />\n</DynamicBottomSheet>`,
         fullCode: { typescript: '// Full TypeScript implementation available in docs', javascript: '// Full JavaScript implementation available in docs' },
-        installation: { steps: ['Copy DynamicBottomSheet.tsx to components', 'Copy responsive.ts and haptics.ts utilities', 'Import and use with useRef'] },
+        installation: { steps: ['Copy DynamicBottomSheet.tsx to components', 'Copy haptics.ts utility', 'Import and use with useRef'] },
     },
     {
         id: 'switch-toggle',
@@ -199,7 +199,7 @@ export const components: ComponentData[] = [
         difficulty: 'Easy',
         codePreview: `<SwitchToggle\n  value={enabled}\n  onValueChange={setEnabled}\n/>`,
         fullCode: { typescript: '// Full TypeScript implementation available in docs', javascript: '// Full JavaScript implementation available in docs' },
-        installation: { steps: ['Copy SwitchToggle.tsx to components', 'Copy utilities (responsive.ts, haptics.ts)', 'Import and use'] },
+        installation: { steps: ['Copy SwitchToggle.tsx to components', 'Copy haptics.ts utility', 'Import and use'] },
     },
     {
         id: 'bottom-navigation',

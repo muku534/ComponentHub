@@ -1,0 +1,86 @@
+{
+    "id": "range-slider",
+    "name": "Range Slider",
+    "category": "Input",
+    "description": "Animated slider with step snapping and haptic feedback",
+    "longDescription": "A fully customizable range slider component with smooth animations, step snapping, and optional haptic feedback. Built with React Native Animated API for 60fps performance.",
+    "gradient": "from-blue-500 to-cyan-500",
+    "emoji": "🎚️",
+    "dependencies": {
+        "required": [],
+        "optional": [
+            "native-haptics"
+        ]
+    },
+    "features": [
+        "Smooth 60fps animations",
+        "Step snapping with configurable intervals",
+        "Haptic feedback on value change",
+        "Fully customizable colors and sizes",
+        "TypeScript support",
+        "Works on iOS and Android"
+    ],
+    "props": [
+        {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "description": "Current value of the slider"
+        },
+        {
+            "name": "onValueChange",
+            "type": "(value: number) => void",
+            "required": true,
+            "description": "Callback fired when slider value changes"
+        },
+        {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "default": "0",
+            "description": "Minimum value"
+        },
+        {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "default": "100",
+            "description": "Maximum value"
+        },
+        {
+            "name": "step",
+            "type": "number",
+            "required": false,
+            "default": "1",
+            "description": "Step increment"
+        },
+        {
+            "name": "hapticEnabled",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Enable haptic feedback"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Simple price filter slider",
+            "code": "const [price, setPrice] = useState(50);\n\n<RangeSlider\n  value={price}\n  onValueChange={setPrice}\n  min={0}\n  max={1000}\n  step={10}\n/>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Easy",
+    "codePreview": "<RangeSlider\n  value={value}\n  onValueChange={setValue}\n  min={0}\n  max={100}\n/>",
+    "installation": {
+        "steps": [
+            "Copy RangeSlider.tsx to your components folder",
+            "Import and use in your screen"
+        ],
+        "nativeSetup": [
+            "Copy native-haptics component (optional)",
+            "No external npm packages required"
+        ]
+    }
+}

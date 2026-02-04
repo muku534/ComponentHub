@@ -1,0 +1,69 @@
+{
+    "id": "bottom-navigation",
+    "name": "Animated Bottom Navigation",
+    "category": "Navigation",
+    "description": "Animated nav bar with floating style and active indicator",
+    "longDescription": "A modern bottom navigation component with smooth animations, floating style option, and active tab indicator. Features bounce animations and icon highlighting.",
+    "gradient": "from-blue-500 to-indigo-500",
+    "emoji": "🧭",
+    "dependencies": {
+        "required": [],
+        "optional": [
+            "native-haptics"
+        ]
+    },
+    "features": [
+        "Floating or standard style",
+        "Animated active indicator",
+        "Bounce effect on tab press",
+        "Optional labels under icons",
+        "Safe area padding support",
+        "Customizable colors"
+    ],
+    "props": [
+        {
+            "name": "tabs",
+            "type": "TabItem[]",
+            "required": true,
+            "description": "Array of tab items with icons"
+        },
+        {
+            "name": "activeTab",
+            "type": "string",
+            "required": true,
+            "description": "Currently active tab key"
+        },
+        {
+            "name": "onTabChange",
+            "type": "(tabKey: string) => void",
+            "required": true,
+            "description": "Callback when tab changes"
+        },
+        {
+            "name": "floating",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Enable floating style"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Bottom navigation with icons",
+            "code": "const tabs = [\n  { key: 'home', icon: <Home />, label: 'Home' },\n  { key: 'search', icon: <Search />, label: 'Search' },\n];\n\n<AnimatedBottomNav\n  tabs={tabs}\n  activeTab={activeTab}\n  onTabChange={setActiveTab}\n  floating\n/>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Medium",
+    "codePreview": "<AnimatedBottomNav\n  tabs={tabs}\n  activeTab={activeTab}\n  onTabChange={setActiveTab}\n  floating\n/>",
+    "installation": {
+        "steps": [
+            "Copy AnimatedBottomNav.tsx to components",
+            "Copy utilities",
+            "Import your icon library",
+            "Setup navigation structure"
+        ]
+    }
+}

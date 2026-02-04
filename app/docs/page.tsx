@@ -182,38 +182,94 @@ export default function DocsPage() {
             </section>
 
             {/* Overview */}
-            <section className="prose prose-neutral dark:prose-invert max-w-none">
-                <h2>Overview</h2>
-                <p>
-                    ComponentHub is a collection of premium React Native UI components designed for
-                    developers who want full control over their code. Unlike traditional component
-                    libraries, we use a copy-paste approach – you copy the components into your
-                    project and customize them to your needs.
-                </p>
+            <div className="space-y-16">
+                <section className="p-8 rounded-2xl bg-gradient-to-br from-blue-600/5 to-purple-600/5 border border-border/50">
+                    <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        The Premium Native UI Library
+                    </h2>
+                    <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
+                        ComponentHub is a collection of premium React Native UI components designed for
+                        developers who want <span className="text-foreground font-semibold">full control</span> over their code.
+                        Unlike traditional component libraries that hide logic in <code>node_modules</code>, we use a
+                        copy-paste approach – you own the code, you control the quality.
+                    </p>
+                </section>
 
-                <h3>Why ComponentHub?</h3>
-                <ul>
-                    <li><strong>Zero Dependencies</strong> – No external runtime packages to manage</li>
-                    <li><strong>Full Ownership</strong> – The code is yours to modify and extend</li>
-                    <li><strong>TypeScript First</strong> – Complete type definitions for everything</li>
-                    <li><strong>Production Ready</strong> – Battle-tested in real applications</li>
-                </ul>
+                <section>
+                    <h2 className="text-2xl font-bold mb-8 text-center">Why ComponentHub?</h2>
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div className="p-6 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
+                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                                <span className="p-1.5 rounded-lg bg-red-500/10 text-red-500">⚡️</span>
+                                Zero Dependencies
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                                No massive npm packages to manage. Your bundle size stays small because you only include what you need.
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
+                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                                <span className="p-1.5 rounded-lg bg-green-500/10 text-green-500">🛡️</span>
+                                Full Ownership
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                                The code lives in your repo. Modify, extend, and twist it to fit your exact requirements without limitations.
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
+                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                                <span className="p-1.5 rounded-lg bg-blue-500/10 text-blue-500">📘</span>
+                                TypeScript First
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                                Complete type definitions for every prop and utility. Catch errors at compile time, not runtime.
+                            </p>
+                        </div>
+                        <div className="p-6 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
+                            <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                                <span className="p-1.5 rounded-lg bg-purple-500/10 text-purple-500">🚀</span>
+                                Production Ready
+                            </h3>
+                            <p className="text-muted-foreground text-sm">
+                                Battle-tested accessible components with 60fps animations, ready for your next big app launch.
+                            </p>
+                        </div>
+                    </div>
+                </section>
 
-                <h3>How It Works</h3>
-                <ol>
-                    <li>Browse our collection of components</li>
-                    <li>Copy the component code to your clipboard</li>
-                    <li>Paste it into your project</li>
-                    <li>Customize the styling and behavior</li>
-                </ol>
+                <section>
+                    <h2 className="text-2xl font-bold mb-8 text-center">How It Works</h2>
+                    <div className="grid sm:grid-cols-4 gap-6">
+                        {[
+                            { title: 'Browse', desc: 'Find your component', icon: '1' },
+                            { title: 'Copy', desc: 'Copy the source', icon: '2' },
+                            { title: 'Paste', desc: 'Add to project', icon: '3' },
+                            { title: 'Customize', desc: 'Make it yours', icon: '4' },
+                        ].map((step, i) => (
+                            <div key={step.title} className="relative text-center group">
+                                <div className="w-12 h-12 mx-auto rounded-full bg-muted border-2 border-border flex items-center justify-center font-bold text-lg mb-4 group-hover:border-blue-500 group-hover:text-blue-500 transition-colors bg-background z-10 relative">
+                                    {step.icon}
+                                </div>
+                                {i !== 3 && (
+                                    <div className="hidden sm:block absolute top-6 left-1/2 w-full h-[2px] bg-border -z-0" />
+                                )}
+                                <h4 className="font-semibold mb-1">{step.title}</h4>
+                                <p className="text-xs text-muted-foreground">{step.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
 
-                <p>
-                    Ready to get started?{' '}
-                    <Link href="/docs/getting-started" className="text-blue-500 hover:underline">
-                        Follow our getting started guide →
+                <div className="flex justify-center pt-8">
+                    <Link
+                        href="/docs/getting-started"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all text-sm"
+                    >
+                        Start Building Now
+                        <ArrowRight className="w-4 h-4" />
                     </Link>
-                </p>
-            </section>
+                </div>
+            </div>
         </motion.div>
     );
 }

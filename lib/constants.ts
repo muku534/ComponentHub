@@ -9,10 +9,12 @@ export const siteConfig = {
         bio: "Passionate React Native developer building beautiful mobile experiences. Creating ComponentHub to help developers ship faster.",
     },
     socials: {
-        github: "https://github.com/mukeshprajapati",
-        twitter: "https://twitter.com/mukeshprajapati",
-        linkedin: "https://linkedin.com/in/mukeshprajapati",
-        reddit: "https://reddit.com/u/mukeshprajapati",
+        github: "https://github.com/muku534/ComponentHub",
+        twitter: "https://x.com/MukeshPraj81318",
+        linkedin: "https://www.linkedin.com/in/mukesh-prajapati-a6a670235",
+        reddit: "https://www.reddit.com/user/Fresh-Wealth4531/",
+        youtube: "https://www.youtube.com/@byteops_0412",
+        website: "https://portfoliomukesh.vercel.app/",
     },
 };
 
@@ -27,20 +29,18 @@ export const footerLinks = {
     product: [
         { name: 'Components', href: '/components' },
         { name: 'Documentation', href: '/docs' },
-        { name: 'Changelog', href: '#' },
-        { name: 'Pricing', href: '#' },
     ],
     resources: [
         { name: 'Getting Started', href: '/docs/getting-started' },
         { name: 'Installation', href: '/docs/installation' },
         { name: 'Customization', href: '/docs/customization' },
-        { name: 'Examples', href: '#' },
+        { name: 'Examples', href: '/components' },
     ],
     company: [
         { name: 'About', href: '/about' },
         { name: 'Blog', href: '/blog' },
-        { name: 'Contact', href: '#' },
-        { name: 'Privacy', href: '#' },
+        { name: 'Contact', href: '/contact' },
+        { name: 'Privacy', href: '/privacy' },
     ],
 };
 
@@ -135,4 +135,10 @@ export const docsNavigation = [
             { name: 'Skeleton Loader', href: '/components/skeleton-loader' },
         ],
     },
+    {
+        title: 'Native Features',
+        items: [
+            { name: 'Native Haptics', href: '/docs/native-haptics' },
+        ],
+    }
 ];

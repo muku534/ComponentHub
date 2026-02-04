@@ -20,45 +20,58 @@ export default function CustomizationPage() {
             </div>
 
             {/* Content */}
-            <div className="prose prose-neutral dark:prose-invert max-w-none">
-                <h2>Design Philosophy</h2>
-                <p>
-                    ComponentHub components are designed to be easily customizable. We use a
-                    consistent approach to styling that makes it simple to adapt components
-                    to your brand.
-                </p>
+            <div className="space-y-12">
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">Design Philosophy</h2>
+                    <div className="p-6 rounded-xl border border-border bg-muted/20">
+                        <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                            ComponentHub components are designed to be easily customizable. We use a
+                            consistent approach to styling that makes it simple to adapt components
+                            to your brand while maintaining a premium feel.
+                        </p>
 
-                <div className="not-prose my-8 grid gap-4 sm:grid-cols-3">
-                    {[
-                        { icon: Palette, title: 'Colors', desc: 'Easily swap color palettes' },
-                        { icon: Type, title: 'Typography', desc: 'Use your own fonts' },
-                        { icon: Layers, title: 'Spacing', desc: 'Adjust padding and margins' },
-                    ].map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <div key={item.title} className="p-4 rounded-xl border border-border bg-muted/30 text-center">
-                                <Icon className="w-8 h-8 mx-auto mb-2 text-blue-500" />
-                                <h4 className="font-semibold">{item.title}</h4>
-                                <p className="text-sm text-muted-foreground">{item.desc}</p>
+                        <div className="grid gap-6 sm:grid-cols-3">
+                            {[
+                                { icon: Palette, title: 'Colors', desc: 'Easily swap hex codes to match your brand palette' },
+                                { icon: Type, title: 'Typography', desc: 'Use your own font families and weight scales' },
+                                { icon: Layers, title: 'Spacing', desc: 'Consistent padding and margin variables' },
+                            ].map((item) => {
+                                const Icon = item.icon;
+                                return (
+                                    <div key={item.title} className="p-5 rounded-xl bg-background border border-border/50 text-center hover:border-primary/30 transition-colors">
+                                        <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mx-auto mb-3">
+                                            <Icon className="w-5 h-5" />
+                                        </div>
+                                        <h4 className="font-semibold mb-1">{item.title}</h4>
+                                        <p className="text-xs text-muted-foreground">{item.desc}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">Creating a Theme</h2>
+                    <p className="text-muted-foreground mb-6">
+                        We recommend creating a central theme file to manage your design tokens. This keeps your design system consistent.
+                    </p>
+
+                    <div className="relative rounded-xl border border-border bg-gray-950 overflow-hidden shadow-2xl">
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gray-900/50">
+                            <div className="flex items-center gap-2">
+                                <div className="flex gap-1.5">
+                                    <div className="w-3 h-3 rounded-full bg-red-500/20" />
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
+                                    <div className="w-3 h-3 rounded-full bg-green-500/20" />
+                                </div>
+                                <span className="text-xs text-gray-400 font-mono ml-2">theme.ts</span>
                             </div>
-                        );
-                    })}
-                </div>
-
-                <h2>Creating a Theme</h2>
-                <p>
-                    We recommend creating a central theme file to manage your design tokens:
-                </p>
-
-                <div className="not-prose my-6">
-                    <div className="relative rounded-xl border border-border bg-muted/50 overflow-hidden">
-                        <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted">
-                            <span className="text-sm text-muted-foreground">theme.ts</span>
-                            <button className="p-1.5 rounded-md hover:bg-background transition-colors">
+                            <button className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-gray-400">
                                 <Copy className="w-4 h-4" />
                             </button>
                         </div>
-                        <pre className="p-4 text-sm overflow-x-auto">
+                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
                             <code>{`export const theme = {
   colors: {
     primary: '#3B82F6',
@@ -72,46 +85,40 @@ export default function CustomizationPage() {
     error: '#EF4444',
   },
   spacing: {
-    xs: 4,
-    sm: 8,
-    md: 16,
-    lg: 24,
-    xl: 32,
+    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
   },
   borderRadius: {
-    sm: 4,
-    md: 8,
-    lg: 12,
-    xl: 16,
-    full: 9999,
+    sm: 4, md: 8, lg: 12, xl: 16, full: 9999,
   },
   fontSize: {
-    xs: 12,
-    sm: 14,
-    base: 16,
-    lg: 18,
-    xl: 20,
-    '2xl': 24,
+    xs: 12, sm: 14, base: 16, lg: 18, xl: 20, '2xl': 24,
   },
 };`}</code>
                         </pre>
                     </div>
-                </div>
+                </section>
 
-                <h2>Using the Theme</h2>
-                <p>
-                    Reference your theme in component styles:
-                </p>
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">Using the Theme</h2>
+                    <p className="text-muted-foreground mb-6">
+                        Reference your theme in component styles for immediate consistency across your app.
+                    </p>
 
-                <div className="not-prose my-6">
-                    <div className="relative rounded-xl border border-border bg-muted/50 overflow-hidden">
-                        <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted">
-                            <span className="text-sm text-muted-foreground">Button.tsx</span>
-                            <button className="p-1.5 rounded-md hover:bg-background transition-colors">
+                    <div className="relative rounded-xl border border-border bg-gray-950 overflow-hidden shadow-2xl">
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gray-900/50">
+                            <div className="flex items-center gap-2">
+                                <div className="flex gap-1.5">
+                                    <div className="w-3 h-3 rounded-full bg-red-500/20" />
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
+                                    <div className="w-3 h-3 rounded-full bg-green-500/20" />
+                                </div>
+                                <span className="text-xs text-gray-400 font-mono ml-2">components/ui/Button.tsx</span>
+                            </div>
+                            <button className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-gray-400">
                                 <Copy className="w-4 h-4" />
                             </button>
                         </div>
-                        <pre className="p-4 text-sm overflow-x-auto">
+                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
                             <code>{`import { StyleSheet } from 'react-native';
 import { theme } from '../theme';
 
@@ -130,62 +137,38 @@ const styles = StyleSheet.create({
 });`}</code>
                         </pre>
                     </div>
-                </div>
+                </section>
 
-                <h2>Dark Mode Support</h2>
-                <p>
-                    Implement dark mode by using React Native&apos;s <code>useColorScheme</code> hook:
-                </p>
-
-                <div className="not-prose my-6">
-                    <div className="relative rounded-xl border border-border bg-muted/50 overflow-hidden">
-                        <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted">
-                            <span className="text-sm text-muted-foreground">useTheme.ts</span>
-                            <button className="p-1.5 rounded-md hover:bg-background transition-colors">
-                                <Copy className="w-4 h-4" />
-                            </button>
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">Customization Tips</h2>
+                    <div className="grid md:grid-cols-2 gap-6">
+                        <div className="p-6 rounded-xl border border-blue-500/20 bg-blue-500/5">
+                            <h3 className="font-bold text-blue-600 dark:text-blue-400 mb-4">Best Practices</h3>
+                            <ul className="space-y-3">
+                                {[
+                                    'Start simple – Only customize what you need first',
+                                    'Be consistent – Use theme tokens everywhere',
+                                    'Test on devices – Validation on real screens is key',
+                                    'Consider accessibility – Check color contrast ratios'
+                                ].map(item => (
+                                    <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                        <span>{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        <pre className="p-4 text-sm overflow-x-auto">
-                            <code>{`import { useColorScheme } from 'react-native';
-
-const lightColors = {
-  background: '#FFFFFF',
-  text: '#0F172A',
-  // ...
-};
-
-const darkColors = {
-  background: '#0F172A',
-  text: '#F8FAFC',
-  // ...
-};
-
-export const useTheme = () => {
-  const colorScheme = useColorScheme();
-  const colors = colorScheme === 'dark' ? darkColors : lightColors;
-  
-  return { colors, isDark: colorScheme === 'dark' };
-};`}</code>
-                        </pre>
+                        <div className="p-6 rounded-xl border border-purple-500/20 bg-purple-500/5 flex flex-col justify-center text-center">
+                            <h3 className="font-bold text-lg mb-2">Need More Help?</h3>
+                            <p className="text-sm text-muted-foreground mb-6">
+                                If you need help customizing components, check out our examples or join the community.
+                            </p>
+                            <Link href="/components" className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-background border border-border hover:bg-muted transition-colors text-sm font-medium">
+                                View Component Examples
+                            </Link>
+                        </div>
                     </div>
-                </div>
-
-                <h2>Customization Tips</h2>
-                <ul>
-                    <li><strong>Start simple</strong> – Only customize what you need</li>
-                    <li><strong>Be consistent</strong> – Use the same spacing and colors everywhere</li>
-                    <li><strong>Test on devices</strong> – Colors can look different on various screens</li>
-                    <li><strong>Consider accessibility</strong> – Ensure sufficient color contrast</li>
-                </ul>
-
-                <h2>Need Help?</h2>
-                <p>
-                    If you need help customizing components, check out our{' '}
-                    <Link href="/components" className="text-blue-500 hover:underline">
-                        component examples
-                    </Link>{' '}
-                    or reach out on our community channels.
-                </p>
+                </section>
             </div>
 
             {/* Navigation */}

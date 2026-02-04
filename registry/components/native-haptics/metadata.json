@@ -1,0 +1,77 @@
+{
+    "id": "native-haptics",
+    "name": "Native Haptics",
+    "category": "Utility",
+    "description": "Zero-dependency native haptic feedback solution.",
+    "longDescription": "A lightweight, zero-dependency implementation of haptic feedback using direct native code for iOS (UIImpactFeedbackGenerator) and Android (Vibrator/HapticFeedbackConstants). Perfect for avoiding heavy external libraries.",
+    "gradient": "from-purple-500 to-pink-500",
+    "emoji": "📳",
+    "dependencies": {
+        "required": [],
+        "optional": []
+    },
+    "features": [
+        "Zero npm dependencies",
+        "Direct Native Access",
+        "iOS High Precision Haptics",
+        "Android Vibration Fallback",
+        "Type-safe Wrapper",
+        "Custom patterns supported"
+    ],
+    "props": [
+        {
+            "name": "triggerHaptic",
+            "type": "function",
+            "required": false,
+            "description": "Triggers a light/soft impact"
+        },
+        {
+            "name": "triggerSelectionHaptic",
+            "type": "function",
+            "required": false,
+            "description": "Triggers a selection feedback (good for pickers/tabs)"
+        },
+        {
+            "name": "triggerSuccessHaptic",
+            "type": "function",
+            "required": false,
+            "description": "Triggers a success notification pattern"
+        },
+        {
+            "name": "triggerErrorHaptic",
+            "type": "function",
+            "required": false,
+            "description": "Triggers an error notification pattern"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Trigger haptics on button press",
+            "code": "import { triggerSelectionHaptic } from './NativeHaptics';\n\n<TouchableOpacity onPress={triggerSelectionHaptic}>\n  <Text>Press Me</Text>\n</TouchableOpacity>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Advanced",
+    "codePreview": "import { triggerSelectionHaptic } from './NativeHaptics';\n\n// Use in your interactions\nconst handlePress = () => {\n  triggerSelectionHaptic();\n  // ... action\n};",
+    "installation": {
+        "steps": [
+            "Copy NativeHaptics.ts to your project",
+            "Copy android/HapticsModule.kt & HapticsPackage.kt to android/app/src/main/java/com/yourpackage/haptics/",
+            "Copy ios/Haptics.swift & Haptics.m to ios/YourAppName/",
+            "Link the package in MainApplication.kt (Android)",
+            "Ensure Swift bridging header exists (iOS)"
+        ],
+        "nativeSetup": [
+            "No npm install required!"
+        ]
+    },
+    "files": [
+        "NativeHaptics.ts",
+        "android/HapticsModule.kt",
+        "android/HapticsPackage.kt",
+        "ios/Haptics.swift",
+        "ios/Haptics.m"
+    ]
+}

@@ -1,0 +1,87 @@
+{
+    "id": "date-picker",
+    "name": "Date Picker",
+    "category": "Input",
+    "description": "Modal calendar picker with custom styling",
+    "longDescription": "A beautiful modal date picker with calendar view, date range constraints, and custom theming. Built on react-native-calendars with additional styling improvements.",
+    "gradient": "from-pink-500 to-rose-500",
+    "emoji": "📅",
+    "dependencies": {
+        "required": [
+            "react-native-calendars"
+        ],
+        "optional": [
+            "native-haptics"
+        ]
+    },
+    "features": [
+        "Modal calendar interface",
+        "Date range constraints (min/max)",
+        "Custom color theming",
+        "Error state support",
+        "Required field indicator",
+        "Formatted date display"
+    ],
+    "props": [
+        {
+            "name": "value",
+            "type": "Date | undefined",
+            "required": false,
+            "description": "Currently selected date"
+        },
+        {
+            "name": "onDateChange",
+            "type": "(date: Date) => void",
+            "required": true,
+            "description": "Callback when date selected"
+        },
+        {
+            "name": "minimumDate",
+            "type": "Date",
+            "required": false,
+            "description": "Earliest selectable date"
+        },
+        {
+            "name": "maximumDate",
+            "type": "Date",
+            "required": false,
+            "description": "Latest selectable date"
+        },
+        {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "description": "Label text above picker"
+        },
+        {
+            "name": "required",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "Show required indicator"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Simple date picker",
+            "code": "const [date, setDate] = useState<Date>();\n\n<DatePicker\n  label=\"Booking Date\"\n  value={date}\n  onDateChange={setDate}\n  minimumDate={new Date()}\n  required\n/>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Medium",
+    "codePreview": "<DatePicker\n  value={date}\n  onDateChange={setDate}\n  label=\"Select Date\"\n/>",
+    "installation": {
+        "steps": [
+            "npm install react-native-calendars",
+            "Copy DatePicker.tsx to components",
+            "Copy utilities",
+            "Import and use in forms"
+        ],
+        "nativeSetup": [
+            "No native setup required",
+            "Works on both iOS and Android"
+        ]
+    }
+}

@@ -1,0 +1,69 @@
+{
+    "id": "bottom-sheet",
+    "name": "Dynamic Bottom Sheet",
+    "category": "Modal",
+    "description": "Auto-height modal with drag gestures and backdrop",
+    "longDescription": "A flexible bottom sheet modal that automatically adjusts to content height. Features drag-to-close gestures, customizable backdrop, and keyboard avoidance.",
+    "gradient": "from-indigo-500 to-purple-500",
+    "emoji": "📋",
+    "dependencies": {
+        "required": [],
+        "optional": [
+            "native-haptics"
+        ]
+    },
+    "features": [
+        "Dynamic height based on content",
+        "Drag to dismiss gesture",
+        "Keyboard avoiding behavior",
+        "Customizable backdrop",
+        "Imperative API (open/close)",
+        "Smooth spring animations"
+    ],
+    "props": [
+        {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Content to render inside sheet"
+        },
+        {
+            "name": "onClose",
+            "type": "() => void",
+            "required": false,
+            "description": "Callback when sheet closes"
+        },
+        {
+            "name": "maxHeightPercent",
+            "type": "number",
+            "required": false,
+            "default": "0.9",
+            "description": "Max height as screen percentage"
+        },
+        {
+            "name": "dragEnabled",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Enable drag to close"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Using with useRef",
+            "code": "const sheetRef = useRef<BottomSheetRef>(null);\n\n<Button onPress={() => sheetRef.current?.open()}>\n  Open Sheet\n</Button>\n\n<DynamicBottomSheet ref={sheetRef}>\n  <View style={{ padding: 20 }}>\n    <Text>Sheet Content</Text>\n  </View>\n</DynamicBottomSheet>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Medium",
+    "codePreview": "const sheetRef = useRef<BottomSheetRef>(null);\n\n<DynamicBottomSheet ref={sheetRef}>\n  <Content />\n</DynamicBottomSheet>",
+    "installation": {
+        "steps": [
+            "Copy DynamicBottomSheet.tsx to components",
+            "Copy haptics.ts utility",
+            "Import and use with useRef"
+        ]
+    }
+}

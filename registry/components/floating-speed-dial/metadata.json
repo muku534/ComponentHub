@@ -1,0 +1,75 @@
+{
+    "id": "floating-speed-dial",
+    "name": "Floating Action Button",
+    "category": "Button",
+    "description": "Expandable FAB menu with gradient background",
+    "longDescription": "A floating action button that expands into a speed dial menu. Features gradient background, smooth animations, backdrop overlay, and customizable action buttons.",
+    "gradient": "from-orange-500 to-red-500",
+    "emoji": "➕",
+    "dependencies": {
+        "required": [
+            "react-native-linear-gradient"
+        ],
+        "optional": [
+            "native-haptics"
+        ]
+    },
+    "features": [
+        "Expandable menu animation",
+        "Gradient FAB background",
+        "Backdrop overlay when open",
+        "Customizable action buttons",
+        "Rotation animation on main FAB",
+        "Position customization"
+    ],
+    "props": [
+        {
+            "name": "actions",
+            "type": "ActionItem[]",
+            "required": true,
+            "description": "Array of action items"
+        },
+        {
+            "name": "icon",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Main FAB icon when closed"
+        },
+        {
+            "name": "openIcon",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Icon when open"
+        },
+        {
+            "name": "gradientColors",
+            "type": "string[]",
+            "required": false,
+            "default": "['#EC4899', '#F97316']",
+            "description": "Gradient colors for FAB"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "FAB with action menu",
+            "code": "const actions = [\n  { key: 'camera', icon: <Camera />, onPress: () => {} },\n  { key: 'gallery', icon: <Image />, onPress: () => {} },\n];\n\n<FloatingSpeedDial\n  actions={actions}\n  icon={<Plus />}\n/>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Advanced",
+    "codePreview": "<FloatingSpeedDial\n  actions={actions}\n  icon={<Plus />}\n  gradientColors={['#EC4899', '#F97316']}\n/>",
+    "installation": {
+        "steps": [
+            "npm install react-native-linear-gradient",
+            "cd ios && pod install",
+            "Copy FloatingSpeedDial.tsx to components",
+            "Import and use"
+        ],
+        "nativeSetup": [
+            "iOS: Pod install handles setup",
+            "Android: Auto-linked in RN 0.60+"
+        ]
+    }
+}

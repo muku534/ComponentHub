@@ -13,6 +13,14 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    files: ["registry/components/**/*.{js,jsx,ts,tsx}"],
+    rules: {
+      "import/no-unresolved": "off",
+      "@next/next/no-html-link-for-pages": "off",
+      "react/no-unknown-property": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

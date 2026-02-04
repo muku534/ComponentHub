@@ -2,7 +2,39 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowRight, ArrowLeft, Copy, Terminal } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Copy, Terminal, Check } from 'lucide-react';
+import { useState } from 'react';
+
+function DependencyCard({ title, description, command }: { title: string, description: string, command: string }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = async () => {
+        await navigator.clipboard.writeText(command);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <div className="group p-5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors flex flex-col md:flex-row md:items-center gap-4">
+            <div className="flex-1">
+                <h4 className="font-bold mb-1">{title}</h4>
+                <p className="text-sm text-muted-foreground">{description}</p>
+            </div>
+            <div className="relative bg-gray-950 rounded-lg border border-gray-800 flex items-center min-w-[280px]">
+                <code className="flex-1 block text-gray-300 text-xs font-mono p-3 truncate pr-10">
+                    {command}
+                </code>
+                <button
+                    onClick={handleCopy}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-800 rounded-md transition-colors text-gray-400 hover:text-white"
+                    title="Copy command"
+                >
+                    {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                </button>
+            </div>
+        </div>
+    );
+}
 
 export default function InstallationPage() {
     return (
@@ -20,120 +52,135 @@ export default function InstallationPage() {
             </div>
 
             {/* Content */}
-            <div className="prose prose-neutral dark:prose-invert max-w-none">
-                <h2>Installation Methods</h2>
-                <p>
-                    There are two ways to use ComponentHub components in your project:
-                </p>
+            <div className="space-y-12">
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">Installation Methods</h2>
+                    <div className="p-6 rounded-xl border-2 border-primary/20 bg-primary/5 relative overflow-hidden">
+                        <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                            <Copy className="w-5 h-5 text-primary" />
+                            Copy & Paste Approach
+                        </h3>
+                        <p className="text-muted-foreground mb-6 max-w-2xl">
+                            The simplest way to use our components is to copy them directly into your project.
+                            This gives you full ownership and control over the code.
+                        </p>
 
-                <h3>Method 1: Copy & Paste (Recommended)</h3>
-                <p>
-                    The simplest way to use our components is to copy them directly into your project.
-                    This gives you full ownership and control over the code.
-                </p>
-                <ol>
-                    <li>Go to the <Link href="/components" className="text-blue-500 hover:underline">Components page</Link></li>
-                    <li>Select the component you want to use</li>
-                    <li>Click the &quot;Copy Code&quot; button</li>
-                    <li>Create a new file in your project (e.g., <code>components/ui/Button.tsx</code>)</li>
-                    <li>Paste the code and save</li>
-                </ol>
-
-                <h3>Method 2: Using the CLI (Coming Soon)</h3>
-                <p>
-                    We&apos;re working on a CLI tool that will make adding components even easier:
-                </p>
-
-                <div className="not-prose my-6">
-                    <div className="relative rounded-xl border border-border bg-gray-950 overflow-hidden">
-                        <div className="flex items-center gap-2 px-4 py-2 border-b border-border/50 bg-gray-900">
-                            <Terminal className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm text-muted-foreground">Terminal</span>
-                        </div>
-                        <pre className="p-4 text-sm text-gray-300">
-                            <code>{`# Coming soon!
-npx componenthub add button
-npx componenthub add card input modal`}</code>
-                        </pre>
-                    </div>
-                </div>
-
-                <h2>Optional Dependencies</h2>
-                <p>
-                    While our components are designed to be dependency-free, some components work
-                    better with these optional packages:
-                </p>
-
-                <div className="not-prose my-6 space-y-4">
-                    <div className="p-4 rounded-xl border border-border bg-muted/30">
-                        <h4 className="font-semibold mb-2">For Animations</h4>
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-gray-950 font-mono text-sm text-gray-300">
-                            <span className="text-blue-400">npm</span> install react-native-reanimated
+                        <div className="space-y-4">
+                            <div className="flex gap-4 p-4 rounded-xl bg-background/50 border border-border/50 items-start">
+                                <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</div>
+                                <div>
+                                    <p className="text-sm font-medium">Browse Components</p>
+                                    <p className="text-xs text-muted-foreground">Go to the <Link href="/components" className="text-blue-500 hover:underline">Components page</Link> and select a component.</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-4 p-4 rounded-xl bg-background/50 border border-border/50 items-start">
+                                <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</div>
+                                <div>
+                                    <p className="text-sm font-medium">Copy Code</p>
+                                    <p className="text-xs text-muted-foreground">Click the &quot;Copy Code&quot; button on the component detail page.</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-4 p-4 rounded-xl bg-background/50 border border-border/50 items-start">
+                                <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</div>
+                                <div>
+                                    <p className="text-sm font-medium">Create File</p>
+                                    <p className="text-xs text-muted-foreground">Create a file (e.g., <code className="bg-muted px-1 py-0.5 rounded text-foreground">components/ui/Button.tsx</code>) and paste the code.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="p-4 rounded-xl border border-border bg-muted/30">
-                        <h4 className="font-semibold mb-2">For Gestures</h4>
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-gray-950 font-mono text-sm text-gray-300">
-                            <span className="text-blue-400">npm</span> install react-native-gesture-handler
-                        </div>
-                    </div>
-                    <div className="p-4 rounded-xl border border-border bg-muted/30">
-                        <h4 className="font-semibold mb-2">For SVG Icons</h4>
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-gray-950 font-mono text-sm text-gray-300">
-                            <span className="text-blue-400">npm</span> install react-native-svg
-                        </div>
-                    </div>
-                </div>
+                </section>
 
-                <h2>TypeScript Configuration</h2>
-                <p>
-                    Our components are written in TypeScript. Make sure your <code>tsconfig.json</code>
-                    includes the following settings for the best experience:
-                </p>
-
-                <div className="not-prose my-6">
-                    <div className="relative rounded-xl border border-border bg-muted/50 overflow-hidden">
-                        <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted">
-                            <span className="text-sm text-muted-foreground">tsconfig.json</span>
-                            <button className="p-1.5 rounded-md hover:bg-background transition-colors">
-                                <Copy className="w-4 h-4" />
-                            </button>
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">Optional Dependencies</h2>
+                    <p className="text-muted-foreground mb-6">
+                        While our components are designed to be dependency-free, some complex interactions work better with these packages.
+                    </p>
+                    <section>
+                        <h2 className="text-2xl font-bold mb-6">Optional Dependencies</h2>
+                        <p className="text-muted-foreground mb-6">
+                            While our components are designed to be dependency-free, some complex interactions work better with these packages.
+                        </p>
+                        <div className="grid grid-cols-1 gap-6">
+                            <DependencyCard
+                                title="Animations"
+                                description="For complex layout transitions"
+                                command="npm i react-native-reanimated"
+                            />
+                            <DependencyCard
+                                title="Gestures"
+                                description="For swipeables and drag interactions"
+                                command="npm i react-native-gesture-handler"
+                            />
+                            <DependencyCard
+                                title="Vectors"
+                                description="For SVG paths and icons"
+                                command="npm i react-native-svg"
+                            />
                         </div>
-                        <pre className="p-4 text-sm overflow-x-auto">
+                    </section>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold mb-6">TypeScript Configuration</h2>
+                    <p className="text-muted-foreground mb-6">
+                        Ensure your <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-foreground">tsconfig.json</code> has these settings for the best developer experience.
+                    </p>
+
+                    <div className="relative rounded-xl border border-border bg-gray-950 overflow-hidden shadow-2xl">
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800 bg-gray-900/50">
+                            <div className="flex items-center gap-2">
+                                <div className="flex gap-1.5">
+                                    <div className="w-3 h-3 rounded-full bg-red-500/20" />
+                                    <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
+                                    <div className="w-3 h-3 rounded-full bg-green-500/20" />
+                                </div>
+                                <span className="text-xs text-gray-400 font-mono ml-2">tsconfig.json</span>
+                            </div>
+                        </div>
+                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
                             <code>{`{
   "compilerOptions": {
-    "strict": true,
-    "jsx": "react-native",
+    "strict": true,            // Enable strict type checking
+    "jsx": "react-native",     // Handle JSX validation
     "moduleResolution": "bundler",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"]       // Optional: Path aliases
     }
   }
 }`}</code>
                         </pre>
                     </div>
-                </div>
+                </section>
 
-                <h2>Troubleshooting</h2>
-                <h3>TypeScript Errors</h3>
-                <p>
-                    If you see TypeScript errors after pasting a component, make sure:
-                </p>
-                <ul>
-                    <li>Your React Native version is 0.70 or later</li>
-                    <li>TypeScript is properly configured</li>
-                    <li>Required peer dependencies are installed</li>
-                </ul>
-
-                <h3>Style Issues</h3>
-                <p>
-                    If styles don&apos;t look right, check that:
-                </p>
-                <ul>
-                    <li>You&apos;ve updated the color values to match your theme</li>
-                    <li>Font families are installed and configured</li>
-                    <li>Screen density is accounted for</li>
-                </ul>
+                <section className="grid md:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-xl border border-red-500/20 bg-red-500/5">
+                        <h3 className="font-bold text-red-600 dark:text-red-400 mb-3">Common Errors</h3>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-start gap-2">
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                                <span>React Native version mismatch (ensure 0.70+)</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                                <span>Missing peer dependencies</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="p-6 rounded-xl border border-blue-500/20 bg-blue-500/5">
+                        <h3 className="font-bold text-blue-600 dark:text-blue-400 mb-3">Styling Tips</h3>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                            <li className="flex items-start gap-2">
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                <span>Check your font configuration</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                <span>Update constants.ts for your theme</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
             </div>
 
             {/* Navigation */}

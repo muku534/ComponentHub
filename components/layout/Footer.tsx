@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Code2, Github, Twitter, Linkedin } from 'lucide-react';
+import { Code2, Github, Twitter, Linkedin, Youtube, Globe } from 'lucide-react';
 import { footerLinks, siteConfig } from '@/lib/constants';
 
 export default function Footer() {
@@ -50,6 +50,24 @@ export default function Footer() {
                                 aria-label="LinkedIn"
                             >
                                 <Linkedin className="w-5 h-5" />
+                            </a>
+                            <a
+                                href={siteConfig.socials.youtube}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                aria-label="YouTube"
+                            >
+                                <Youtube className="w-5 h-5" />
+                            </a>
+                            <a
+                                href={siteConfig.socials.website}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                aria-label="Portfolio"
+                            >
+                                <Globe className="w-5 h-5" />
                             </a>
                             <a
                                 href={siteConfig.socials.reddit}

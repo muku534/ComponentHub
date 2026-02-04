@@ -1,0 +1,68 @@
+{
+    "id": "animated-tab-bar",
+    "name": "Animated Tab Bar",
+    "category": "Navigation",
+    "description": "Sliding indicator with smooth transitions and scale effects",
+    "longDescription": "A beautifully animated tab bar component with a sliding indicator, scale effects on active tabs, and smooth transitions. Perfect for segmented controls or navigation tabs.",
+    "gradient": "from-purple-500 to-pink-500",
+    "emoji": "📱",
+    "dependencies": {
+        "required": [],
+        "optional": [
+            "native-haptics"
+        ]
+    },
+    "features": [
+        "Smooth sliding indicator animation",
+        "Scale and opacity effects on tabs",
+        "Customizable colors and styling",
+        "Haptic feedback on tab change",
+        "Dynamic number of tabs",
+        "TypeScript ready"
+    ],
+    "props": [
+        {
+            "name": "tabs",
+            "type": "string[]",
+            "required": true,
+            "description": "Array of tab labels"
+        },
+        {
+            "name": "activeTab",
+            "type": "string",
+            "required": true,
+            "description": "Currently active tab"
+        },
+        {
+            "name": "onTabChange",
+            "type": "(tab: string) => void",
+            "required": true,
+            "description": "Callback when tab changes"
+        },
+        {
+            "name": "hapticEnabled",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Enable haptic feedback"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Simple segmented control",
+            "code": "const [activeTab, setActiveTab] = useState('All');\n\n<AnimatedTabBar\n  tabs={['All', 'Active', 'Completed']}\n  activeTab={activeTab}\n  onTabChange={setActiveTab}\n/>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Easy",
+    "codePreview": "<AnimatedTabBar\n  tabs={['Tab 1', 'Tab 2', 'Tab 3']}\n  activeTab={activeTab}\n  onTabChange={setActiveTab}\n/>",
+    "installation": {
+        "steps": [
+            "Copy AnimatedTabBar.tsx to your components folder",
+            "Copy haptics.ts utility",
+            "Import and use"
+        ]
+    }
+}

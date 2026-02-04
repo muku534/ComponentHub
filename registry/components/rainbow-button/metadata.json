@@ -1,0 +1,79 @@
+{
+    "id": "rainbow-button",
+    "name": "Rainbow Button",
+    "category": "Button",
+    "description": "Animated gradient border with SVG stroke animation",
+    "longDescription": "An eye-catching button component with an animated rainbow gradient border. Uses SVG for smooth stroke animations that travel around the button perimeter.",
+    "gradient": "from-red-500 via-yellow-500 to-blue-500",
+    "emoji": "🌈",
+    "dependencies": {
+        "required": [
+            "react-native-svg"
+        ],
+        "optional": []
+    },
+    "features": [
+        "Animated gradient border effect",
+        "Customizable gradient colors",
+        "Adjustable animation speed",
+        "Static or animated modes",
+        "Press feedback",
+        "Fully customizable size"
+    ],
+    "props": [
+        {
+            "name": "width",
+            "type": "number",
+            "required": true,
+            "description": "Width of the button"
+        },
+        {
+            "name": "height",
+            "type": "number",
+            "required": true,
+            "description": "Height of the button"
+        },
+        {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Button content"
+        },
+        {
+            "name": "onPress",
+            "type": "() => void",
+            "required": false,
+            "description": "Press handler"
+        },
+        {
+            "name": "animated",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Enable border animation"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Simple rainbow button",
+            "code": "<RainbowButton\n  width={200}\n  height={50}\n  onPress={() => console.log('Pressed')}\n>\n  <Text>Premium Feature</Text>\n</RainbowButton>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-04",
+    "difficulty": "Medium",
+    "codePreview": "<RainbowButton width={200} height={50}>\n  <Text>Click Me</Text>\n</RainbowButton>",
+    "installation": {
+        "steps": [
+            "npm install react-native-svg",
+            "cd ios && pod install",
+            "Copy RainbowButton.tsx to components",
+            "Import and use"
+        ],
+        "nativeSetup": [
+            "iOS: Pod install handles setup",
+            "Android: Auto-linked in RN 0.60+"
+        ]
+    }
+}
