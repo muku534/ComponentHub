@@ -13,7 +13,7 @@ export default function PrivacyPage() {
             content: (
                 <>
                     <p className="mb-4">
-                        A key principle of ComponentHub is privacy by design. As a library of copy-paste components, we minimize data collection:
+                        A key principle of nativecn-ui is privacy by design. As a library of copy-paste components, we minimize data collection:
                     </p>
                     <ul className="space-y-2 ml-1">
                         <li className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
             title: '4. Cookies and Web Beacons',
             content: (
                 <p>
-                    Like any other website, ComponentHub uses "cookies". These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
+                    Like any other website, nativecn-ui uses "cookies". These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
                 </p>
             )
         },
@@ -85,7 +85,7 @@ export default function PrivacyPage() {
             title: '5. Third Party Privacy Policies',
             content: (
                 <p>
-                    ComponentHub's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
+                    nativecn-ui's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
                 </p>
             )
         },
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
             title: '7. Children\'s Information',
             content: (
                 <p>
-                    Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity. ComponentHub does not knowingly collect any Personal Identifiable Information from children under the age of 13.
+                    Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity. nativecn-ui does not knowingly collect any Personal Identifiable Information from children under the age of 13.
                 </p>
             )
         },

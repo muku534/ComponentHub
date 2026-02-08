@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft, Copy, Terminal, Check } from 'lucide-react';
 import { useState } from 'react';
+import { logEvent } from '@/lib/firebase';
 
 function DependencyCard({ title, description, command }: { title: string, description: string, command: string }) {
     const [copied, setCopied] = useState(false);
@@ -11,6 +12,10 @@ function DependencyCard({ title, description, command }: { title: string, descri
     const handleCopy = async () => {
         await navigator.clipboard.writeText(command);
         setCopied(true);
+        logEvent('copy_installation_command', {
+            command_title: title,
+            command: command
+        });
         setTimeout(() => setCopied(false), 2000);
     };
 

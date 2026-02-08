@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import AnalyticsProvider from "@/components/analytics/AnalyticsProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
     title: "nativecn-ui - Premium React Native Components",
     description: "Copy-paste React Native UI components. Production-ready, TypeScript-first.",
     type: "website",
+  },
+  icons: {
+    icon: "/logo-v1.png",
+    shortcut: "/logo-v1.png",
+    apple: "/logo-v1.png",
   },
 };
 
@@ -33,6 +39,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <AnalyticsProvider />
           <Navbar />
           <main className="min-h-screen">{children}</main>
           <Footer />

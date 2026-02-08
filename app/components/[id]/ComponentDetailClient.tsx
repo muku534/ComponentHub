@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Copy, Check, ChevronLeft, Code2, Package, Zap, BookOpen, ArrowRight, Play } from 'lucide-react';
 import type { ComponentData, ComponentMetadata } from '@/lib/types';
+import { logEvent } from '@/lib/firebase';
 
 interface ComponentDetailClientProps {
     component: ComponentData;
@@ -18,6 +19,11 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
     const handleCopy = async (text: string, section: string) => {
         await navigator.clipboard.writeText(text);
         setCopiedSection(section);
+        logEvent('copy_component_detail', {
+            component_id: component.id,
+            component_name: component.name,
+            section: section
+        });
         setTimeout(() => setCopiedSection(null), 2000);
     };
 

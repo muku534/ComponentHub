@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Code2 } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { navigation } from '@/lib/constants';
 
@@ -29,11 +30,13 @@ export default function Navbar() {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
-                        <div className="relative">
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-                            <div className="relative bg-gradient-to-br from-blue-600 to-purple-600 p-2 rounded-lg shadow-lg">
-                                <Code2 className="w-5 h-5 text-white" />
-                            </div>
+                        <div className="relative w-8 h-8">
+                            <Image
+                                src="/logo-v1.png"
+                                alt="nativecn-ui logo"
+                                fill
+                                className="object-contain"
+                            />
                         </div>
                         <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             nativecn-ui

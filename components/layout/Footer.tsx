@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Code2, Github, Twitter, Linkedin, Youtube, Globe } from 'lucide-react';
+import Image from 'next/image';
+import { Github, Twitter, Linkedin, Youtube, Globe } from 'lucide-react';
 import { footerLinks, siteConfig } from '@/lib/constants';
 
 export default function Footer() {
@@ -10,11 +11,13 @@ export default function Footer() {
                     {/* Brand */}
                     <div className="lg:col-span-2">
                         <Link href="/" className="flex items-center space-x-2 group mb-4">
-                            <div className="relative">
-                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-50 group-hover:opacity-75 transition-opacity duration-300" />
-                                <div className="relative bg-gradient-to-br from-blue-600 to-purple-600 p-2 rounded-lg">
-                                    <Code2 className="w-5 h-5 text-white" />
-                                </div>
+                            <div className="relative w-8 h-8">
+                                <Image
+                                    src="/logo-v1.png"
+                                    alt="nativecn-ui logo"
+                                    fill
+                                    className="object-contain"
+                                />
                             </div>
                             <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                                 nativecn-ui

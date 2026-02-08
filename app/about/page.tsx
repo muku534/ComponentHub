@@ -26,7 +26,7 @@ function HeroSection() {
                 >
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-600/10 to-purple-600/10 border border-blue-500/20 mb-6">
                         <Heart className="w-4 h-4 text-pink-500" />
-                        <span className="text-sm font-medium">The Story Behind ComponentHub</span>
+                        <span className="text-sm font-medium">The Story Behind nativecn-ui</span>
                     </div>
                 </motion.div>
 
@@ -79,7 +79,7 @@ function HeroSection() {
                         className="p-8 rounded-2xl bg-gradient-to-r from-blue-600/10 to-purple-600/10 border border-blue-500/20 text-center"
                     >
                         <p className="text-xl md:text-2xl font-semibold mb-4">
-                            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">ComponentHub</span> is my answer.
+                            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">nativecn-ui</span> is my answer.
                         </p>
                         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                             Every component here is extracted from real production apps.
@@ -226,7 +226,7 @@ function TheJourney() {
                     viewport={{ once: true }}
                     className="text-center mb-12"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">How ComponentHub Started</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">How nativecn-ui Started</h2>
                     <p className="text-xl text-muted-foreground">From Frustration to Solution</p>
                 </motion.div>
 
@@ -240,7 +240,7 @@ function TheJourney() {
                         className="space-y-6 text-lg leading-relaxed"
                     >
                         <p className="text-muted-foreground">
-                            ComponentHub didn't start as a business idea. It started as a folder on my computer labeled
+                            nativecn-ui didn't start as a business idea. It started as a folder on my computer labeled
                             <code className="px-2 py-1 rounded bg-muted text-foreground mx-1">reusable-components</code>.
                         </p>
                         <p className="text-muted-foreground">
@@ -341,7 +341,7 @@ function WhyFree() {
                     className="space-y-8"
                 >
                     <p className="text-lg text-muted-foreground text-center max-w-2xl mx-auto">
-                        ComponentHub starts free because I believe in the React Native community.
+                        nativecn-ui starts free because I believe in the React Native community.
                         We share knowledge on Twitter. We help each other on Discord. We contribute to open source.
                         <span className="text-foreground font-medium"> This is my contribution.</span>
                     </p>
@@ -394,7 +394,7 @@ function WhyFree() {
                             <span className="px-4 py-2 rounded-full bg-green-500/10 text-green-500 text-sm font-medium">Share if they helped</span>
                         </div>
                         <p className="text-sm text-muted-foreground mt-6 italic">
-                            If ComponentHub saves you even 2 hours, that's worth it.
+                            If nativecn-ui saves you even 2 hours, that's worth it.
                         </p>
                     </div>
                 </motion.div>
@@ -436,7 +436,7 @@ function WhyDifferent() {
         {
             icon: Sparkles,
             title: 'AI Era Ready',
-            description: 'While AI generates generic code, ComponentHub provides the proven solutions you can trust. Use AI to customize these components, not build from scratch.',
+            description: 'While AI generates generic code, nativecn-ui provides the proven solutions you can trust. Use AI to customize these components, not build from scratch.',
         },
     ];
 
@@ -450,7 +450,7 @@ function WhyDifferent() {
                     viewport={{ once: true }}
                     className="text-center mb-12"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Why ComponentHub Stands Out</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Why nativecn-ui Stands Out</h2>
                     <p className="text-xl text-muted-foreground">Not Just Another Component Library</p>
                 </motion.div>
 
@@ -486,7 +486,7 @@ function WhyDifferent() {
 function AboutCreator() {
     const projects = [
         { icon: Rocket, label: 'Mobile Apps', description: 'Building production React Native apps' },
-        { icon: Code2, label: 'ComponentHub', description: 'This platform you\'re on' },
+        { icon: Code2, label: 'nativecn-ui', description: 'This platform you\'re on' },
         { icon: Github, label: 'Open Source', description: 'Contributing to React Native ecosystem' },
         { icon: Twitter, label: 'Twitter', description: 'Sharing daily learnings and builds' },
     ];
@@ -530,7 +530,7 @@ function AboutCreator() {
                         <p className="text-muted-foreground leading-relaxed">
                             Hey! I'm Mukesh, a React Native developer who's been building mobile apps for 2+ years.
                             I'm passionate about creating delightful mobile experiences with smooth animations and intuitive UIs.
-                            I believe the best way to learn is to share. ComponentHub is
+                            I believe the best way to learn is to share. nativecn-ui is
                             my experiment in documenting what I learn and building a community of makers.
                         </p>
                     </div>
@@ -633,7 +633,7 @@ function Roadmap() {
     ];
 
     const helpItems = [
-        { icon: MessageSquare, label: 'Share', description: 'If ComponentHub helps you, tell other devs' },
+        { icon: MessageSquare, label: 'Share', description: 'If nativecn-ui helps you, tell other devs' },
         { icon: MessageSquare, label: 'Feedback', description: 'Tell me what components you need' },
         { icon: Bug, label: 'Report Issues', description: 'Found a bug? Let me know' },
         { icon: Star, label: 'Star on GitHub', description: 'Help others discover this' },

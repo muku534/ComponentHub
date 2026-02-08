@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Copy, Check, ExternalLink, ArrowRight, Sparkles, Compass, Sliders, MousePointer2, Layers, Loader2, LayoutGrid } from 'lucide-react';
 import type { ComponentMetadata } from '@/lib/types';
+import { logEvent } from '@/lib/firebase';
 
 // Category data with icons
 const categories = [
@@ -49,6 +50,11 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
     const handleCopyPreview = async (component: ComponentMetadata) => {
         await navigator.clipboard.writeText(component.codePreview);
         setCopiedId(component.id);
+        logEvent('copy_component_preview', {
+            component_id: component.id,
+            component_name: component.name,
+            location: 'components_grid'
+        });
         setTimeout(() => setCopiedId(null), 2000);
     };
 
