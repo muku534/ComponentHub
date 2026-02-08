@@ -21,8 +21,8 @@ export default function Navbar() {
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                    ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-lg'
-                    : 'bg-transparent'
+                ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-lg'
+                : 'bg-transparent'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +36,7 @@ export default function Navbar() {
                             </div>
                         </div>
                         <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                            ComponentHub
+                            nativecn-ui
                         </span>
                     </Link>
 

@@ -17,7 +17,7 @@ export default function Footer() {
                                 </div>
                             </div>
                             <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                ComponentHub
+                                nativecn-ui
                             </span>
                         </Link>
                         <p className="text-muted-foreground max-w-sm mb-6">
@@ -138,7 +138,7 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-muted-foreground">
-                        © {new Date().getFullYear()} ComponentHub. All rights reserved.
+                        © {new Date().getFullYear()} nativecn-ui. All rights reserved.
                     </p>
                     <p className="text-sm text-muted-foreground">
                         Built with ❤️ for React Native developers

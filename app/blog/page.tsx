@@ -38,7 +38,7 @@ export default function BlogPage() {
                             <h2 className="text-2xl font-bold mb-2">Coming Soon</h2>
                             <p className="text-muted-foreground max-w-md">
                                 We&apos;re working on amazing content for you. Check back soon for tutorials,
-                                best practices, and updates about ComponentHub.
+                                best practices, and updates about nativecn-ui.
                             </p>
                         </div>
                     </div>

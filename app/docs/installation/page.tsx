@@ -47,7 +47,7 @@ export default function InstallationPage() {
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-4">Installation</h1>
                 <p className="text-lg text-muted-foreground">
-                    Learn how to add ComponentHub components to your project.
+                    Learn how to add nativecn-ui components to your project.
                 </p>
             </div>
 

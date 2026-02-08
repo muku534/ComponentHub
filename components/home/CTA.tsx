@@ -39,7 +39,7 @@ export default function CTA() {
                         </h2>
 
                         <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-                            Join thousands of developers who ship faster with ComponentHub.
+                            Join thousands of developers who ship faster with nativecn-ui.
                             No subscriptions, no lock-in. Just great components.
                         </p>
 

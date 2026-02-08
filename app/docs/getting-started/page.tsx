@@ -15,7 +15,7 @@ export default function GettingStartedPage() {
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-4">Getting Started</h1>
                 <p className="text-lg text-muted-foreground">
-                    Start using ComponentHub components in your React Native project.
+                    Start using nativecn-ui components in your React Native project.
                 </p>
             </div>
 
@@ -112,7 +112,7 @@ export const Button = ({ title, onPress, variant = 'primary' }: ButtonProps) => 
                     <div className="p-6 rounded-xl border border-border bg-gray-950 font-mono text-sm text-gray-300 shadow-md">
                         <pre>{`src/
 ├── components/
-│   ├── ui/           # ComponentHub components go here
+│   ├── ui/           # nativecn-ui components go here
 │   │   ├── Button.tsx
 │   │   ├── Card.tsx
 │   │   ├── Input.tsx

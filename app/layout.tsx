@@ -8,12 +8,12 @@ import Footer from "@/components/layout/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ComponentHub - Premium React Native Components",
+  title: "nativecn-ui - Premium React Native Components",
   description: "Copy-paste React Native UI components. Production-ready, TypeScript-first. No package bloat, just beautiful code.",
   keywords: ["React Native", "Components", "UI Library", "TypeScript", "Mobile Development"],
-  authors: [{ name: "ComponentHub" }],
+  authors: [{ name: "nativecn-ui" }],
   openGraph: {
-    title: "ComponentHub - Premium React Native Components",
+    title: "nativecn-ui - Premium React Native Components",
     description: "Copy-paste React Native UI components. Production-ready, TypeScript-first.",
     type: "website",
   },

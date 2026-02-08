@@ -1,15 +1,15 @@
 export const siteConfig = {
-    name: "ComponentHub",
+    name: "nativecn-ui",
     description: "Premium React Native components you own. No package bloat. Just beautiful, performant code.",
-    url: "https://componenthub.dev",
+    url: "https://nativecn-ui.dev",
     creator: {
         name: "Mukesh Prajapati",
         role: "React Native Developer",
         location: "India",
-        bio: "Passionate React Native developer building beautiful mobile experiences. Creating ComponentHub to help developers ship faster.",
+        bio: "Passionate React Native developer building beautiful mobile experiences. Creating nativecn-ui to help developers ship faster.",
     },
     socials: {
-        github: "https://github.com/muku534/ComponentHub",
+        github: "https://github.com/muku534/",
         twitter: "https://x.com/MukeshPraj81318",
         linkedin: "https://www.linkedin.com/in/mukesh-prajapati-a6a670235",
         reddit: "https://www.reddit.com/user/Fresh-Wealth4531/",

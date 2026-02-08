@@ -743,7 +743,7 @@ function FinalCTA() {
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Join the Journey</h2>
                     <p className="text-xl text-muted-foreground mb-4">Let's Build Better Apps, Together</p>
                     <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
-                        ComponentHub is just getting started. Every component added, every bug fixed,
+                        nativecn-ui is just getting started. Every component added, every bug fixed,
                         every piece of feedback makes it better. This isn't a solo project - it's a community effort.
                     </p>
 

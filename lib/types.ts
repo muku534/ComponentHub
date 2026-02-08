@@ -1,4 +1,4 @@
-// Component Registry Types for ComponentHub
+// Component Registry Types for nativecn-ui
 // These types define the structure of component data
 
 export interface ComponentProp {

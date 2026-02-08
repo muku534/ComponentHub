@@ -15,7 +15,7 @@ export default function CustomizationPage() {
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-4">Customization</h1>
                 <p className="text-lg text-muted-foreground">
-                    Learn how to customize ComponentHub components to match your design system.
+                    Learn how to customize nativecn-ui components to match your design system.
                 </p>
             </div>
 
@@ -25,7 +25,7 @@ export default function CustomizationPage() {
                     <h2 className="text-2xl font-bold mb-6">Design Philosophy</h2>
                     <div className="p-6 rounded-xl border border-border bg-muted/20">
                         <p className="text-muted-foreground text-lg leading-relaxed mb-8">
-                            ComponentHub components are designed to be easily customizable. We use a
+                            nativecn-ui components are designed to be easily customizable. We use a
                             consistent approach to styling that makes it simple to adapt components
                             to your brand while maintaining a premium feel.
                         </p>

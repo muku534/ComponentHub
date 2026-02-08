@@ -112,8 +112,8 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold mb-1">Email Support</h4>
-                                            <a href="mailto:contact@componenthub.dev" className="text-primary hover:underline font-medium break-all">
-                                                contact@componenthub.dev
+                                            <a href="mailto:contact@nativecn-ui.dev" className="text-primary hover:underline font-medium break-all">
+                                                contact@nativecn-ui.dev
                                             </a>
                                         </div>
                                     </div>

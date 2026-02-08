@@ -10,7 +10,7 @@ const quickLinks = [
     {
         icon: Rocket,
         title: 'Getting Started',
-        description: 'Set up ComponentHub in your project in minutes.',
+        description: 'Set up nativecn-ui in your project in minutes.',
         href: '/docs/getting-started',
     },
     {
@@ -60,7 +60,7 @@ export default function DocsPage() {
                 <h1 className="text-4xl font-bold mb-4">
                     Welcome to{' '}
                     <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        ComponentHub
+                        nativecn-ui
                     </span>
                 </h1>
                 <p className="text-lg text-muted-foreground">
@@ -188,7 +188,7 @@ export default function DocsPage() {
                         The Premium Native UI Library
                     </h2>
                     <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
-                        ComponentHub is a collection of premium React Native UI components designed for
+                        nativecn-ui is a collection of premium React Native UI components designed for
                         developers who want <span className="text-foreground font-semibold">full control</span> over their code.
                         Unlike traditional component libraries that hide logic in <code>node_modules</code>, we use a
                         copy-paste approach – you own the code, you control the quality.
@@ -196,7 +196,7 @@ export default function DocsPage() {
                 </section>
 
                 <section>
-                    <h2 className="text-2xl font-bold mb-8 text-center">Why ComponentHub?</h2>
+                    <h2 className="text-2xl font-bold mb-8 text-center">Why nativecn-ui?</h2>
                     <div className="grid md:grid-cols-2 gap-6">
                         <div className="p-6 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
                             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">

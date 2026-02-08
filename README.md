@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="public/logo.svg" alt="ComponentHub Logo" width="100" height="100" />
+  <img src="public/logo.svg" alt="nativecn-ui Logo" width="100" height="100" />
   
-  # ComponentHub
+  # nativecn-ui
   
   **Premium React Native Components You Own**
   
@@ -12,15 +12,15 @@
   [![React Native](https://img.shields.io/badge/React_Native-v0.76-61DAFB?style=flat-square&logo=react)](https://reactnative.dev/)
   [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
-  [Live Demo](https://componenthub.dev) · [Documentation](https://componenthub-docs.vercel.app/docs) · [Report Bug](https://github.com/muku534/ComponentHub/issues)
+  [Live Demo](https://nativecn-ui.dev) · [Documentation](https://nativecn-ui.dev/docs) · [Report Bug](https://github.com/muku534/nativecn-ui/issues)
   
 </div>
 
 ---
 
-## 🚀 Why ComponentHub?
+## 🚀 Why nativecn-ui?
 
-Modern React Native development often relies on heavy UI libraries that bloat your bundle size and restrict customization. ComponentHub takes a different approach:
+Modern React Native development often relies on heavy UI libraries that bloat your bundle size and restrict customization. nativecn-ui takes a different approach:
 
 - **Zero Bloat**: Don't install a 5MB library for a single button.
 - **Copy & Paste**: Copy the component code directly into your project.
@@ -47,11 +47,11 @@ Modern React Native development often relies on heavy UI libraries that bloat yo
 
 ### 2. Installation
 
-Clone the repository to run the ComponentHub documentation site locally:
+Clone the repository to run the nativecn-ui documentation site locally:
 
 ```bash
-git clone https://github.com/muku534/ComponentHub.git
-cd componenthub
+git clone https://github.com/muku534/nativecn-ui.git
+cd nativecn-ui
 npm install
 npm run dev
 ```
@@ -60,7 +60,7 @@ Visit `http://localhost:3000` to browse components.
 
 ### 3. Using Components
 
-1. Browse the [ComponentHub Gallery](http://localhost:3000/components).
+1. Browse the [nativecn-ui Gallery](http://localhost:3000/components).
 2. Select a component (e.g., `RangeSlider`, `AnimatedTabBar`).
 3. Click **"Copy Code"** and paste it into your project's `components/` directory.
 4. (Optional) Copy any required utility files mentioned in the installation guide.
@@ -70,7 +70,7 @@ Visit `http://localhost:3000` to browse components.
 ## 📂 Project Structure
 
 ```
-componenthub/
+nativecn-ui/
 ├── app/                    # Next.js App Router (Doc Site)
 ├── components/             # Reusable UI components
 ├── registry/               # ✨ The Core: Source of all components
@@ -93,7 +93,7 @@ Built with ❤️ by **Mukesh Prajapati**. Follow for updates and more React Nat
 | Platform | Link |
 |----------|------|
 | **Portfolio** | [portfoliomukesh.vercel.app](https://portfoliomukesh.vercel.app/) |
-| **GitHub** | [@muku534](https://github.com/muku534/ComponentHub) |
+| **GitHub** | [@muku534](https://github.com/muku534/nativecn-ui) |
 | **X / Twitter** | [@MukeshPraj81318](https://x.com/MukeshPraj81318) |
 | **LinkedIn** | [Mukesh Prajapati](https://www.linkedin.com/in/mukesh-prajapati-a6a670235) |
 | **YouTube** | [@byteops_0412](https://www.youtube.com/@byteops_0412) |
