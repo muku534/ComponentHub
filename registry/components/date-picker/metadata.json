@@ -6,13 +6,10 @@
     "longDescription": "A beautiful modal date picker with calendar view, date range constraints, and custom theming. Built on react-native-calendars with additional styling improvements.",
     "gradient": "from-pink-500 to-rose-500",
     "emoji": "📅",
+    "snackId": "@mr.mukesh/date-picker",
     "dependencies": {
-        "required": [
-            "react-native-calendars"
-        ],
-        "optional": [
-            "native-haptics"
-        ]
+        "required": [],
+        "optional": []
     },
     "features": [
         "Modal calendar interface",
@@ -74,7 +71,6 @@
     "codePreview": "<DatePicker\n  value={date}\n  onDateChange={setDate}\n  label=\"Select Date\"\n/>",
     "installation": {
         "steps": [
-            "npm install react-native-calendars",
             "Copy DatePicker.tsx to components",
             "Copy utilities",
             "Import and use in forms"

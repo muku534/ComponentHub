@@ -6,6 +6,7 @@
     "longDescription": "A lightweight, zero-dependency implementation of haptic feedback using direct native code for iOS (UIImpactFeedbackGenerator) and Android (Vibrator/HapticFeedbackConstants). Perfect for avoiding heavy external libraries.",
     "gradient": "from-purple-500 to-pink-500",
     "emoji": "📳",
+    "snackId": "",
     "dependencies": {
         "required": [],
         "optional": []

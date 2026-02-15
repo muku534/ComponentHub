@@ -6,6 +6,7 @@
     "longDescription": "A beautifully animated switch component with spring physics and color interpolation. Features smooth transitions, customizable colors, and optional haptic feedback.",
     "gradient": "from-green-500 to-emerald-500",
     "emoji": "🔘",
+    "snackId": "@mr.mukesh/switch-toggle",
     "dependencies": {
         "required": [],
         "optional": [

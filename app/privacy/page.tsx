@@ -154,7 +154,7 @@ export default function PrivacyPage() {
                             Transparency is our core value. We believe in software that respects your privacy by default.
                         </p>
                         <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-muted border border-border text-xs text-muted-foreground">
-                            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                            Last updated: February 15, 2026
                         </div>
                     </div>
 

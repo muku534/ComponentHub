@@ -6,6 +6,7 @@
     "longDescription": "A fully customizable range slider component with smooth animations, step snapping, and optional haptic feedback. Built with React Native Animated API for 60fps performance.",
     "gradient": "from-blue-500 to-cyan-500",
     "emoji": "🎚️",
+    "snackId": "@mr.mukesh/range-slider",
     "dependencies": {
         "required": [],
         "optional": [

@@ -6,6 +6,7 @@
     "longDescription": "A modern bottom navigation component with smooth animations, floating style option, and active tab indicator. Features bounce animations and icon highlighting.",
     "gradient": "from-blue-500 to-indigo-500",
     "emoji": "🧭",
+    "snackId": "@mr.mukesh/animated-bottom-navigation",
     "dependencies": {
         "required": [],
         "optional": [

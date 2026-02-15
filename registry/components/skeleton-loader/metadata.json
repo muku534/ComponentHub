@@ -6,6 +6,7 @@
     "longDescription": "A versatile skeleton loader component with shimmer animation. Includes pre-built variants for common UI patterns like cards, list items, and text blocks.",
     "gradient": "from-slate-500 to-slate-700",
     "emoji": "⚡",
+    "snackId": "@mr.mukesh/skeleton-loader",
     "dependencies": {
         "required": [],
         "optional": []

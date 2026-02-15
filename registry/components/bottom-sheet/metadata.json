@@ -6,6 +6,7 @@
     "longDescription": "A flexible bottom sheet modal that automatically adjusts to content height. Features drag-to-close gestures, customizable backdrop, and keyboard avoidance.",
     "gradient": "from-indigo-500 to-purple-500",
     "emoji": "📋",
+    "snackId": "@mr.mukesh/dynamic-bottom-sheet",
     "dependencies": {
         "required": [],
         "optional": [

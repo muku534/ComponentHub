@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Copy, Check, ChevronLeft, Code2, Package, Zap, BookOpen, ArrowRight, Play } from 'lucide-react';
+import { Copy, Check, ChevronLeft, Code2, Package, Zap, BookOpen, ArrowRight, Play, ExternalLink } from 'lucide-react';
 import type { ComponentData, ComponentMetadata } from '@/lib/types';
 import { logEvent } from '@/lib/firebase';
 
@@ -69,18 +69,36 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
                 <div className="grid lg:grid-cols-3 gap-12">
                     {/* Main Content */}
                     <div className="lg:col-span-2 space-y-12">
-                        {/* Quick Preview */}
-                        <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
-                            <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                                <Zap className="w-6 h-6" />Quick Preview
-                            </h2>
-                            <div className="bg-muted/50 border border-border rounded-xl p-6">
-                                <pre className="overflow-x-auto text-sm"><code>{component.codePreview}</code></pre>
-                                <button onClick={() => handleCopy(component.codePreview, 'preview')} className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg flex items-center gap-2 hover:bg-primary/90 transition">
-                                    {copiedSection === 'preview' ? <><Check className="w-4 h-4" />Copied!</> : <><Copy className="w-4 h-4" />Copy Preview</>}
-                                </button>
-                            </div>
-                        </motion.section>
+
+                        {/* Live Preview - PRIORITY #1 */}
+                        {component.id !== 'native-haptics' && (
+                            <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                                        <Play className="w-6 h-6 text-blue-500" /> Live Preview
+                                    </h2>
+                                    <a
+                                        href={component.snackId ? `https://snack.expo.dev/${component.snackId}` : 'https://snack.expo.dev/'}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-muted/80 rounded-lg text-sm font-medium transition-colors"
+                                    >
+                                        Open in Snack <ExternalLink className="w-4 h-4" />
+                                    </a>
+                                </div>
+
+                                <div className="relative rounded-xl overflow-hidden border border-border bg-slate-900 shadow-2xl">
+                                    <div className="h-[600px] w-full">
+                                        <iframe
+                                            src={`https://snack.expo.dev/embedded/${component.snackId || ''}?preview=true&platform=ios&theme=dark`}
+                                            style={{ width: '100%', height: '100%', border: 'none' }}
+                                            title={`${component.name} Preview`}
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </div>
+                            </motion.section>
+                        )}
 
                         {/* Installation */}
                         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
@@ -214,21 +232,7 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
                     <div className="space-y-8">
                         <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="sticky top-24">
                             {/* Try it Live CTA (Phase 2 placeholder) */}
-                            <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-6 mb-6">
-                                <div className="flex items-center gap-2 mb-3">
-                                    <Play className="w-5 h-5 text-blue-500" />
-                                    <h3 className="font-bold">Try it Live</h3>
-                                </div>
-                                <p className="text-sm text-muted-foreground mb-4">
-                                    Interactive preview coming soon! Test this component in a real React Native environment.
-                                </p>
-                                <button
-                                    disabled
-                                    className="w-full px-4 py-3 bg-muted/60 rounded-xl font-medium text-muted-foreground cursor-not-allowed"
-                                >
-                                    Coming Soon
-                                </button>
-                            </div>
+
 
                             {/* Features */}
                             <div className="bg-background border border-border rounded-xl p-6">

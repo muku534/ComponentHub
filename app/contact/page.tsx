@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Mail, Github, Twitter, MessageSquare, ArrowRight, ExternalLink } from 'lucide-react';
+import { Mail, Github, Twitter, MessageSquare, ArrowRight, ExternalLink, Linkedin } from 'lucide-react';
 import { siteConfig } from '@/lib/constants';
 
 export default function ContactPage() {
@@ -33,26 +33,26 @@ export default function ContactPage() {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.2 }}
-                                className="group p-8 rounded-2xl border border-border bg-gradient-to-br from-muted/20 to-muted/5 hover:bg-muted/30 transition-all duration-300 relative overflow-hidden"
+                                className="group p-8 rounded-2xl border border-border bg-gradient-to-br from-blue-700/20 to-blue-500/5 hover:bg-blue-600/10 transition-all duration-300 relative overflow-hidden"
                             >
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                    <Github className="w-32 h-32 rotate-12" />
+                                    <Linkedin className="w-32 h-32 rotate-12" />
                                 </div>
                                 <div className="relative z-10">
                                     <div className="w-12 h-12 rounded-xl bg-background border border-border flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform duration-300">
-                                        <Github className="w-6 h-6 text-foreground" />
+                                        <Linkedin className="w-6 h-6 text-blue-600" />
                                     </div>
-                                    <h3 className="text-2xl font-bold mb-3">GitHub Issues</h3>
+                                    <h3 className="text-2xl font-bold mb-3">Connect on LinkedIn</h3>
                                     <p className="text-muted-foreground mb-6 leading-relaxed">
-                                        Found a bug or have a feature request? The fastest way to get help is to open an issue on our repository.
+                                        Let's connect professionally. I'm always open to discussing React Native, new opportunities, or tech in general.
                                     </p>
                                     <a
-                                        href={`${siteConfig.socials.github}/issues`}
+                                        href={siteConfig.socials.linkedin}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-2 text-sm font-semibold bg-foreground text-background px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+                                        className="inline-flex items-center gap-2 text-sm font-semibold bg-blue-600 text-white px-6 py-2.5 rounded-full hover:bg-blue-700 transition-colors"
                                     >
-                                        Open an Issue
+                                        View Profile
                                         <ExternalLink className="w-4 h-4" />
                                     </a>
                                 </div>
@@ -112,8 +112,8 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <h4 className="font-semibold mb-1">Email Support</h4>
-                                            <a href="mailto:contact@nativecn-ui.dev" className="text-primary hover:underline font-medium break-all">
-                                                contact@nativecn-ui.dev
+                                            <a href="mailto:prajapatimukesh0111@gmail.com" className="text-primary hover:underline font-medium break-all">
+                                                prajapatimukesh0111@gmail.com
                                             </a>
                                         </div>
                                     </div>

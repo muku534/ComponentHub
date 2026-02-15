@@ -3,6 +3,7 @@
     "name": "Rainbow Button",
     "category": "Button",
     "description": "Animated gradient border with SVG stroke animation",
+    "snackId": "@mr.mukesh/rainbow-button",
     "longDescription": "An eye-catching button component with an animated rainbow gradient border. Uses SVG for smooth stroke animations that travel around the button perimeter.",
     "gradient": "from-red-500 via-yellow-500 to-blue-500",
     "emoji": "🌈",

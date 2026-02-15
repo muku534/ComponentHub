@@ -6,6 +6,7 @@
     "longDescription": "A beautifully animated tab bar component with a sliding indicator, scale effects on active tabs, and smooth transitions. Perfect for segmented controls or navigation tabs.",
     "gradient": "from-purple-500 to-pink-500",
     "emoji": "📱",
+    "snackId": "@mr.mukesh/animated-tab-bar",
     "dependencies": {
         "required": [],
         "optional": [

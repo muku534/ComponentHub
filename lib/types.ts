@@ -43,6 +43,7 @@ export interface ComponentMetadata {
     codePreview: string;
     installation: ComponentInstallation;
     files?: string[];
+    snackId?: string;
 }
 
 // Registry index entry (lightweight for listing)
