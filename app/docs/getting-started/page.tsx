@@ -1,12 +1,11 @@
-'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionA } from '@/components/ui/ClientMotion';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft, CheckCircle2, Copy } from 'lucide-react';
 
 export default function GettingStartedPage() {
     return (
-        <motion.div
+        <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -168,6 +167,6 @@ export const Button = ({ title, onPress, variant = 'primary' }: ButtonProps) => 
                     <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
-        </motion.div>
+        </MotionDiv>
     );
 }

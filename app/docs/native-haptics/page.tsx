@@ -1,21 +1,13 @@
-'use client';
 
-import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Smartphone, Zap, Code2, Check, Copy } from 'lucide-react';
+import { MotionDiv, MotionA } from '@/components/ui/ClientMotion';
+import { ArrowRight, Sparkles, Smartphone, Zap, Code2 } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import CodeCopyButton from '@/components/docs/CodeCopyButton';
 
 export default function NativeHapticsDoc() {
-    const [copied, setCopied] = useState(false);
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText("import { triggerSelectionHaptic } from './NativeHaptics';");
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    };
 
     return (
-        <motion.div
+        <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -107,9 +99,7 @@ export default function NativeHapticsDoc() {
                 <div className="bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800">
                         <span className="text-xs text-slate-500">How to use</span>
-                        <button onClick={handleCopy} className="text-slate-400 hover:text-white transition-colors">
-                            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                        </button>
+                        <CodeCopyButton code="import { triggerSelectionHaptic } from './NativeHaptics';" />
                     </div>
                     <pre className="p-6 text-sm text-slate-300 overflow-x-auto">
                         <code>{`import { triggerSelectionHaptic, triggerImpact } from './NativeHaptics';
@@ -127,6 +117,6 @@ const onSuccess = () => {
                     </pre>
                 </div>
             </section>
-        </motion.div>
+        </MotionDiv>
     );
 }

@@ -1,42 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import {
-    getFirestore,
-    doc,
-    getDoc,
-    setDoc,
-    updateDoc,
-    increment,
-    collection,
-    getDocs,
-} from 'firebase/firestore';
 
-// ─── Firebase Init (server-side, re-uses same config) ────────────────────────
+// ─── Firebase REST API Configuration ─────────────────────────────────────────
+const PROJECT_ID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+const API_KEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
 
-const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-};
+// Base URL for Firestore REST API
+const FIRESTORE_BASE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
-// Use a separate app name to avoid conflicts with client-side app
-const SERVER_APP_NAME = 'server-analytics';
-
-function getServerDb() {
-    let app;
-    try {
-        app = getApp(SERVER_APP_NAME);
-    } catch {
-        app = initializeApp(firebaseConfig, SERVER_APP_NAME);
+async function firestoreRestFetch(path: string, method: string = 'GET', body?: any) {
+    const url = `${FIRESTORE_BASE_URL}/${path}?key=${API_KEY}`;
+    const options: RequestInit = {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+    };
+    if (body) {
+        options.body = JSON.stringify(body);
     }
-    return getFirestore(app);
+
+    const res = await fetch(url, options);
+    if (!res.ok) {
+        throw new Error(`Firestore REST Error: ${res.statusText}`);
+    }
+
+    // Some responses (like an empty COMMIT) might not have JSON
+    const text = await res.text();
+    return text ? JSON.parse(text) : {};
 }
 
-const COUNTERS_COLLECTION = 'counters';
-const COMPONENT_STATS_COLLECTION = 'component_stats';
+// Helper to determine if a document exists by making a targeted GET request
+async function getDocument(path: string) {
+    try {
+        const data = await firestoreRestFetch(path);
+        return data; // Document exists
+    } catch (e: any) {
+        if (e.message.includes('Not Found')) return null;
+        throw e;
+    }
+}
 
 // ─── Track Events (POST) ────────────────────────────────────────────────────
 
@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         const { action } = body;
-        const db = getServerDb();
 
         // ── Increment Component Stat ──
         if (action === 'track_component') {
@@ -54,14 +53,23 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ error: 'Invalid params' }, { status: 400 });
             }
 
-            const ref = doc(db, COMPONENT_STATS_COLLECTION, componentId);
-            const snap = await getDoc(ref);
+            const docPath = `component_stats/${componentId}`;
 
-            if (snap.exists()) {
-                await updateDoc(ref, { [field]: increment(1) });
-            } else {
-                await setDoc(ref, { views: 0, copies: 0, snack_opens: 0, [field]: 1 });
-            }
+            await firestoreRestFetch(':commit', 'POST', {
+                writes: [
+                    {
+                        transform: {
+                            document: `projects/${PROJECT_ID}/databases/(default)/documents/${docPath}`,
+                            fieldTransforms: [
+                                {
+                                    fieldPath: field,
+                                    increment: { integerValue: "1" }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            });
 
             return NextResponse.json({ success: true });
         }
@@ -79,40 +87,42 @@ export async function POST(request: NextRequest) {
                 return NextResponse.json({ error: 'Invalid field' }, { status: 400 });
             }
 
-            const ref = doc(db, COUNTERS_COLLECTION, 'global');
-            const snap = await getDoc(ref);
-
-            if (snap.exists()) {
-                await updateDoc(ref, { [field]: increment(1) });
-            } else {
-                await setDoc(ref, {
-                    dev_count: 175,
-                    total_views: 0,
-                    total_copies: 0,
-                    total_snack_opens: 0,
-                    total_studio_landing_views: 0,
-                    total_studio_builder_views: 0,
-                    total_studio_exports: 0,
-                    total_studio_copies: 0,
-                    total_studio_props_updates: 0,
-                    total_studio_code_views: 0,
-                    [field]: 1,
-                });
-            }
+            await firestoreRestFetch(':commit', 'POST', {
+                writes: [
+                    {
+                        transform: {
+                            document: `projects/${PROJECT_ID}/databases/(default)/documents/counters/global`,
+                            fieldTransforms: [
+                                {
+                                    fieldPath: field,
+                                    increment: { integerValue: "1" }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            });
 
             return NextResponse.json({ success: true });
         }
 
         // ── Increment Dev Count ──
         if (action === 'increment_dev') {
-            const ref = doc(db, COUNTERS_COLLECTION, 'global');
-            const snap = await getDoc(ref);
-
-            if (snap.exists()) {
-                await updateDoc(ref, { dev_count: increment(1) });
-            } else {
-                await setDoc(ref, { dev_count: 175 });
-            }
+            await firestoreRestFetch(':commit', 'POST', {
+                writes: [
+                    {
+                        transform: {
+                            document: `projects/${PROJECT_ID}/databases/(default)/documents/counters/global`,
+                            fieldTransforms: [
+                                {
+                                    fieldPath: "dev_count",
+                                    increment: { integerValue: "1" }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            });
 
             return NextResponse.json({ success: true });
         }
@@ -124,20 +134,33 @@ export async function POST(request: NextRequest) {
     }
 }
 
+// ─── Helper to unwrap Firestore REST API response format ─────────────────────
+function unwrapFirestoreData(fields: any) {
+    if (!fields) return {};
+    const result: any = {};
+    for (const [key, value] of Object.entries(fields)) {
+        const rawValue = value as any;
+        if (rawValue.integerValue !== undefined) result[key] = parseInt(rawValue.integerValue, 10);
+        else if (rawValue.stringValue !== undefined) result[key] = rawValue.stringValue;
+        else if (rawValue.booleanValue !== undefined) result[key] = rawValue.booleanValue;
+        else if (rawValue.doubleValue !== undefined) result[key] = parseFloat(rawValue.doubleValue);
+        else result[key] = rawValue;
+    }
+    return result;
+}
+
 // ─── Get Stats (GET) ─────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
     try {
-        const db = getServerDb();
         const type = request.nextUrl.searchParams.get('type');
 
         // Dev count — PUBLIC (for the home page counter)
         if (type === 'dev_count') {
-            const ref = doc(db, COUNTERS_COLLECTION, 'global');
-            const snap = await getDoc(ref);
-
-            if (snap.exists()) {
-                return NextResponse.json({ dev_count: snap.data()?.dev_count || 175 });
+            const doc = await getDocument('counters/global');
+            if (doc && doc.fields) {
+                const data = unwrapFirestoreData(doc.fields);
+                return NextResponse.json({ dev_count: data.dev_count || 175 });
             }
             return NextResponse.json({ dev_count: 175 });
         }
@@ -165,11 +188,10 @@ export async function GET(request: NextRequest) {
 
         // ── Global Counters (admin only) ──
         if (type === 'global') {
-            const ref = doc(db, COUNTERS_COLLECTION, 'global');
-            const snap = await getDoc(ref);
-
-            if (snap.exists()) {
-                return NextResponse.json(snap.data());
+            const doc = await getDocument('counters/global');
+            if (doc && doc.fields) {
+                const data = unwrapFirestoreData(doc.fields);
+                return NextResponse.json(data);
             }
             return NextResponse.json({
                 dev_count: 175,
@@ -187,11 +209,16 @@ export async function GET(request: NextRequest) {
 
         // ── Component Stats (admin only) ──
         if (type === 'components') {
-            const snap = await getDocs(collection(db, COMPONENT_STATS_COLLECTION));
+            // Need to retrieve all documents in a collection via REST GET
+            const res = await firestoreRestFetch('component_stats');
             const stats: Record<string, any> = {};
-            snap.forEach((d) => {
-                stats[d.id] = d.data();
-            });
+            if (res.documents && Array.isArray(res.documents)) {
+                for (const doc of res.documents) {
+                    // document.name looks like: projects/.../databases/(default)/documents/component_stats/buttons
+                    const id = doc.name.split('/').pop();
+                    stats[id] = unwrapFirestoreData(doc.fields);
+                }
+            }
             return NextResponse.json(stats);
         }
 

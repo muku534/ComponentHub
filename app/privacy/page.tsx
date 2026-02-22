@@ -1,6 +1,5 @@
-'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionA } from '@/components/ui/ClientMotion';
 import { Shield, Lock, Eye, FileText, Mail, Server, Globe, Cookie, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { siteConfig } from '@/lib/constants';
@@ -137,7 +136,7 @@ export default function PrivacyPage() {
     return (
         <div className="pt-24 pb-20 px-4 min-h-screen">
             <div className="max-w-4xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -163,7 +162,7 @@ export default function PrivacyPage() {
                         {sections.map((section, index) => {
                             const Icon = section.icon;
                             return (
-                                <motion.div
+                                <MotionDiv
                                     key={section.title}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
@@ -181,13 +180,13 @@ export default function PrivacyPage() {
                                             </div>
                                         </div>
                                     </div>
-                                </motion.div>
+                                </MotionDiv>
                             );
                         })}
                     </div>
 
                     {/* Contact Footer */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
@@ -204,8 +203,8 @@ export default function PrivacyPage() {
                             <Mail className="w-4 h-4" />
                             Contact Support
                         </Link>
-                    </motion.div>
-                </motion.div>
+                    </MotionDiv>
+                </MotionDiv>
             </div>
         </div>
     );

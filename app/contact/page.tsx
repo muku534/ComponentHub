@@ -1,7 +1,6 @@
-'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionA } from '@/components/ui/ClientMotion';
 import { Mail, Github, Twitter, MessageSquare, ArrowRight, ExternalLink, Linkedin } from 'lucide-react';
 import { siteConfig } from '@/lib/constants';
 
@@ -9,7 +8,7 @@ export default function ContactPage() {
     return (
         <div className="pt-24 pb-20 px-4 min-h-screen">
             <div className="max-w-5xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -29,7 +28,7 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-8 mb-12">
                         {/* Support Options */}
                         <div className="space-y-6">
-                            <motion.div
+                            <MotionDiv
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.2 }}
@@ -56,9 +55,9 @@ export default function ContactPage() {
                                         <ExternalLink className="w-4 h-4" />
                                     </a>
                                 </div>
-                            </motion.div>
+                            </MotionDiv>
 
-                            <motion.div
+                            <MotionDiv
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: 0.3 }}
@@ -84,11 +83,11 @@ export default function ContactPage() {
                                 >
                                     Follow @MukeshPraj81318 <ArrowRight className="w-4 h-4" />
                                 </a>
-                            </motion.div>
+                            </MotionDiv>
                         </div>
 
                         {/* Email / Direct Contact */}
-                        <motion.div
+                        <MotionDiv
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.4 }}
@@ -135,9 +134,9 @@ export default function ContactPage() {
                                     Looking for documentation? <Link href="/docs" className="text-foreground underline">Visit Docs</Link>
                                 </p>
                             </div>
-                        </motion.div>
+                        </MotionDiv>
                     </div>
-                </motion.div>
+                </MotionDiv>
             </div>
         </div>
     );

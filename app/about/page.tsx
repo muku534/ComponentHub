@@ -1,6 +1,5 @@
-'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionA } from '@/components/ui/ClientMotion';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -18,7 +17,7 @@ function HeroSection() {
     return (
         <section className="pt-32 pb-20 px-4">
             <div className="max-w-4xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -28,9 +27,9 @@ function HeroSection() {
                         <Heart className="w-4 h-4 text-pink-500" />
                         <span className="text-sm font-medium">The Story Behind nativecn-ui</span>
                     </div>
-                </motion.div>
+                </MotionDiv>
 
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.1 }}
@@ -72,7 +71,7 @@ function HeroSection() {
                     </div>
 
                     {/* The Answer */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
@@ -85,8 +84,8 @@ function HeroSection() {
                             Every component here is extracted from real production apps.
                             These aren't toy examples or weekend projects. They're <span className="text-foreground font-medium">battle-tested solutions to real problems.</span>
                         </p>
-                    </motion.div>
-                </motion.div>
+                    </MotionDiv>
+                </MotionDiv>
             </div>
         </section>
     );
@@ -121,7 +120,7 @@ function TheProblem() {
     return (
         <section className="py-20 px-4 bg-muted/30">
             <div className="max-w-6xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -130,10 +129,10 @@ function TheProblem() {
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">The Problem with React Native Development</h2>
                     <p className="text-xl text-muted-foreground">We waste too much time rebuilding basics.</p>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Pain Points */}
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -155,12 +154,12 @@ function TheProblem() {
                             );
                         })}
                     </div>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Solutions Comparison */}
                 <div className="grid md:grid-cols-2 gap-8">
                     {/* Bad Solutions */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
@@ -179,10 +178,10 @@ function TheProblem() {
                                 </div>
                             ))}
                         </div>
-                    </motion.div>
+                    </MotionDiv>
 
                     {/* Good Solutions */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5 }}
@@ -198,7 +197,7 @@ function TheProblem() {
                                 </div>
                             ))}
                         </div>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </div>
         </section>
@@ -219,7 +218,7 @@ function TheJourney() {
     return (
         <section className="py-20 px-4">
             <div className="max-w-4xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -228,11 +227,11 @@ function TheJourney() {
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">How nativecn-ui Started</h2>
                     <p className="text-xl text-muted-foreground">From Frustration to Solution</p>
-                </motion.div>
+                </MotionDiv>
 
                 <div className="space-y-12">
                     {/* Origin Story */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
@@ -252,10 +251,10 @@ function TheJourney() {
                             After the 10th time copying the same range slider, I thought:
                             <span className="text-foreground font-medium italic"> "Other developers must be doing this too. What if I just... shared these?"</span>
                         </p>
-                    </motion.div>
+                    </MotionDiv>
 
                     {/* The Realization */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
@@ -281,10 +280,10 @@ function TheJourney() {
                             These aren't things you find in tutorials. They're the details you only discover after
                             shipping to production and getting user feedback.
                         </p>
-                    </motion.div>
+                    </MotionDiv>
 
                     {/* Quote */}
-                    <motion.div
+                    <MotionDiv
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
@@ -295,7 +294,7 @@ function TheJourney() {
                         <p className="relative text-2xl md:text-3xl font-bold">
                             "I'm not selling you a product. I'm sharing what actually works."
                         </p>
-                    </motion.div>
+                    </MotionDiv>
                 </div>
             </div>
         </section>
@@ -322,7 +321,7 @@ function WhyFree() {
     return (
         <section className="py-20 px-4 bg-muted/30">
             <div className="max-w-4xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -331,9 +330,9 @@ function WhyFree() {
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Free? Why Now?</h2>
                     <p className="text-xl text-muted-foreground">Building in Public, Growing Together</p>
-                </motion.div>
+                </MotionDiv>
 
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -397,7 +396,7 @@ function WhyFree() {
                             If nativecn-ui saves you even 2 hours, that's worth it.
                         </p>
                     </div>
-                </motion.div>
+                </MotionDiv>
             </div>
         </section>
     );
@@ -443,7 +442,7 @@ function WhyDifferent() {
     return (
         <section className="py-20 px-4">
             <div className="max-w-6xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -452,13 +451,13 @@ function WhyDifferent() {
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Why nativecn-ui Stands Out</h2>
                     <p className="text-xl text-muted-foreground">Not Just Another Component Library</p>
-                </motion.div>
+                </MotionDiv>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {differentiators.map((item, index) => {
                         const Icon = item.icon;
                         return (
-                            <motion.div
+                            <MotionDiv
                                 key={item.title}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -471,7 +470,7 @@ function WhyDifferent() {
                                 </div>
                                 <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                                 <p className="text-sm text-muted-foreground">{item.description}</p>
-                            </motion.div>
+                            </MotionDiv>
                         );
                     })}
                 </div>
@@ -494,7 +493,7 @@ function AboutCreator() {
     return (
         <section className="py-20 px-4 bg-muted/30">
             <div className="max-w-4xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -503,9 +502,9 @@ function AboutCreator() {
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">Built by Mukesh Prajapati</h2>
                     <p className="text-xl text-muted-foreground">Developer, Designer, Problem Solver</p>
-                </motion.div>
+                </MotionDiv>
 
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -586,7 +585,7 @@ function AboutCreator() {
                             <Linkedin className="w-6 h-6" />
                         </a>
                     </div>
-                </motion.div>
+                </MotionDiv>
             </div>
         </section>
     );
@@ -642,7 +641,7 @@ function Roadmap() {
     return (
         <section className="py-20 px-4">
             <div className="max-w-5xl mx-auto">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -651,10 +650,10 @@ function Roadmap() {
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">What's Next</h2>
                     <p className="text-xl text-muted-foreground">Building in Public - Here's the Plan</p>
-                </motion.div>
+                </MotionDiv>
 
                 {/* Timeline */}
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -696,10 +695,10 @@ function Roadmap() {
                             </ul>
                         </div>
                     ))}
-                </motion.div>
+                </MotionDiv>
 
                 {/* How You Can Help */}
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
@@ -721,7 +720,7 @@ function Roadmap() {
                             );
                         })}
                     </div>
-                </motion.div>
+                </MotionDiv>
             </div>
         </section>
     );
@@ -734,7 +733,7 @@ function FinalCTA() {
     return (
         <section className="py-20 px-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
             <div className="max-w-3xl mx-auto text-center">
-                <motion.div
+                <MotionDiv
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
@@ -799,7 +798,7 @@ function FinalCTA() {
                     <p className="text-muted-foreground mt-2">
                         – Mukesh
                     </p>
-                </motion.div>
+                </MotionDiv>
             </div>
         </section>
     );

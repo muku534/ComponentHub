@@ -1,12 +1,12 @@
-'use client';
 
-import { motion } from 'framer-motion';
+import { MotionDiv, MotionA } from '@/components/ui/ClientMotion';
 import Link from 'next/link';
-import { ArrowLeft, Copy, Palette, Type, Layers } from 'lucide-react';
+import { ArrowLeft, Palette, Type, Layers } from 'lucide-react';
+import CodeCopyButton from '@/components/docs/CodeCopyButton';
 
 export default function CustomizationPage() {
     return (
-        <motion.div
+        <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -67,9 +67,28 @@ export default function CustomizationPage() {
                                 </div>
                                 <span className="text-xs text-gray-400 font-mono ml-2">theme.ts</span>
                             </div>
-                            <button className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-gray-400">
-                                <Copy className="w-4 h-4" />
-                            </button>
+                            <CodeCopyButton code="export const theme = {
+  colors: {
+    primary: '#3B82F6',
+    secondary: '#8B5CF6',
+    background: '#0F172A',
+    surface: '#1E293B',
+    text: '#F8FAFC',
+    textMuted: '#94A3B8',
+    border: '#334155',
+    success: '#22C55E',
+    error: '#EF4444',
+  },
+  spacing: {
+    xs: 4, sm: 8, md: 16, lg: 24, xl: 32,
+  },
+  borderRadius: {
+    sm: 4, md: 8, lg: 12, xl: 16, full: 9999,
+  },
+  fontSize: {
+    xs: 12, sm: 14, base: 16, lg: 18, xl: 20, '2xl': 24,
+  },
+};" />
                         </div>
                         <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
                             <code>{`export const theme = {
@@ -114,9 +133,22 @@ export default function CustomizationPage() {
                                 </div>
                                 <span className="text-xs text-gray-400 font-mono ml-2">components/ui/Button.tsx</span>
                             </div>
-                            <button className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-gray-400">
-                                <Copy className="w-4 h-4" />
-                            </button>
+                            <CodeCopyButton code="import { StyleSheet } from 'react-native';
+import { theme } from '../theme';
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: theme.colors.primary,
+    paddingVertical: theme.spacing.md,
+    paddingHorizontal: theme.spacing.lg,
+    borderRadius: theme.borderRadius.lg,
+  },
+  buttonText: {
+    color: theme.colors.text,
+    fontSize: theme.fontSize.base,
+    fontWeight: '600',
+  },
+});" />
                         </div>
                         <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
                             <code>{`import { StyleSheet } from 'react-native';
@@ -187,6 +219,6 @@ const styles = StyleSheet.create({
                     Browse Components
                 </Link>
             </div>
-        </motion.div>
+        </MotionDiv>
     );
 }
