@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Copy, Check, ExternalLink, ArrowRight, Sparkles, Compass, Sliders, MousePointer2, Layers, Loader2, LayoutGrid } from 'lucide-react';
+import { Search, Copy, Check, ExternalLink, ArrowRight, Compass, Sliders, MousePointer2, Layers, Loader2, LayoutGrid } from 'lucide-react';
 import type { ComponentMetadata } from '@/lib/types';
 import { trackCopyCode, trackCategoryFilter, trackSearch, trackCardClick } from '@/lib/analytics';
 
@@ -82,23 +82,24 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
     };
 
     return (
-        <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+        <div className="min-h-screen pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-background relative">
+            <div className="absolute inset-0 z-0 bg-dot-pattern opacity-[0.4] dark:opacity-[0.2]" />
+            <div className="max-w-6xl mx-auto relative z-10">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-center mb-16"
+                    className="mb-16 text-center"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 mb-6">
-                        <Sparkles className="w-4 h-4 text-blue-500" />
-                        <span className="text-sm font-medium">{initialComponents.length} Components Available</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-muted/50 border border-border mb-8 backdrop-blur-md shadow-sm">
+                        <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse"></span>
+                        <span className="text-sm font-medium text-muted-foreground">{initialComponents.length} Components Available</span>
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-bold mb-4">
-                        Component <span className="text-gradient">Library</span>
+                    <h1 className="text-5xl md:text-6xl font-bold mb-6 tracking-tight text-foreground drop-shadow-sm">
+                        Component Library
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
                         Premium React Native components. Copy, paste, and ship faster.
                     </p>
                 </motion.div>
@@ -108,26 +109,14 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="mb-12 space-y-6"
+                    className="mb-14 flex flex-col lg:flex-row gap-6 items-center justify-between sticky top-20 z-40 bg-background/80 backdrop-blur-xl p-4 rounded-2xl border border-border/50 shadow-sm"
                 >
-                    {/* Search Bar */}
-                    <div className="relative max-w-xl mx-auto">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                        <input
-                            type="text"
-                            placeholder="Search components..."
-                            value={searchQuery}
-                            onChange={(e) => handleSearchChange(e.target.value)}
-                            className="w-full pl-12 pr-4 py-4 bg-muted/50 border border-border rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all"
-                        />
-                    </div>
-
-                    {/* Category Filter with Sliding Indicator */}
-                    <div className="flex justify-center">
-                        <div className="relative inline-flex p-1.5 bg-muted/50 rounded-full border border-border/50">
+                    {/* Category Filter */}
+                    <div className="flex w-full lg:w-auto overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
+                        <div className="relative inline-flex p-1 bg-muted/40 rounded-xl border border-border/50">
                             {/* Sliding Background Indicator */}
                             <motion.div
-                                className="absolute top-1.5 bottom-1.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full shadow-lg shadow-blue-500/25"
+                                className="absolute top-1 bottom-1 bg-background rounded-lg shadow-sm border border-border"
                                 initial={false}
                                 animate={{
                                     left: indicatorStyle.left,
@@ -135,8 +124,8 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                 }}
                                 transition={{
                                     type: "spring",
-                                    stiffness: 400,
-                                    damping: 30,
+                                    stiffness: 500,
+                                    damping: 35,
                                 }}
                             />
 
@@ -149,22 +138,29 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                         key={cat.name}
                                         ref={el => { buttonRefs.current[index] = el; }}
                                         onClick={() => handleCategoryChange(cat.name)}
-                                        className={`relative z-10 flex items-center gap-2 px-4 py-2.5 rounded-full font-medium transition-colors duration-200 ${isActive
-                                            ? 'text-white'
+                                        className={`relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm transition-colors duration-200 ${isActive
+                                            ? 'text-foreground'
                                             : 'text-muted-foreground hover:text-foreground'
                                             }`}
                                     >
-                                        <Icon className={`w-4 h-4 ${isActive ? 'text-white' : ''}`} />
-                                        <span className="hidden sm:inline">{cat.name}</span>
+                                        <Icon className="w-4 h-4" />
+                                        <span>{cat.name}</span>
                                     </button>
                                 );
                             })}
                         </div>
                     </div>
 
-                    {/* Results Count */}
-                    <div className="text-center text-sm text-muted-foreground">
-                        Showing {filteredComponents.length} of {initialComponents.length} components
+                    {/* Search Bar */}
+                    <div className="relative w-full lg:w-[350px]">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <input
+                            type="text"
+                            placeholder="Search components..."
+                            value={searchQuery}
+                            onChange={(e) => handleSearchChange(e.target.value)}
+                            className="w-full pl-11 pr-4 py-3 bg-muted/40 border border-border/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm text-foreground placeholder:text-muted-foreground"
+                        />
                     </div>
                 </motion.div>
 
@@ -181,51 +177,48 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                 layout
                                 className="group relative"
                             >
-                                {/* Card with glassmorphism effect */}
-                                <div className="relative h-full bg-gradient-to-br from-background via-background to-muted/30 border border-border/50 rounded-3xl overflow-hidden transition-all duration-500 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1">
-                                    {/* Subtle gradient overlay on hover */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
+                                {/* Card with solid styling */}
+                                <div className="h-full rounded-[24px] bg-card border border-border/40 hover:border-border/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-500 overflow-hidden transform group-hover:-translate-y-1">
                                     {/* Content Container with fixed structure */}
-                                    <div className="relative p-6 flex flex-col h-full">
+                                    <div className="relative p-7 flex flex-col h-full cursor-pointer group/card" onClick={() => handleCardClick(component, index)}>
                                         {/* Header Row - Fixed Height */}
-                                        <div className="flex items-start justify-between gap-4 mb-4">
+                                        <div className="flex items-start justify-between gap-4 mb-5">
                                             {/* Icon */}
-                                            <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${component.gradient} flex items-center justify-center text-3xl shadow-lg group-hover:scale-105 group-hover:shadow-xl transition-all duration-300`}>
+                                            <div className="w-14 h-14 rounded-[14px] bg-muted/50 flex items-center justify-center text-2xl border border-border/40 group-hover/card:scale-[1.15] transition-transform duration-500 ease-out shadow-sm">
                                                 {component.emoji}
                                             </div>
                                             {/* Category Badge */}
-                                            <span className="px-3 py-1.5 bg-muted/80 backdrop-blur-sm rounded-full text-xs font-medium shrink-0">
+                                            <span className="px-3 py-1.5 bg-muted rounded-full text-xs font-medium text-muted-foreground shrink-0 border border-border/50">
                                                 {component.category}
                                             </span>
                                         </div>
 
                                         {/* Title - Fixed */}
-                                        <Link href={`/components/${component.id}`} onClick={() => handleCardClick(component, index)}>
-                                            <h3 className="text-xl font-bold mb-2 group-hover:text-gradient transition-all duration-300 cursor-pointer">
+                                        <Link href={`/components/${component.id}`}>
+                                            <h3 className="text-xl font-semibold mb-3 text-foreground group-hover/card:text-blue-500 transition-colors">
                                                 {component.name}
                                             </h3>
                                         </Link>
 
                                         {/* Description - Fixed Height with line-clamp */}
-                                        <p className="text-muted-foreground text-sm mb-5 line-clamp-2 min-h-[40px]">
+                                        <p className="text-muted-foreground text-sm mb-6 line-clamp-2 min-h-[40px] leading-relaxed font-light">
                                             {component.description}
                                         </p>
 
                                         {/* Features - Fixed Height Section */}
-                                        <div className="mb-5 min-h-[72px]">
-                                            <div className="flex flex-wrap gap-1.5">
+                                        <div className="mb-6 min-h-[72px]">
+                                            <div className="flex flex-wrap gap-2">
                                                 {component.features.slice(0, 2).map((feature, i) => (
                                                     <span
                                                         key={i}
-                                                        className="px-3 py-1.5 bg-muted/60 rounded-lg text-xs text-muted-foreground"
+                                                        className="px-2.5 py-1 bg-muted/80 rounded-md text-xs text-muted-foreground border border-border/50"
                                                     >
                                                         {feature}
                                                     </span>
                                                 ))}
                                                 {component.features.length > 2 && (
-                                                    <span className="px-3 py-1.5 text-xs text-muted-foreground/70">
-                                                        +{component.features.length - 2} more
+                                                    <span className="px-2.5 py-1 bg-transparent rounded-md text-xs text-muted-foreground border border-transparent">
+                                                        +{component.features.length - 2}
                                                     </span>
                                                 )}
                                             </div>
@@ -235,41 +228,41 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                         <div className="flex-grow" />
 
                                         {/* Footer - Always at bottom */}
-                                        <div className="pt-4 border-t border-border/50">
+                                        <div className="pt-5 border-t border-border mt-auto">
                                             {/* Dependencies Row */}
-                                            <div className="flex items-center justify-between mb-4">
+                                            <div className="flex items-center justify-between mb-5">
                                                 {component.dependencies.required.length === 0 ? (
-                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-xs font-medium">
-                                                        <Check className="w-3 h-3" />
+                                                    <span className="inline-flex items-center gap-1.5 text-muted-foreground rounded-md text-xs font-medium">
+                                                        <Check className="w-3.5 h-3.5 text-emerald-500" />
                                                         Zero dependencies
                                                     </span>
                                                 ) : (
-                                                    <span className="px-3 py-1.5 bg-muted/60 rounded-lg text-xs font-mono text-muted-foreground">
+                                                    <span className="px-2.5 py-1 bg-muted rounded-md text-xs font-mono text-muted-foreground border border-border/50">
                                                         {component.dependencies.required[0]}
                                                     </span>
                                                 )}
-                                                <span className="text-xs text-muted-foreground/60">
+                                                <span className="text-xs text-muted-foreground font-mono">
                                                     v{component.version}
                                                 </span>
                                             </div>
 
                                             {/* Action Buttons */}
-                                            <div className="flex gap-3">
+                                            <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
                                                 <button
                                                     onClick={() => handleCopyPreview(component)}
-                                                    className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 rounded-xl font-medium text-white text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
+                                                    className="flex-1 px-4 py-2.5 bg-foreground text-background hover:bg-foreground/90 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
                                                 >
                                                     {copiedId === component.id ? (
-                                                        <><Check className="w-4 h-4" />Copied!</>
+                                                        <><Check className="w-4 h-4 text-emerald-400" />Copied!</>
                                                     ) : (
                                                         <><Copy className="w-4 h-4" />Copy Code</>
                                                     )}
                                                 </button>
                                                 <Link
                                                     href={`/components/${component.id}`}
-                                                    className="px-4 py-3 bg-muted/60 hover:bg-muted rounded-xl transition-all duration-300 flex items-center justify-center group/btn"
+                                                    className="px-4 py-2.5 bg-muted hover:bg-muted/80 text-foreground rounded-lg transition-colors flex items-center justify-center border border-border/50 shadow-sm"
                                                 >
-                                                    <ExternalLink className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
+                                                    <ExternalLink className="w-4 h-4" />
                                                 </Link>
                                             </div>
                                         </div>
@@ -285,21 +278,21 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-center py-20"
+                        className="text-center py-24 bg-card border border-border rounded-xl mt-8"
                     >
-                        <div className="w-20 h-20 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-6">
+                        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
                             <Search className="w-8 h-8 text-muted-foreground" />
                         </div>
-                        <p className="text-2xl font-bold mb-2">No components found</p>
+                        <p className="text-xl font-semibold mb-2">No components found</p>
                         <p className="text-muted-foreground mb-6">
-                            Try adjusting your search or category filter
+                            Try adjusting your search or category filter.
                         </p>
                         <button
                             onClick={() => {
                                 setSelectedCategory('All');
                                 setSearchQuery('');
                             }}
-                            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+                            className="px-6 py-2.5 bg-background border border-border text-foreground rounded-md font-medium hover:bg-accent hover:text-accent-foreground transition-all shadow-sm"
                         >
                             Reset Filters
                         </button>
@@ -312,20 +305,20 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     viewport={{ once: true }}
-                    className="mt-24 relative"
+                    className="mt-32"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 rounded-3xl blur-xl" />
-                    <div className="relative bg-gradient-to-br from-muted/50 to-muted/30 border border-border/50 rounded-3xl p-12 text-center">
-                        <h2 className="text-3xl font-bold mb-4">Need a specific component?</h2>
-                        <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                            Can&apos;t find what you&apos;re looking for? Let me know and I&apos;ll build it for you.
+                    <div className="rounded-[32px] bg-card border border-border/40 p-16 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+                        <h2 className="text-4xl font-bold mb-6 tracking-tight text-foreground relative z-10">Need a specific component?</h2>
+                        <p className="text-muted-foreground mb-10 max-w-lg mx-auto text-lg relative z-10 font-light">
+                            Can&apos;t find what you&apos;re looking for? Request it and we&apos;ll build it for the community.
                         </p>
                         <Link
                             href="/contact"
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300"
+                            className="inline-flex items-center gap-2 px-8 py-4 bg-foreground text-background rounded-full font-medium shadow-[0_0_0_1px_rgba(255,255,255,0.05)_inset,0_4px_14px_0_rgba(255,255,255,0.1)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 relative z-10"
                         >
                             Request a Component
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-4 h-4" />
                         </Link>
                     </div>
                 </motion.div>

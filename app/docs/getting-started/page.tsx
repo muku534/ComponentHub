@@ -45,7 +45,7 @@ export default function GettingStartedPage() {
                     <div className="p-6 rounded-xl border border-border bg-muted/20">
                         <p className="text-muted-foreground mb-4">
                             Installing a component is as simple as copying the code. For a detailed walkthrough, check out the{' '}
-                            <Link href="/docs/installation" className="text-blue-500 hover:text-blue-400 font-medium inline-flex items-center gap-1">
+                            <Link href="/docs/installation" className="text-foreground hover:text-muted-foreground transition-colors font-medium inline-flex items-center gap-1.5">
                                 Installation Guide <ArrowRight className="w-4 h-4" />
                             </Link>
                         </p>
@@ -75,7 +75,7 @@ export default function GettingStartedPage() {
                                 <Copy className="w-4 h-4" />
                             </button>
                         </div>
-                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
+                        <pre className="p-6 text-sm text-muted-foreground overflow-x-auto font-mono leading-relaxed">
                             <code>{`import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
@@ -126,21 +126,21 @@ export const Button = ({ title, onPress, variant = 'primary' }: ButtonProps) => 
                     <h2 className="text-2xl font-bold mb-6">What&apos;s Next?</h2>
                     <div className="grid gap-4 md:grid-cols-3">
                         <Link href="/docs/installation" className="group p-5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
-                            <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center mb-3">
+                            <div className="w-8 h-8 rounded-lg bg-muted border border-border/50 text-foreground flex items-center justify-center mb-3">
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </div>
                             <h3 className="font-semibold mb-1">Installation</h3>
                             <p className="text-xs text-muted-foreground">See detailed setup options</p>
                         </Link>
                         <Link href="/docs/customization" className="group p-5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
-                            <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-500 flex items-center justify-center mb-3">
+                            <div className="w-8 h-8 rounded-lg bg-muted border border-border/50 text-foreground flex items-center justify-center mb-3">
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </div>
                             <h3 className="font-semibold mb-1">Customization</h3>
                             <p className="text-xs text-muted-foreground">Theming and styling guides</p>
                         </Link>
                         <Link href="/components" className="group p-5 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
-                            <div className="w-8 h-8 rounded-lg bg-green-500/10 text-green-500 flex items-center justify-center mb-3">
+                            <div className="w-8 h-8 rounded-lg bg-muted border border-border/50 text-foreground flex items-center justify-center mb-3">
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </div>
                             <h3 className="font-semibold mb-1">Browse Library</h3>
@@ -161,7 +161,7 @@ export const Button = ({ title, onPress, variant = 'primary' }: ButtonProps) => 
                 </Link>
                 <Link
                     href="/docs/installation"
-                    className="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-2 text-foreground hover:text-muted-foreground font-medium transition-colors"
                 >
                     Installation
                     <ArrowRight className="w-4 h-4" />

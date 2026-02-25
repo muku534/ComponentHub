@@ -22,7 +22,7 @@ export default function DocsLayout({
                 </aside>
 
                 {/* Main content */}
-                <main className="flex-1 py-8 px-4 md:px-8 lg:px-12">
+                <main className="flex-1 min-w-0 py-8 px-4 md:px-8 lg:px-12">
                     <div className="max-w-3xl">
                         {children}
                     </div>

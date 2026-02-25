@@ -102,7 +102,7 @@ function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
                             <button
                                 type="submit"
                                 disabled={isLoading || !username || !password}
-                                className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition-all disabled:opacity-50"
+                                className="w-full py-3 bg-foreground text-background rounded-xl font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                             >
                                 {isLoading ? 'Verifying...' : 'Access Dashboard'}
                             </button>
@@ -474,7 +474,7 @@ function Dashboard() {
                         href="https://console.firebase.google.com"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg transition-all"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-foreground text-background rounded-xl font-medium hover:opacity-90 transition-opacity"
                     >
                         <BarChart3 className="w-4 h-4" /> Open Firebase Console
                         <ExternalLink className="w-4 h-4" />

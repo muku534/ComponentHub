@@ -10,6 +10,7 @@ import {
     type DragStartEvent,
     type DragEndEvent,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
 } from '@dnd-kit/core';
@@ -89,7 +90,7 @@ function PaletteItem({ type, name, icon }: { type: string; name: string; icon: s
             ref={setNodeRef}
             {...listeners}
             {...attributes}
-            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-grab active:cursor-grabbing border transition-all text-sm
+            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-grab active:cursor-grabbing border transition-all text-sm touch-none
                 ${isDragging
                     ? 'opacity-50 border-blue-400 bg-blue-50 dark:bg-blue-950'
                     : 'border-border/50 bg-card hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-950/30'
@@ -401,7 +402,7 @@ function CanvasNodeItem({
                 <div
                     {...attributes}
                     {...listeners}
-                    className="cursor-grab active:cursor-grabbing p-1.5 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-muted rounded flex items-center justify-center"
+                    className="cursor-grab active:cursor-grabbing p-1.5 text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-muted rounded flex items-center justify-center touch-none"
                     title="Drag to reorder"
                 >
                     <svg width="14" height="14" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3C6.32843 3 7 2.32843 7 1.5C7 0.671573 6.32843 0 5.5 0C4.67157 0 4 0.671573 4 1.5C4 2.32843 4.67157 3 5.5 3ZM9.5 3C10.3284 3 11 2.32843 11 1.5C11 0.671573 10.3284 0 9.5 0C8.67157 0 8 0.671573 8 1.5C8 2.32843 8.67157 3 9.5 3ZM11 7.5C11 8.32843 10.3284 9 9.5 9C8.67157 9 8 8.32843 8 7.5C8 6.67157 8.67157 6 9.5 6C10.3284 6 11 6.67157 11 7.5ZM7 7.5C7 8.32843 6.32843 9 5.5 9C4.67157 9 4 8.32843 4 7.5C4 6.67157 4.67157 6 5.5 6C6.32843 6 7 6.67157 7 7.5ZM11 13.5C11 14.3284 10.3284 15 9.5 15C8.67157 15 8 14.3284 8 13.5C8 12.6716 8.67157 12 9.5 12C10.3284 12 11 12.6716 11 13.5ZM7 13.5C7 14.3284 6.32843 15 5.5 15C4.67157 15 4 14.3284 4 13.5C4 12.6716 4.67157 12 5.5 12C6.32843 12 7 12.6716 7 13.5Z" fill="currentColor"></path></svg>
@@ -437,9 +438,9 @@ function PhoneMockup({
     const isIOS = deviceType === 'ios';
 
     return (
-        <div className="relative flex flex-col items-center min-h-full">
+        <div className="relative flex flex-col items-center min-h-full pt-14 lg:pt-0 w-full">
             {/* Device Toggle - Absolute Top Right */}
-            <div className="absolute top-4 right-4 z-50 flex items-center gap-1 bg-white/60 dark:bg-zinc-800/80 rounded-xl p-1 border border-border/50 backdrop-blur-md shadow-sm">
+            <div className="absolute top-0 right-0 z-50 flex items-center gap-1 bg-white/60 dark:bg-zinc-800/80 rounded-xl p-1 border border-border/50 backdrop-blur-md shadow-sm">
                 <button
                     onClick={() => onDeviceChange('ios')}
                     className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${isIOS
@@ -757,7 +758,8 @@ export default function StudioBuilderPage() {
     }, []);
 
     const sensors = useSensors(
-        useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+        useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
     );
 
     // Load from localStorage on mount
@@ -945,9 +947,9 @@ export default function StudioBuilderPage() {
                         </div>
                     ) : (
                         /* ─── Builder View ─── */
-                        <div className="grid grid-cols-[280px_1fr_320px] gap-4 min-h-[calc(100vh-100px)]">
+                        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_320px] gap-4 min-h-[calc(100vh-100px)] pb-10">
                             {/* Left — Component Palette */}
-                            <div className="bg-card border border-border rounded-xl p-4 overflow-y-auto max-h-[calc(100vh-100px)]">
+                            <div className="bg-card border border-border rounded-xl p-4 overflow-y-auto max-h-[40vh] lg:max-h-[calc(100vh-100px)] scrollbar-hide">
                                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-1">
                                     Components
                                 </h3>
@@ -1063,7 +1065,7 @@ export default function StudioBuilderPage() {
                             </div>
 
                             {/* Center — Phone Mockup Canvas */}
-                            <div className="bg-slate-50 dark:bg-zinc-950 border border-border rounded-xl p-4 overflow-y-auto">
+                            <div className="bg-slate-50 dark:bg-zinc-950 border border-border rounded-xl p-4 lg:p-8 overflow-x-auto flex justify-center min-h-[60vh] relative">
                                 <SortableContext
                                     items={nodes.map((n) => n.id)}
                                     strategy={verticalListSortingStrategy}
@@ -1087,7 +1089,7 @@ export default function StudioBuilderPage() {
                             </div>
 
                             {/* Right — Properties Panel */}
-                            <div className="bg-card border border-border rounded-xl p-5 overflow-y-auto max-h-[calc(100vh-100px)]">
+                            <div className="bg-card border border-border rounded-xl p-5 overflow-y-auto max-h-[40vh] lg:max-h-[calc(100vh-100px)]">
                                 {selectedNode ? (
                                     <PropsPanel node={selectedNode} onChange={handleUpdateProps} />
                                 ) : (
@@ -1107,7 +1109,7 @@ export default function StudioBuilderPage() {
                                                 studio?.setShowCode(true);
                                                 trackStudioCodeExport();
                                             }}
-                                            className="w-full py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-sm font-medium rounded-lg hover:shadow-md transition-all"
+                                            className="w-full py-2.5 bg-foreground text-background text-sm font-medium rounded-lg hover:opacity-90"
                                         >
                                             Export Code →
                                         </button>

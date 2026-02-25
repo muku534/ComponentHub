@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Bell, ArrowRight } from 'lucide-react';
+import { Mail, ArrowRight } from 'lucide-react';
 
 export default function NewsletterSignup() {
     const [email, setEmail] = useState('');
@@ -25,11 +25,11 @@ export default function NewsletterSignup() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-12 p-8 rounded-2xl border border-border bg-gradient-to-br from-blue-600/5 to-purple-600/5 max-w-2xl mx-auto"
+            className="mt-12 p-8 rounded-[24px] border border-border/40 bg-card max-w-2xl mx-auto shadow-sm relative overflow-hidden"
         >
             <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center p-3 rounded-xl bg-blue-500/10 text-blue-500 mb-4">
-                    <Bell className="w-6 h-6" />
+                <div className="inline-flex items-center justify-center p-3 rounded-xl bg-muted/50 text-foreground border border-border/50 mb-4 shadow-sm">
+                    <Mail className="w-6 h-6" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">Get Notified</h3>
                 <p className="text-muted-foreground">
@@ -58,7 +58,7 @@ export default function NewsletterSignup() {
                     <button
                         type="submit"
                         disabled={status === 'loading'}
-                        className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-medium hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[120px]"
+                        className="px-6 py-3 bg-foreground text-background rounded-xl font-medium hover:opacity-90 transition-opacity disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[120px] shadow-sm"
                     >
                         {status === 'loading' ? (
                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

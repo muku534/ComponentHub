@@ -37,6 +37,8 @@ const config: Config = {
         "fade-in": "fadeIn 0.5s ease-in",
         "slide-in": "slideIn 0.3s ease-out",
         "pulse-slow": "pulse 3s ease-in-out infinite",
+        "shimmer": "shimmer 2.5s linear infinite",
+        "text-gradient": "textGradient 8s linear infinite",
       },
       keyframes: {
         float: {
@@ -50,6 +52,14 @@ const config: Config = {
         slideIn: {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0)' },
+        },
+        shimmer: {
+          from: { backgroundPosition: "0 0" },
+          to: { backgroundPosition: "-200% 0" },
+        },
+        textGradient: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
         },
       },
     },

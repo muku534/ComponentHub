@@ -29,19 +29,7 @@ export default function StudioLandingClient() {
 
     return (
         <div className="min-h-screen bg-background overflow-hidden">
-            {/* Animated Background elements */}
-            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-                <motion.div
-                    animate={{ y: [0, -40, 0], scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-                    transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-                    className="absolute -top-40 -right-40 w-[800px] h-[800px] bg-blue-500/10 blur-[120px] rounded-full mix-blend-screen"
-                />
-                <motion.div
-                    animate={{ y: [0, 50, 0], scale: [1, 1.2, 1], rotate: [0, -5, 0] }}
-                    transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                    className="absolute top-1/2 -left-40 w-[600px] h-[600px] bg-purple-500/10 blur-[120px] rounded-full mix-blend-screen"
-                />
-            </div>
+            {/* Clean background instead of glowing orbs */}
 
             <motion.div
                 variants={containerVariants}
@@ -51,14 +39,14 @@ export default function StudioLandingClient() {
             >
                 {/* Hero Section */}
                 <div className="text-center max-w-4xl mx-auto mb-20">
-                    <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-8 shadow-sm">
-                        <Sparkles className="w-4 h-4" />
+                    <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted border border-border text-foreground text-sm font-medium mb-8 shadow-sm">
+                        <Sparkles className="w-4 h-4 text-emerald-500" />
                         Introducing Form Studio
                     </motion.div>
 
                     <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
                         Build native screens<br />
-                        <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                        <span className="text-foreground border-b-4 border-emerald-500/30">
                             at the speed of thought.
                         </span>
                     </motion.h1>
@@ -70,7 +58,7 @@ export default function StudioLandingClient() {
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <Link
                             href="/studio/builder"
-                            className="group flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background rounded-full font-semibold text-lg transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(59,130,246,0.3)] active:scale-95 w-full sm:w-auto"
+                            className="group flex items-center justify-center gap-2 px-8 py-4 bg-foreground text-background rounded-full font-semibold text-lg transition-all hover:-translate-y-1 hover:shadow-lg active:scale-95 w-full sm:w-auto"
                         >
                             Open Studio Builder
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -123,10 +111,9 @@ export default function StudioLandingClient() {
                             whileHover={{ y: -8, scale: 1.02 }}
                             className="relative group rounded-3xl border border-border/50 bg-card/50 p-8 hover:border-blue-500/30 transition-all duration-300 backdrop-blur-sm shadow-sm hover:shadow-xl"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl" />
                             <div className="relative z-10">
-                                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20 group-hover:bg-blue-500/20 transition-colors">
-                                    <feature.icon className="w-7 h-7 text-blue-500" />
+                                <div className="w-14 h-14 rounded-2xl bg-muted flex items-center justify-center mb-6 border border-border group-hover:bg-background transition-colors shadow-sm">
+                                    <feature.icon className="w-7 h-7 text-foreground" />
                                 </div>
                                 <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                                 <p className="text-muted-foreground leading-relaxed">

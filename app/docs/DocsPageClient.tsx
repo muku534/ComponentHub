@@ -62,10 +62,7 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                     Documentation
                 </div>
                 <h1 className="text-4xl font-bold mb-4">
-                    Welcome to{' '}
-                    <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        nativecn-ui
-                    </span>
+                    Welcome to <span className="text-foreground border-b-2 border-primary/20">nativecn-ui</span>
                 </h1>
                 <p className="text-lg text-muted-foreground">
                     Learn how to use our premium React Native components to build beautiful mobile apps.
@@ -87,8 +84,8 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                                 href={link.href}
                                 className="group flex items-center gap-4 p-4 rounded-xl border border-border bg-muted/30 hover:bg-muted transition-all duration-200"
                             >
-                                <div className="p-3 rounded-lg bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-border">
-                                    <Icon className="w-5 h-5 text-blue-500" />
+                                <div className="p-3 rounded-lg bg-background border border-border shadow-sm">
+                                    <Icon className="w-5 h-5 text-foreground" />
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="font-semibold mb-1">{link.title}</h3>
@@ -106,7 +103,7 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
                     <span className="text-3xl">📦</span>
                     All Components
-                    <span className="ml-2 px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full text-sm font-medium">
+                    <span className="ml-2 px-2 py-0.5 bg-muted text-foreground border border-border/50 rounded-full text-sm font-medium">
                         {components.length}
                     </span>
                 </h2>
@@ -125,14 +122,14 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                                     className="group flex items-center gap-4 p-4 rounded-xl border border-border bg-muted/20 hover:bg-muted/50 transition-all"
                                 >
                                     {/* Emoji Icon */}
-                                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${component.gradient} flex items-center justify-center text-2xl shadow-md`}>
+                                    <div className={`w-12 h-12 rounded-xl bg-muted/50 border border-border/40 flex items-center justify-center text-2xl shadow-sm`}>
                                         {component.emoji}
                                     </div>
 
                                     {/* Info */}
                                     <div className="flex-1 min-w-0">
                                         <Link href={`/components/${component.id}`}>
-                                            <h4 className="font-semibold hover:text-blue-500 transition-colors cursor-pointer">
+                                            <h4 className="font-semibold text-foreground group-hover:text-muted-foreground transition-colors cursor-pointer">
                                                 {component.name}
                                             </h4>
                                         </Link>
@@ -161,7 +158,7 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                                     <div className="flex items-center gap-2">
                                         <button
                                             onClick={() => handleCopy(component)}
-                                            className="p-2 rounded-lg bg-muted hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600 hover:text-white transition-all"
+                                            className="p-2 rounded-lg bg-muted hover:bg-foreground hover:text-background transition-all"
                                             title="Copy code"
                                         >
                                             {copiedId === component.id ? (
@@ -187,8 +184,8 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
 
             {/* Overview */}
             <div className="space-y-16">
-                <section className="p-8 rounded-2xl bg-gradient-to-br from-blue-600/5 to-purple-600/5 border border-border/50">
-                    <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <section className="p-8 rounded-2xl bg-muted/40 border border-border/50">
+                    <h2 className="text-3xl font-bold mb-4 text-foreground tracking-tight">
                         The Premium Native UI Library
                     </h2>
                     <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl">
@@ -222,7 +219,7 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                         </div>
                         <div className="p-6 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
                             <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
-                                <span className="p-1.5 rounded-lg bg-blue-500/10 text-blue-500">📘</span>
+                                <span className="p-1.5 rounded-lg bg-muted border border-border/50 text-foreground">📘</span>
                                 TypeScript First
                             </h3>
                             <p className="text-muted-foreground text-sm">
@@ -251,7 +248,7 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                             { title: 'Customize', desc: 'Make it yours', icon: '4' },
                         ].map((step, i) => (
                             <div key={step.title} className="relative text-center group">
-                                <div className="w-12 h-12 mx-auto rounded-full bg-muted border-2 border-border flex items-center justify-center font-bold text-lg mb-4 group-hover:border-blue-500 group-hover:text-blue-500 transition-colors bg-background z-10 relative">
+                                <div className="w-12 h-12 mx-auto rounded-full bg-muted border border-border/50 flex items-center justify-center font-bold text-lg mb-4 group-hover:bg-foreground group-hover:text-background transition-colors shadow-sm relative z-10">
                                     {step.icon}
                                 </div>
                                 {i !== 3 && (
@@ -267,7 +264,7 @@ export default function DocsPageClient({ components }: DocsPageClientProps) {
                 <div className="flex justify-center pt-8">
                     <Link
                         href="/docs/getting-started"
-                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all text-sm"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-medium hover:bg-foreground/90 hover:shadow-md transition-all text-sm"
                     >
                         Start Building Now
                         <ArrowRight className="w-4 h-4" />

@@ -60,7 +60,7 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
                         </Link>
 
                         <div className="flex items-start gap-6">
-                            <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${component.gradient} flex items-center justify-center text-4xl shadow-xl`}>
+                            <div className="w-20 h-20 rounded-[24px] bg-muted/50 border border-border/40 flex items-center justify-center text-4xl shadow-sm">
                                 {component.emoji}
                             </div>
 
@@ -89,14 +89,14 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
                 <div className="grid lg:grid-cols-3 gap-12">
                     {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-12">
+                    <div className="lg:col-span-2 space-y-12 min-w-0">
 
                         {/* Live Preview - PRIORITY #1 */}
                         {component.id !== 'native-haptics' && (
                             <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
                                 <div className="flex items-center justify-between mb-4">
                                     <h2 className="text-2xl font-bold flex items-center gap-2">
-                                        <Play className="w-6 h-6 text-blue-500" /> Live Preview
+                                        <Play className="w-6 h-6 text-foreground" /> Live Preview
                                     </h2>
                                     <a
                                         href={component.snackId ? `https://snack.expo.dev/${component.snackId}` : 'https://snack.expo.dev/'}
@@ -271,15 +271,15 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
 
                             {/* Native Capabilities */}
                             {component.dependencies.optional.includes('native-haptics') && (
-                                <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-xl p-6 mt-6">
+                                <div className="bg-muted/30 border border-border/50 rounded-[24px] p-6 mt-6 shadow-sm">
                                     <h3 className="font-bold mb-2 flex items-center gap-2">
                                         <span className="text-xl">📳</span> Native Capabilities
                                     </h3>
                                     <p className="text-sm text-muted-foreground mb-3">
                                         Includes a zero-dependency native haptic feedback implementation.
                                     </p>
-                                    <Link href="/components/native-haptics" className="text-sm font-medium text-purple-500 hover:underline inline-flex items-center gap-1">
-                                        View Native Implementation <ArrowRight className="w-3 h-3" />
+                                    <Link href="/components/native-haptics" className="text-sm font-medium text-foreground hover:underline inline-flex items-center gap-1">
+                                        View Native Implementation <ArrowRight className="w-4 h-4" />
                                     </Link>
                                 </div>
                             )}
@@ -326,7 +326,7 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
                                             <Link key={related.id} href={`/components/${related.id}`} className="flex items-center gap-3 p-3 bg-muted hover:bg-muted/80 rounded-lg transition group">
                                                 <span className="text-2xl">{related.emoji}</span>
                                                 <div className="flex-1">
-                                                    <p className="font-medium text-sm group-hover:text-gradient">{related.name}</p>
+                                                    <p className="font-medium text-sm group-hover:text-muted-foreground transition-colors">{related.name}</p>
                                                     <p className="text-xs text-muted-foreground line-clamp-1">{related.description}</p>
                                                 </div>
                                                 <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />

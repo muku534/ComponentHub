@@ -24,8 +24,8 @@ export default function Sidebar() {
                                         className={cn(
                                             'flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all duration-200',
                                             isActive
-                                                ? 'bg-gradient-to-r from-blue-600/10 to-purple-600/10 text-blue-600 dark:text-blue-400 font-medium border-l-2 border-blue-600'
-                                                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                                                ? 'bg-muted text-foreground font-medium'
+                                                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
                                         )}
                                     >
                                         {isActive && <ChevronRight className="w-3 h-3" />}

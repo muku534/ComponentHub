@@ -29,12 +29,12 @@ export { app, analytics };
 
 // Helper to log events safely
 export const logEvent = (eventName: string, eventParams?: { [key: string]: any }) => {
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`[Analytics] ${eventName}`, eventParams);
+        return;
+    }
+
     if (analytics) {
         firebaseLogEvent(analytics, eventName, eventParams);
-    } else {
-        // In development or if analytics isn't supported, log to console
-        if (process.env.NODE_ENV === 'development') {
-            console.log(`[Analytics] ${eventName}`, eventParams);
-        }
     }
 };

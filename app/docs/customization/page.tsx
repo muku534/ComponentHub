@@ -38,8 +38,8 @@ export default function CustomizationPage() {
                             ].map((item) => {
                                 const Icon = item.icon;
                                 return (
-                                    <div key={item.title} className="p-5 rounded-xl bg-background border border-border/50 text-center hover:border-primary/30 transition-colors">
-                                        <div className="w-10 h-10 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mx-auto mb-3">
+                                    <div key={item.title} className="p-5 rounded-xl bg-background border border-border/50 text-center hover:border-border transition-colors shadow-sm">
+                                        <div className="w-10 h-10 rounded-full bg-muted border border-border/50 text-foreground flex items-center justify-center mx-auto mb-3">
                                             <Icon className="w-5 h-5" />
                                         </div>
                                         <h4 className="font-semibold mb-1">{item.title}</h4>
@@ -90,7 +90,7 @@ export default function CustomizationPage() {
   },
 };" />
                         </div>
-                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
+                        <pre className="p-6 text-sm text-muted-foreground overflow-x-auto font-mono leading-relaxed">
                             <code>{`export const theme = {
   colors: {
     primary: '#3B82F6',
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
 });" />
                         </div>
-                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
+                        <pre className="p-6 text-sm text-muted-foreground overflow-x-auto font-mono leading-relaxed">
                             <code>{`import { StyleSheet } from 'react-native';
 import { theme } from '../theme';
 
@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
                 <section>
                     <h2 className="text-2xl font-bold mb-6">Customization Tips</h2>
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="p-6 rounded-xl border border-blue-500/20 bg-blue-500/5">
-                            <h3 className="font-bold text-blue-600 dark:text-blue-400 mb-4">Best Practices</h3>
+                        <div className="p-6 rounded-[24px] border border-border/40 bg-muted/20 shadow-sm">
+                            <h3 className="font-bold text-foreground mb-4">Best Practices</h3>
                             <ul className="space-y-3">
                                 {[
                                     'Start simple – Only customize what you need first',
@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
                                     'Consider accessibility – Check color contrast ratios'
                                 ].map(item => (
                                     <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-foreground shrink-0" />
                                         <span>{item}</span>
                                     </li>
                                 ))}
                             </ul>
                         </div>
-                        <div className="p-6 rounded-xl border border-purple-500/20 bg-purple-500/5 flex flex-col justify-center text-center">
+                        <div className="p-6 rounded-[24px] border border-border/40 bg-muted/20 shadow-sm flex flex-col justify-center text-center">
                             <h3 className="font-bold text-lg mb-2">Need More Help?</h3>
                             <p className="text-sm text-muted-foreground mb-6">
                                 If you need help customizing components, check out our examples or join the community.
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
                 </Link>
                 <Link
                     href="/components"
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-foreground text-background rounded-xl font-medium shadow-sm hover:bg-foreground/90 transition-all font-medium"
                 >
                     Browse Components
                 </Link>

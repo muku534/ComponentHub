@@ -28,6 +28,8 @@ export const EVENTS = {
 // ─── Server API Helpers (No direct Firestore access) ─────────────────────────
 
 async function serverTrack(action: string, data: Record<string, any>): Promise<void> {
+    if (process.env.NODE_ENV !== 'production') return;
+
     try {
         await fetch('/api/analytics/track', {
             method: 'POST',

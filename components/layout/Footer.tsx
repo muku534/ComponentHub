@@ -5,7 +5,8 @@ import { footerLinks, siteConfig } from '@/lib/constants';
 
 export default function Footer() {
     return (
-        <footer className="border-t border-border bg-muted/30">
+        <footer className="border-t border-border bg-card relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-border/50" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
                     {/* Brand */}
@@ -19,11 +20,11 @@ export default function Footer() {
                                     className="object-contain"
                                 />
                             </div>
-                            <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            <span className="font-bold text-lg text-foreground">
                                 nativecn-ui
                             </span>
                         </Link>
-                        <p className="text-muted-foreground max-w-sm mb-6">
+                        <p className="text-muted-foreground max-w-sm mb-6 leading-relaxed">
                             {siteConfig.description}
                         </p>
                         <div className="flex space-x-3">
@@ -31,7 +32,7 @@ export default function Footer() {
                                 href={siteConfig.socials.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                 aria-label="GitHub"
                             >
                                 <Github className="w-5 h-5" />
@@ -40,7 +41,7 @@ export default function Footer() {
                                 href={siteConfig.socials.twitter}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                 aria-label="Twitter"
                             >
                                 <Twitter className="w-5 h-5" />
@@ -49,7 +50,7 @@ export default function Footer() {
                                 href={siteConfig.socials.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                 aria-label="LinkedIn"
                             >
                                 <Linkedin className="w-5 h-5" />
@@ -58,7 +59,7 @@ export default function Footer() {
                                 href={siteConfig.socials.youtube}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                 aria-label="YouTube"
                             >
                                 <Youtube className="w-5 h-5" />
@@ -67,7 +68,7 @@ export default function Footer() {
                                 href={siteConfig.socials.website}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                 aria-label="Portfolio"
                             >
                                 <Globe className="w-5 h-5" />
@@ -76,7 +77,7 @@ export default function Footer() {
                                 href={siteConfig.socials.reddit}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                                className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-200"
                                 aria-label="Reddit"
                             >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -88,7 +89,7 @@ export default function Footer() {
 
                     {/* Product Links */}
                     <div>
-                        <h3 className="font-semibold mb-4">Product</h3>
+                        <h3 className="font-semibold mb-4 text-foreground">Product</h3>
                         <ul className="space-y-3">
                             {footerLinks.product.map((link) => (
                                 <li key={link.name}>
@@ -105,7 +106,7 @@ export default function Footer() {
 
                     {/* Resources Links */}
                     <div>
-                        <h3 className="font-semibold mb-4">Resources</h3>
+                        <h3 className="font-semibold mb-4 text-foreground">Resources</h3>
                         <ul className="space-y-3">
                             {footerLinks.resources.map((link) => (
                                 <li key={link.name}>
@@ -122,7 +123,7 @@ export default function Footer() {
 
                     {/* Company Links */}
                     <div>
-                        <h3 className="font-semibold mb-4">Company</h3>
+                        <h3 className="font-semibold mb-4 text-foreground">Company</h3>
                         <ul className="space-y-3">
                             {footerLinks.company.map((link) => (
                                 <li key={link.name}>
@@ -143,8 +144,8 @@ export default function Footer() {
                     <p className="text-sm text-muted-foreground">
                         © {new Date().getFullYear()} nativecn-ui. All rights reserved.
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                        Built with ❤️ for React Native developers
+                    <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+                        Built with <span className="text-red-500">❤️</span> for React Native developers
                     </p>
                 </div>
             </div>

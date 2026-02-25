@@ -2,38 +2,38 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Light mode CSS variables */
+/* Light mode CSS variables - Clean & Airy */
 :root {
   --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --primary: 222 47% 11%;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 210 40% 96%;
-  --secondary-foreground: 222 47% 11%;
-  --accent: 210 40% 96%;
-  --accent-foreground: 222 47% 11%;
-  --ring: 215 20% 65%;
+  --foreground: 240 10% 3.9%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --ring: 240 5.9% 10%;
 }
 
-/* Dark mode CSS variables */
+/* Dark mode CSS variables - Deep & Crisp */
 .dark {
-  --background: 222 47% 5%;
-  --foreground: 210 40% 98%;
-  --muted: 217 33% 17%;
-  --muted-foreground: 215 20% 65%;
-  --border: 217 33% 17%;
-  --input: 217 33% 17%;
-  --primary: 210 40% 98%;
-  --primary-foreground: 222 47% 11%;
-  --secondary: 217 33% 17%;
-  --secondary-foreground: 210 40% 98%;
-  --accent: 217 33% 17%;
-  --accent-foreground: 210 40% 98%;
-  --ring: 215 20% 65%;
+  --background: 0 0% 3%;
+  --foreground: 0 0% 98%;
+  --muted: 0 0% 10%;
+  --muted-foreground: 240 5% 64.9%;
+  --border: 0 0% 12%;
+  --input: 0 0% 12%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 10%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 0 0% 12%;
+  --accent-foreground: 0 0% 98%;
+  --ring: 0 0% 20%;
 }
 
 @theme inline {
@@ -53,11 +53,10 @@
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 
-  /* Custom animations */
+  /* Custom animations setup */
   --animate-float: float 6s ease-in-out infinite;
   --animate-fade-in: fadeIn 0.5s ease-in;
   --animate-slide-in: slideIn 0.3s ease-out;
-  --animate-pulse-slow: pulse 3s ease-in-out infinite;
 
   @keyframes float {
 
@@ -67,8 +66,10 @@
     }
 
     50% {
-      transform: translateY(-20px);
+      transform: translateY(-10px);
     }
+
+    /* Reduced float distance for subtlety */
   }
 
   @keyframes fadeIn {
@@ -107,27 +108,38 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Refined */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.2);
+  background: hsl(var(--muted-foreground) / 0.3);
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary) / 0.4);
+  background: hsl(var(--muted-foreground) / 0.5);
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #3b82f6, #8b5cf6);
+  background: linear-gradient(to right, hsl(var(--foreground)), hsl(var(--muted-foreground)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Subtle Dot Background for both themes */
+.bg-dot-pattern {
+  background-image: radial-gradient(hsl(var(--foreground) / 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-black {
+  background-size: 20px 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(0,0,0,0.1)'/%3E%3C/svg%3E");
 }

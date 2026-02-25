@@ -127,6 +127,7 @@ export const docsNavigation = [
         title: 'Button Components',
         items: [
             { name: 'Rainbow Button', href: '/components/rainbow-button' },
+            { name: 'Gradient Button', href: '/components/gradient-button' },
             { name: 'Floating Action Button', href: '/components/floating-action-button' },
         ],
     },

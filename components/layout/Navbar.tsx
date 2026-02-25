@@ -29,8 +29,8 @@ export default function Navbar() {
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-lg'
-                : 'bg-transparent'
+                ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-sm'
+                : 'bg-transparent border-b border-transparent'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -46,7 +46,7 @@ export default function Navbar() {
                             />
                         </div>
                         <div className="flex flex-col">
-                            <span className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
+                            <span className="font-bold text-lg text-foreground leading-tight tracking-tight">
                                 nativecn-ui
                             </span>
                             {isStudioBuilder && (
@@ -63,7 +63,7 @@ export default function Navbar() {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className={`px-4 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-lg hover:bg-muted/50 ${pathname === item.href ? 'text-foreground bg-muted/50' : ''
+                                className={`px-4 py-2 text-muted-foreground hover:text-foreground transition-colors duration-200 rounded-lg hover:bg-muted ${pathname === item.href ? 'text-foreground bg-muted/80 font-medium' : ''
                                     }`}
                             >
                                 {item.name}
@@ -73,12 +73,10 @@ export default function Navbar() {
 
                     {/* Desktop Actions */}
                     <div className="hidden md:flex items-center space-x-3">
-                        <ThemeToggle />
-
                         {isStudioBuilder && studio ? (
                             /* ─── Studio Controls ─── */
                             <>
-                                <div className="flex items-center gap-1.5 bg-muted/60 rounded-lg px-2.5 py-1.5 border border-border/50">
+                                <div className="flex items-center gap-1.5 bg-muted rounded-lg px-2.5 py-1.5 border border-border">
                                     <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Screen</span>
                                     <input
                                         type="text"
@@ -95,9 +93,9 @@ export default function Navbar() {
                                         studio.setShowCode(newState);
                                         if (newState) trackStudioCodeView();
                                     }}
-                                    className={`px-4 py-2 text-xs font-semibold rounded-lg transition-all duration-200 ${studio.showCode
-                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                        : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-purple-500/25'
+                                    className={`px-4 py-2 text-xs font-semibold rounded-md transition-all duration-200 ${studio.showCode
+                                        ? 'bg-muted text-foreground shadow-sm border border-border'
+                                        : 'bg-foreground text-background hover:bg-foreground/90 shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)]'
                                         }`}
                                 >
                                     {studio.showCode ? '← Builder' : 'View Code →'}
@@ -106,7 +104,7 @@ export default function Navbar() {
                                 {studio.hasNodes && (
                                     <button
                                         onClick={studio.onClearAll}
-                                        className="px-3 py-2 text-xs font-medium text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-all"
+                                        className="px-3 py-2 text-xs font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all"
                                     >
                                         Clear
                                     </button>
@@ -116,12 +114,12 @@ export default function Navbar() {
                             /* ─── Default: Get Started ─── */
                             <Link
                                 href="/components"
-                                className="relative group px-5 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/25"
+                                className="px-5 py-2.5 bg-foreground text-background hover:bg-foreground/90 rounded-lg font-medium transition-all duration-200 shadow-sm"
                             >
-                                <span className="relative z-10">Get Started</span>
-                                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                Get Started
                             </Link>
                         )}
+                        <ThemeToggle />
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -129,7 +127,7 @@ export default function Navbar() {
                         <ThemeToggle />
                         <button
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="p-2 rounded-lg hover:bg-muted transition-colors duration-200"
+                            className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors duration-200"
                             aria-label="Toggle menu"
                         >
                             <div className="relative w-6 h-6">
@@ -174,7 +172,7 @@ export default function Navbar() {
                                         if (newState) trackStudioCodeView();
                                         setMobileMenuOpen(false);
                                     }}
-                                    className="block w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-center"
+                                    className="block w-full px-4 py-3 bg-foreground text-background rounded-lg font-medium text-center hover:opacity-90 transition-opacity"
                                 >
                                     {studio.showCode ? '← Back to Builder' : 'View Code →'}
                                 </button>
@@ -183,7 +181,7 @@ export default function Navbar() {
                             <Link
                                 href="/components"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="block px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-center mt-4"
+                                className="block px-4 py-3 bg-foreground text-background rounded-lg font-medium text-center mt-4 hover:opacity-90 transition-opacity"
                             >
                                 Get Started
                             </Link>

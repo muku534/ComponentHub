@@ -23,9 +23,9 @@ export default function InstallationPage() {
             <div className="space-y-12">
                 <section>
                     <h2 className="text-2xl font-bold mb-6">Installation Methods</h2>
-                    <div className="p-6 rounded-xl border-2 border-primary/20 bg-primary/5 relative overflow-hidden">
+                    <div className="p-6 rounded-xl border border-border bg-muted/20 relative overflow-hidden">
                         <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-                            <Copy className="w-5 h-5 text-primary" />
+                            <Copy className="w-5 h-5 text-foreground" />
                             Copy & Paste Approach
                         </h3>
                         <p className="text-muted-foreground mb-6 max-w-2xl">
@@ -38,7 +38,7 @@ export default function InstallationPage() {
                                 <div className="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</div>
                                 <div>
                                     <p className="text-sm font-medium">Browse Components</p>
-                                    <p className="text-xs text-muted-foreground">Go to the <Link href="/components" className="text-blue-500 hover:underline">Components page</Link> and select a component.</p>
+                                    <p className="text-xs text-muted-foreground">Go to the <Link href="/components" className="text-foreground hover:underline font-medium">Components page</Link> and select a component.</p>
                                 </div>
                             </div>
                             <div className="flex gap-4 p-4 rounded-xl bg-background/50 border border-border/50 items-start">
@@ -106,7 +106,7 @@ export default function InstallationPage() {
                                 <span className="text-xs text-gray-400 font-mono ml-2">tsconfig.json</span>
                             </div>
                         </div>
-                        <pre className="p-6 text-sm text-blue-100 overflow-x-auto font-mono leading-relaxed">
+                        <pre className="p-6 text-sm text-muted-foreground overflow-x-auto font-mono leading-relaxed">
                             <code>{`{
   "compilerOptions": {
     "strict": true,            // Enable strict type checking
@@ -122,28 +122,34 @@ export default function InstallationPage() {
                 </section>
 
                 <section className="grid md:grid-cols-2 gap-6">
-                    <div className="p-6 rounded-xl border border-red-500/20 bg-red-500/5">
-                        <h3 className="font-bold text-red-600 dark:text-red-400 mb-3">Common Errors</h3>
+                    <div className="p-6 rounded-xl border border-border bg-muted/20">
+                        <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-red-500/50" />
+                            Common Errors
+                        </h3>
                         <ul className="space-y-2 text-sm text-muted-foreground">
                             <li className="flex items-start gap-2">
-                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0" />
                                 <span>React Native version mismatch (ensure 0.70+)</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0" />
                                 <span>Missing peer dependencies</span>
                             </li>
                         </ul>
                     </div>
-                    <div className="p-6 rounded-xl border border-blue-500/20 bg-blue-500/5">
-                        <h3 className="font-bold text-blue-600 dark:text-blue-400 mb-3">Styling Tips</h3>
+                    <div className="p-6 rounded-xl border border-border bg-muted/20">
+                        <h3 className="font-bold text-foreground mb-3 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-blue-500/50" />
+                            Styling Tips
+                        </h3>
                         <ul className="space-y-2 text-sm text-muted-foreground">
                             <li className="flex items-start gap-2">
-                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0" />
                                 <span>Check your font configuration</span>
                             </li>
                             <li className="flex items-start gap-2">
-                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                                <span className="mt-1 w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0" />
                                 <span>Update constants.ts for your theme</span>
                             </li>
                         </ul>
@@ -162,12 +168,12 @@ export default function InstallationPage() {
                 </Link>
                 <Link
                     href="/docs/customization"
-                    className="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition-colors"
+                    className="flex items-center gap-2 text-foreground hover:text-muted-foreground font-medium transition-colors"
                 >
                     Customization
                     <ArrowRight className="w-4 h-4" />
                 </Link>
             </div>
-        </MotionDiv>
+        </MotionDiv >
     );
 }

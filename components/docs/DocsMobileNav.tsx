@@ -12,8 +12,8 @@ export default function DocsMobileNav() {
             {/* Mobile sidebar toggle */}
             <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="fixed bottom-6 right-6 z-50 md:hidden p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-lg"
-                aria-label="Toggle sidebar"
+                className="fixed bottom-6 right-6 z-50 md:hidden p-4 bg-foreground text-background rounded-full shadow-lg border border-border/40 hover:opacity-90 transition-opacity"
+                aria-label="Open documentation navigation"
             >
                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
