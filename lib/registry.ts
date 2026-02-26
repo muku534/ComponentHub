@@ -31,13 +31,16 @@ async function loadComponentMetadata(componentPath: string): Promise<ComponentMe
  * Get all components with their full metadata (for component listing page)
  * This loads metadata but NOT the full source code for performance
  */
-export async function getAllComponents(): Promise<ComponentMetadata[]> {
+export async function getAllComponents(): Promise<(ComponentMetadata & { slug: string })[]> {
     const registry = await loadRegistry();
 
     const components = await Promise.all(
         registry.components.map(async (entry: RegistryEntry) => {
             const metadata = await loadComponentMetadata(entry.path);
-            return metadata;
+            return {
+                ...metadata,
+                slug: metadata.id // ID is the source of truth for the slug/CLI
+            };
         })
     );
 
@@ -45,22 +48,51 @@ export async function getAllComponents(): Promise<ComponentMetadata[]> {
 }
 
 /**
- * Get a single component by ID with full source code
- * Used on component detail pages
+ * Get a single component by its SEO slug
  */
-export async function getComponentById(id: string): Promise<ComponentData | null> {
-    const registry = await loadRegistry();
-    const entry = registry.components.find((c: RegistryEntry) => c.id === id);
+export async function getComponentBySlug(slug: string): Promise<ComponentData & { slug: string } | null> {
+    const all = await getAllComponents();
+    const componentMeta = all.find(c => c.slug === slug);
 
-    if (!entry) {
+    if (!componentMeta) {
         return null;
     }
 
-    const metadata = await loadComponentMetadata(entry.path);
-    const fullCode = await loadComponentCode(entry.path, metadata.files);
+    // We need the original registry entry to get the path
+    const registry = await loadRegistry();
+    const entry = registry.components.find((c: RegistryEntry) => c.id === componentMeta.id);
+
+    if (!entry) return null;
+
+    const fullCode = await loadComponentCode(entry.path, componentMeta.files);
 
     return {
-        ...metadata,
+        ...componentMeta,
+        fullCode,
+        nativeFiles: fullCode.nativeFiles
+    };
+}
+
+/**
+ * Get a single component by ID with full source code
+ * Used on component detail pages
+ */
+export async function getComponentById(id: string): Promise<ComponentData & { slug: string } | null> {
+    const all = await getAllComponents();
+    const componentMeta = all.find(c => c.id === id);
+
+    if (!componentMeta) {
+        return null;
+    }
+
+    const registry = await loadRegistry();
+    const entry = registry.components.find((c: RegistryEntry) => c.id === id);
+    if (!entry) return null;
+
+    const fullCode = await loadComponentCode(entry.path, componentMeta.files);
+
+    return {
+        ...componentMeta,
         fullCode,
         nativeFiles: fullCode.nativeFiles
     };

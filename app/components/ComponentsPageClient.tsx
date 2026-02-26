@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Copy, Check, ExternalLink, ArrowRight, Compass, Sliders, MousePointer2, Layers, Loader2, LayoutGrid } from 'lucide-react';
+import { Search, Copy, Check, ExternalLink, ArrowRight, Compass, Sliders, MousePointer2, Layers, Loader2, LayoutGrid, Terminal } from 'lucide-react';
 import type { ComponentMetadata } from '@/lib/types';
 import { trackCopyCode, trackCategoryFilter, trackSearch, trackCardClick } from '@/lib/analytics';
 
@@ -24,6 +24,7 @@ interface ComponentsPageClientProps {
 export default function ComponentsPageClient({ initialComponents }: ComponentsPageClientProps) {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
+    const [trendingIds, setTrendingIds] = useState<string[]>([]);
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
     const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -39,6 +40,22 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
             });
         }
     }, [selectedCategory]);
+
+    // Fetch Trending Components
+    useEffect(() => {
+        const fetchTrending = async () => {
+            try {
+                const res = await fetch('/api/analytics/track?type=trending');
+                if (res.ok) {
+                    const data = await res.json();
+                    setTrendingIds(data.trending || []);
+                }
+            } catch (e) {
+                console.error('Failed to fetch trending components:', e);
+            }
+        };
+        fetchTrending();
+    }, []);
 
     const filteredComponents = initialComponents.filter(component => {
         const matchesCategory = selectedCategory === 'All' || component.category === selectedCategory;
@@ -70,11 +87,19 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
         }
     };
 
-    const handleCopyPreview = async (component: ComponentMetadata) => {
-        await navigator.clipboard.writeText(component.codePreview);
-        setCopiedId(component.id);
-        trackCopyCode(component.id, component.name, 'preview_grid');
-        setTimeout(() => setCopiedId(null), 2000);
+    const handleCopyCli = async (component: any) => {
+        try {
+            const command = `npx nativecn add ${component.slug || component.id}`;
+            await navigator.clipboard.writeText(command);
+            setCopiedId(component.id);
+            trackCopyCode(component.id, component.name, 'cli_grid');
+            setTimeout(() => setCopiedId(null), 2000);
+        } catch (error) {
+            console.error('Failed to copy CLI command:', error);
+            // Fallback: still show feedback so user knows something happened
+            setCopiedId(component.id);
+            setTimeout(() => setCopiedId(null), 2000);
+        }
     };
 
     const handleCardClick = (component: ComponentMetadata, index: number) => {
@@ -164,6 +189,8 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                     </div>
                 </motion.div>
 
+
+
                 {/* Component Grid */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <AnimatePresence mode="popLayout">
@@ -181,6 +208,15 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                 <div className="h-full rounded-[24px] bg-card border border-border/40 hover:border-border/80 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-500 overflow-hidden transform group-hover:-translate-y-1">
                                     {/* Content Container with fixed structure */}
                                     <div className="relative p-7 flex flex-col h-full cursor-pointer group/card" onClick={() => handleCardClick(component, index)}>
+                                        {/* Trending Badge Overlay */}
+                                        {trendingIds.includes(component.id) && (
+                                            <div className="absolute top-3 left-3 z-30 pointer-events-none">
+                                                <div className="flex items-center gap-1.5 px-2 py-0.5 bg-orange-500/10 dark:bg-orange-500/20 backdrop-blur-md text-orange-600 dark:text-orange-400 rounded-full text-[9px] font-black border border-orange-500/20 shadow-sm transition-all duration-500 group-hover/card:scale-110 group-hover/card:rotate-[2deg] group-hover/card:shadow-[0_4px_12px_rgba(249,115,22,0.15)]">
+                                                    <span className="flex h-1.5 w-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)] animate-pulse" />
+                                                    <span className="tracking-wider">TRENDING</span>
+                                                </div>
+                                            </div>
+                                        )}
                                         {/* Header Row - Fixed Height */}
                                         <div className="flex items-start justify-between gap-4 mb-5">
                                             {/* Icon */}
@@ -188,13 +224,15 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                                 {component.emoji}
                                             </div>
                                             {/* Category Badge */}
-                                            <span className="px-3 py-1.5 bg-muted rounded-full text-xs font-medium text-muted-foreground shrink-0 border border-border/50">
-                                                {component.category}
-                                            </span>
+                                            <div className="flex flex-col items-end gap-2">
+                                                <span className="px-3 py-1.5 bg-muted rounded-full text-xs font-medium text-muted-foreground shrink-0 border border-border/50">
+                                                    {component.category}
+                                                </span>
+                                            </div>
                                         </div>
 
                                         {/* Title - Fixed */}
-                                        <Link href={`/components/${component.id}`}>
+                                        <Link href={`/components/${(component as any).slug}`}>
                                             <h3 className="text-xl font-semibold mb-3 text-foreground group-hover/card:text-blue-500 transition-colors">
                                                 {component.name}
                                             </h3>
@@ -232,9 +270,9 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                             {/* Dependencies Row */}
                                             <div className="flex items-center justify-between mb-5">
                                                 {component.dependencies.required.length === 0 ? (
-                                                    <span className="inline-flex items-center gap-1.5 text-muted-foreground rounded-md text-xs font-medium">
+                                                    <span className="inline-flex items-center gap-1.5 text-muted-foreground rounded-md text-[11px] font-medium opacity-80">
                                                         <Check className="w-3.5 h-3.5 text-emerald-500" />
-                                                        Zero dependencies
+                                                        Source files only. No dependencies.
                                                     </span>
                                                 ) : (
                                                     <span className="px-2.5 py-1 bg-muted rounded-md text-xs font-mono text-muted-foreground border border-border/50">
@@ -249,20 +287,22 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                             {/* Action Buttons */}
                                             <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
                                                 <button
-                                                    onClick={() => handleCopyPreview(component)}
-                                                    className="flex-1 px-4 py-2.5 bg-foreground text-background hover:bg-foreground/90 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-sm"
+                                                    onClick={() => handleCopyCli(component)}
+                                                    className="flex-1 px-4 py-2.5 bg-foreground text-background hover:bg-foreground/90 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-sm group/btn active:scale-[0.98]"
+                                                    title="Copies source directly into your project — nothing installed"
                                                 >
                                                     {copiedId === component.id ? (
                                                         <><Check className="w-4 h-4 text-emerald-400" />Copied!</>
                                                     ) : (
-                                                        <><Copy className="w-4 h-4" />Copy Code</>
+                                                        <><Terminal className="w-4 h-4 group-hover/btn:text-blue-400 transition-colors" />Copy CLI</>
                                                     )}
                                                 </button>
                                                 <Link
-                                                    href={`/components/${component.id}`}
-                                                    className="px-4 py-2.5 bg-muted hover:bg-muted/80 text-foreground rounded-lg transition-colors flex items-center justify-center border border-border/50 shadow-sm"
+                                                    href={`/components/${(component as any).slug}`}
+                                                    className="px-4 py-2.5 bg-muted hover:bg-muted/80 text-foreground rounded-lg transition-colors flex items-center justify-center border border-border/50 shadow-sm group/link active:scale-[0.98]"
+                                                    title="View Details"
                                                 >
-                                                    <ExternalLink className="w-4 h-4" />
+                                                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-0.5 transition-transform" />
                                                 </Link>
                                             </div>
                                         </div>

@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         if (action === 'track_component') {
             const { componentId, field } = body;
 
-            if (!componentId || !['views', 'copies', 'snack_opens'].includes(field)) {
+            if (!componentId || !['views', 'copies', 'snack_opens', 'studio_uses'].includes(field)) {
                 return NextResponse.json({ error: 'Invalid params' }, { status: 400 });
             }
 
@@ -163,6 +163,37 @@ export async function GET(request: NextRequest) {
                 return NextResponse.json({ dev_count: data.dev_count || 175 });
             }
             return NextResponse.json({ dev_count: 175 });
+        }
+
+        // Trending Components — PUBLIC (for the component grid)
+        if (type === 'trending') {
+            try {
+                const res = await firestoreRestFetch('component_stats');
+                if (res.documents && Array.isArray(res.documents)) {
+                    const stats = res.documents.map((doc: any) => {
+                        const id = doc.name.split('/').pop();
+                        const data = unwrapFirestoreData(doc.fields);
+                        // Popularity Score: (Views * 1) + (Copies * 6) + (Studio Uses * 4) + (Snack Opens * 2)
+                        const score = (data.views || 0) +
+                            ((data.copies || 0) * 6) +
+                            ((data.studio_uses || 0) * 4) +
+                            ((data.snack_opens || 0) * 2);
+                        return { id, score };
+                    });
+
+                    // Sort by score and take top 4
+                    const trending = stats
+                        .sort((a: any, b: any) => b.score - a.score)
+                        .slice(0, 4)
+                        .map((s: any) => s.id);
+
+                    return NextResponse.json({ trending });
+                }
+                return NextResponse.json({ trending: [] });
+            } catch (e) {
+                console.error('[Trending API] Error:', e);
+                return NextResponse.json({ trending: [] });
+            }
         }
 
         // Everything below requires admin session ────────────────────

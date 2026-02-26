@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Copy, Check, ChevronLeft, Code2, Package, Zap, BookOpen, ArrowRight, Play, ExternalLink } from 'lucide-react';
+import { Copy, Check, ChevronLeft, Code2, Package, Zap, BookOpen, ArrowRight, Play, ExternalLink, Terminal } from 'lucide-react';
 import type { ComponentData, ComponentMetadata } from '@/lib/types';
 import { trackComponentView, trackCopyCode, trackSnackOpen, trackTabSwitch } from '@/lib/analytics';
 
@@ -172,6 +172,10 @@ export default function ComponentDetailClient({ component, relatedComponents }: 
                                     ))}
                                 </div>
                             ) : (
+
+
+
+
                                 <>
                                     <div className="flex gap-2 mb-4">
                                         <button onClick={() => handleTabSwitch('typescript')} className={`px-6 py-3 rounded-lg font-medium transition ${activeTab === 'typescript' ? 'bg-primary text-primary-foreground' : 'bg-muted hover:bg-muted/80'}`}>TypeScript</button>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Code2, Star, ArrowRight } from 'lucide-react';
 import HeroShowcase from './HeroShowcase';
+import { CliCommand } from './CliCommand';
 
 export default function Hero() {
     return (
@@ -42,7 +43,7 @@ export default function Hero() {
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl leading-[1.6] font-light tracking-[-0.01em]"
                 >
-                    No dependencies, no lock-in. A curated collection of meticulously designed components, plus a visual sandbox to test them before coding.
+                    Zero dependencies. Zero lock-in. A curated collection of meticulously designed components you can copy-paste or pull via CLI.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -66,6 +67,17 @@ export default function Hero() {
                     </Link>
                 </motion.div>
 
+                {/* CLI Command Preview */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.35 }}
+                    className="mt-12"
+                >
+                    <CliCommand />
+                </motion.div>
+
+
                 {/* Visual Anchor: The Component Showcase */}
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
@@ -78,6 +90,6 @@ export default function Hero() {
                     <div className="absolute -bottom-24 left-0 right-0 h-48 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-20" />
                 </motion.div>
             </div>
-        </section>
+        </section >
     );
 }

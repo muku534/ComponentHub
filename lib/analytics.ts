@@ -149,11 +149,23 @@ export function trackStudioCodeView() {
 export function trackStudioCodeExport() {
     logEvent(EVENTS.STUDIO_CODE_EXPORT, {});
     serverTrack('increment_global', { field: 'total_studio_exports' });
+
+    // Increment dev count if this is a new user
+    if (typeof window !== 'undefined' && !localStorage.getItem('nativecn_is_dev')) {
+        localStorage.setItem('nativecn_is_dev', 'true');
+        serverTrack('increment_dev', {});
+    }
 }
 
 export function trackStudioCodeCopy() {
     logEvent(EVENTS.STUDIO_CODE_COPY, {});
     serverTrack('increment_global', { field: 'total_studio_copies' });
+
+    // Increment dev count if this is a new user
+    if (typeof window !== 'undefined' && !localStorage.getItem('nativecn_is_dev')) {
+        localStorage.setItem('nativecn_is_dev', 'true');
+        serverTrack('increment_dev', {});
+    }
 }
 
 // ─── Admin Auth (httpOnly cookie — no tokens in client) ──────────────────────

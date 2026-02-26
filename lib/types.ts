@@ -37,6 +37,7 @@ export interface ComponentMetadata {
     features: string[];
     props: ComponentProp[];
     usage: UsageExample[];
+    slug: string;
     version: string;
     lastUpdated: string;
     difficulty: 'Easy' | 'Medium' | 'Advanced';

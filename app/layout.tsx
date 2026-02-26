@@ -11,14 +11,33 @@ import { StudioProvider } from "@/lib/studio/context";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "nativecn-ui - Premium React Native Components",
+  metadataBase: new URL('https://nativecn-ui.vercel.app'),
+  title: {
+    default: "nativecn-ui — Premium React Native Components",
+    template: "%s | nativecn-ui"
+  },
   description: "Copy-paste React Native UI components. Production-ready, TypeScript-first. No package bloat, just beautiful code.",
-  keywords: ["React Native", "Components", "UI Library", "TypeScript", "Mobile Development"],
+  keywords: ["React Native", "Components", "UI Library", "TypeScript", "Mobile Development", "Expo", "nativecn", "nativecn-ui"],
   authors: [{ name: "nativecn-ui" }],
+  creator: "nativecn-ui",
+  publisher: "nativecn-ui",
+  category: "technology",
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: "nativecn-ui - Premium React Native Components",
+    title: "nativecn-ui — Premium React Native Components",
     description: "Copy-paste React Native UI components. Production-ready, TypeScript-first.",
+    url: 'https://nativecn-ui.vercel.app',
+    siteName: 'nativecn-ui',
     type: "website",
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "nativecn-ui — Premium React Native Components",
+    description: "Copy-paste React Native UI components. Production-ready, TypeScript-first.",
+    creator: '@nativecn_ui',
   },
   icons: {
     icon: "/logo-v1.png",
