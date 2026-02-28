@@ -323,6 +323,83 @@ function ComponentPreview({ node }: { node: CanvasNode }) {
         );
     }
 
+    // ─── Image Carousel
+    if (node.type === 'image-carousel') {
+        const orientation = node.props.orientation || 'horizontal';
+        const layout = node.props.layout || 'depth';
+        const isHorizontal = orientation === 'horizontal';
+        const w = Number(node.props.cardWidth || 200);
+        const h = Number(node.props.cardHeight || 280);
+
+        return (
+            <div className={`px-4 py-3 flex ${isHorizontal ? 'flex-row overflow-x-hidden' : 'flex-col items-center overflow-y-hidden'} gap-3 w-full h-full min-h-[300px] bg-zinc-50/50 rounded-xl relative`}>
+                <div className="absolute top-2 left-4 text-[9px] font-bold text-zinc-400 uppercase tracking-widest z-10">
+                    {orientation} • {layout}
+                </div>
+
+                {[1, 2, 3].map((i) => {
+                    const isCenter = i === 2;
+                    let style: any = {
+                        width: isHorizontal ? w * 0.7 : w * 0.8,
+                        height: isHorizontal ? h * 0.7 : h * 0.6,
+                        borderRadius: 16,
+                        background: `linear-gradient(135deg, ${i === 1 ? '#6366f1' : i === 2 ? '#a855f7' : '#ec4899'}, ${i === 1 ? '#4f46e5' : i === 2 ? '#9333ea' : '#db2777'})`,
+                        flexShrink: 0,
+                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        boxShadow: isCenter ? '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        padding: '12px',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                    };
+
+                    // Simulate 3D layouts with CSS
+                    if (layout === 'depth') {
+                        if (!isCenter) {
+                            style.transform = isHorizontal
+                                ? `scale(0.8) rotateY(${i === 1 ? 25 : -25}deg)`
+                                : `scale(0.8) rotateX(${i === 1 ? -25 : 25}deg)`;
+                            style.opacity = 0.5;
+                        } else {
+                            style.zIndex = 10;
+                        }
+                    } else if (layout === 'stack') {
+                        if (i === 1) {
+                            style.transform = isHorizontal ? 'translateX(40px) scale(0.9)' : 'translateY(40px) scale(0.9)';
+                            style.opacity = 0.4;
+                            style.zIndex = 1;
+                        } else if (i === 2) {
+                            style.zIndex = 10;
+                        } else {
+                            style.display = 'none'; // Only show 2 for stack preview
+                        }
+                    } else if (layout === 'perspective') {
+                        if (!isCenter) {
+                            style.transform = isHorizontal ? `rotateY(${i === 1 ? 90 : -90}deg)` : `rotateX(${i === 1 ? -90 : 90}deg)`;
+                            style.opacity = 0;
+                        }
+                    }
+
+                    return (
+                        <div key={i} style={style}>
+                            <div className="w-full">
+                                <div className="h-1.5 w-2/3 bg-white/30 rounded-full mb-1" />
+                                <div className="h-1 w-1/2 bg-white/20 rounded-full" />
+                            </div>
+                        </div>
+                    );
+                })}
+
+                {/* Pagination indicator simulation */}
+                <div className={`absolute ${isHorizontal ? 'bottom-2 left-1/2 -translate-x-1/2 flex-row' : 'right-2 top-1/2 -translate-y-1/2 flex-col'} flex gap-1`}>
+                    {[1, 2, 3].map(j => (
+                        <div key={j} className={`rounded-full bg-zinc-300 ${j === 2 ? (isHorizontal ? 'w-4 h-1' : 'w-1 h-4 bg-zinc-600') : 'w-1 h-1'}`} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     // ─── Heading
     if (node.type === 'heading') {
         const align = node.props.align || 'left';
@@ -747,6 +824,7 @@ export default function StudioBuilderPage() {
     const [deviceType, setDeviceType] = useState<'ios' | 'android'>('ios');
     const [inputExpanded, setInputExpanded] = useState(false);
     const [buttonExpanded, setButtonExpanded] = useState(true);
+    const [displayExpanded, setDisplayExpanded] = useState(true);
     const [mounted, setMounted] = useState(false);
 
     const studio = useStudio();
@@ -1022,6 +1100,45 @@ export default function StudioBuilderPage() {
                                                     </div>
                                                 </button>
                                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${buttonExpanded ? 'max-h-[800px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+                                                    <div className="space-y-2 pl-4 border-l-2 border-border/30 ml-4">
+                                                        {items.map((d) => (
+                                                            <PaletteItem
+                                                                key={d.type}
+                                                                type={d.type}
+                                                                name={d.name}
+                                                                icon={d.icon}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+
+                                    // Display category is collapsible
+                                    if (cat === 'Display') {
+                                        return (
+                                            <div key={cat} className="mb-4">
+                                                <button
+                                                    onClick={() => setDisplayExpanded((v) => !v)}
+                                                    className={`w-full flex flex-col p-px rounded-xl overflow-hidden transition-all duration-300 ${displayExpanded ? 'bg-gradient-to-b from-purple-500/20 to-indigo-500/20 shadow-sm' : 'bg-transparent hover:bg-black/5 dark:hover:bg-white/5'}`}
+                                                >
+                                                    <div className={`w-full flex items-center justify-between gap-3 p-3 rounded-[11px] backdrop-blur-md transition-all ${displayExpanded ? 'bg-white/80 dark:bg-zinc-900/80 border border-white/20 dark:border-white/10' : 'bg-transparent border border-transparent'}`}>
+                                                        <div className="flex items-center gap-3">
+                                                            <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-colors ${displayExpanded ? 'bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400' : 'bg-secondary text-muted-foreground'}`}>
+                                                                <span className="text-sm">✨</span>
+                                                            </div>
+                                                            <span className={`text-sm font-semibold transition-colors ${displayExpanded ? 'text-gray-900 dark:text-white' : 'text-gray-600 dark:text-gray-300'}`}>Display</span>
+                                                        </div>
+                                                        <svg
+                                                            className={`w-4 h-4 transition-transform duration-300 ${displayExpanded ? 'rotate-180 text-gray-900 dark:text-white' : 'text-muted-foreground/50'}`}
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}
+                                                        >
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                                        </svg>
+                                                    </div>
+                                                </button>
+                                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${displayExpanded ? 'max-h-[800px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
                                                     <div className="space-y-2 pl-4 border-l-2 border-border/30 ml-4">
                                                         {items.map((d) => (
                                                             <PaletteItem

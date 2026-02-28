@@ -217,9 +217,7 @@ const getStyles = (COLORS: any, isTablet: boolean, variant: string, size: string
     };
 
     return StyleSheet.create({
-        container: {
-            ...widthStyles,
-        },
+        container: widthStyles as any,
         button: {
             ...baseButtonStyles,
             ...variantStyles[variant],

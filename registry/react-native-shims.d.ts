@@ -52,6 +52,7 @@ declare module 'react-native' {
     export type LayoutChangeEvent = any;
     export type NativeSyntheticEvent<T> = any;
     export type NativeScrollEvent = any;
+    export type ImageSourcePropType = any;
 }
 
 declare module 'react-native-linear-gradient' {

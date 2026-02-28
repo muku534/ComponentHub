@@ -326,7 +326,7 @@ const CustomInput = forwardRef<any, CustomInputProps>(
                                 paddingVertical: multiline ? 12 : 4,
                             },
                             inputStyle,
-                        ]}
+                        ] as any}
                         placeholder={placeholder}
                         placeholderTextColor={placeholderTextColor || COLORS.placeholder}
                         value={value}
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 0,
         margin: 0,
-        outlineStyle: 'none', // removes default blue web focus outline
+        outlineStyle: 'none' as any, // removes default blue web focus outline
         borderWidth: 0,       // removes any default TextInput border on web
     },
     iconLeft: {

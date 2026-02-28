@@ -99,7 +99,7 @@ const FloatingSpeedDial = ({
         <View style={styles.container}>
             {/* Action 3: Switch View */}
             {setShowMapView && (
-                <Animated.View style={[styles.actionBtnContainer, getActionStyle(action3Anim, -20)]}>
+                <Animated.View style={[styles.actionBtnContainer, getActionStyle(action3Anim, -20)] as any}>
                     <View style={styles.labelContainer}>
                         <Text style={styles.actionLabel}>{showMapView ? "List View" : "Map View"}</Text>
                     </View>
@@ -122,7 +122,7 @@ const FloatingSpeedDial = ({
 
             {/* Action 2: Add Friends */}
             {onAddFriends && (
-                <Animated.View style={[styles.actionBtnContainer, getActionStyle(action2Anim, -10)]}>
+                <Animated.View style={[styles.actionBtnContainer, getActionStyle(action2Anim, -10)] as any}>
                     <View style={styles.labelContainer}>
                         <Text style={styles.actionLabel}>Add Friends</Text>
                     </View>
@@ -141,7 +141,7 @@ const FloatingSpeedDial = ({
 
             {/* Action 1: Add Document */}
             {onAddDocument && (
-                <Animated.View style={[styles.actionBtnContainer, getActionStyle(action1Anim, 0)]}>
+                <Animated.View style={[styles.actionBtnContainer, getActionStyle(action1Anim, 0)] as any}>
                     <View style={styles.labelContainer}>
                         <Text style={styles.actionLabel}>Upload Doc</Text>
                     </View>

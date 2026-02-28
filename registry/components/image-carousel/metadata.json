@@ -1,0 +1,89 @@
+{
+    "id": "image-carousel",
+    "name": "Animated Image Carousel",
+    "category": "Display",
+    "description": "Premium 3D animated carousel with depth, stack, and perspective layouts",
+    "snackId": "@mr.mukesh/animated-image-carousel",
+    "longDescription": "A high-performance image carousel built with React Native Reanimated. Supports vertical and horizontal orientations, along with three unique 3D layout modes: Depth, Stack, and Perspective. Includes parallax effects and glassmorphic overlays.",
+    "gradient": "from-purple-500 to-indigo-600",
+    "emoji": "🎠",
+    "dependencies": {
+        "required": [
+            "react-native-reanimated",
+            "react-native-linear-gradient"
+        ],
+        "optional": []
+    },
+    "features": [
+        "3D Depth & Perspective rotations",
+        "Stack and Perspective layout modes",
+        "Horizontal and Vertical orientation support",
+        "Parallax scrolling images",
+        "Glassmorphic design for titles and overlays",
+        "Dynamic pagination dots",
+        "Custom card rendering support"
+    ],
+    "props": [
+        {
+            "name": "data",
+            "type": "CarouselItem[]",
+            "required": true,
+            "description": "Array of items to display"
+        },
+        {
+            "name": "orientation",
+            "type": "'horizontal' | 'vertical'",
+            "required": false,
+            "default": "horizontal",
+            "description": "Scroll direction"
+        },
+        {
+            "name": "layout",
+            "type": "'depth' | 'stack' | 'perspective'",
+            "required": false,
+            "default": "depth",
+            "description": "3D animation style"
+        },
+        {
+            "name": "cardWidth",
+            "type": "number",
+            "required": false,
+            "description": "Width of each card"
+        },
+        {
+            "name": "cardHeight",
+            "type": "number",
+            "required": false,
+            "description": "Height of each card"
+        },
+        {
+            "name": "autoPlay",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Depth Carousel",
+            "description": "Standard horizontal carousel with 3D depth effect",
+            "code": "<ImageCarousel\n  data={DATA}\n  layout=\"depth\"\n  cardWidth={340}\n/>"
+        },
+        {
+            "title": "Vertical Stack",
+            "description": "Vertical scrolling with card stacking animation",
+            "code": "<ImageCarousel\n  data={DATA}\n  orientation=\"vertical\"\n  layout=\"stack\"\n  cardHeight={400}\n/>"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-02-27",
+    "difficulty": "Advanced",
+    "installation": {
+        "steps": [
+            "npm install react-native-reanimated react-native-linear-gradient",
+            "cd ios && pod install",
+            "Copy ImageCarousel.tsx to your components folder",
+            "Import and use"
+        ]
+    }
+}

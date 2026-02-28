@@ -335,6 +335,48 @@ const spacer: ComponentDefinition = {
     },
 };
 
+// ─── Image Carousel ──────────────────────────────────────────────────────────
+
+const imageCarousel: ComponentDefinition = {
+    type: 'image-carousel',
+    name: 'Image Carousel',
+    category: 'Display',
+    icon: '🎠',
+    importName: 'ImageCarousel',
+    needsState: false,
+    propControls: [
+        {
+            name: 'orientation', label: 'Orientation', type: 'select', defaultValue: 'horizontal',
+            options: [
+                { label: 'Horizontal', value: 'horizontal' },
+                { label: 'Vertical', value: 'vertical' },
+            ],
+        },
+        {
+            name: 'layout', label: '3D Layout', type: 'select', defaultValue: 'depth',
+            options: [
+                { label: 'Depth (3D)', value: 'depth' },
+                { label: 'Stack', value: 'stack' },
+                { label: 'Perspective', value: 'perspective' },
+            ],
+        },
+        { name: 'cardWidth', label: 'Card Width', type: 'number', defaultValue: 300 },
+        { name: 'cardHeight', label: 'Card Height', type: 'number', defaultValue: 400 },
+        { name: 'autoPlay', label: 'Auto Play', type: 'boolean', defaultValue: true },
+    ],
+    generateJSX: (props) => {
+        const lines = [`      <ImageCarousel`];
+        lines.push(`        data={DATA}`);
+        if (props.orientation && props.orientation !== 'horizontal') lines.push(`        orientation="${props.orientation}"`);
+        if (props.layout && props.layout !== 'depth') lines.push(`        layout="${props.layout}"`);
+        if (props.cardWidth && props.cardWidth !== 300) lines.push(`        cardWidth={${props.cardWidth}}`);
+        if (props.cardHeight && props.cardHeight !== 400) lines.push(`        cardHeight={${props.cardHeight}}`);
+        if (props.autoPlay === false) lines.push(`        autoPlay={false}`);
+        lines.push(`      />`);
+        return lines.join('\n');
+    },
+};
+
 // ─── Export ──────────────────────────────────────────────────────────────────
 
 export const COMPONENT_DEFINITIONS: ComponentDefinition[] = [
@@ -351,10 +393,11 @@ export const COMPONENT_DEFINITIONS: ComponentDefinition[] = [
     switchToggle,
     rainbowButton,
     gradientButton,
+    imageCarousel,
 ];
 
 export function getDefinition(type: string): ComponentDefinition | undefined {
     return COMPONENT_DEFINITIONS.find((d) => d.type === type);
 }
 
-export const CATEGORIES = ['Layout', 'Input', 'Button'] as const;
+export const CATEGORIES = ['Layout', 'Input', 'Button', 'Display'] as const;

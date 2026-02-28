@@ -109,6 +109,17 @@ export function generateScreenCode(nodes: CanvasNode[], screenName: string = 'My
     }
 
     lines.push('');
+
+    // Mock DATA for Image Carousel
+    if (imports.has('ImageCarousel')) {
+        lines.push(`const DATA = [`);
+        lines.push(`  { id: '1', image: { uri: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb' }, title: 'Mountain Lake', subtitle: 'Pristine nature views' },`);
+        lines.push(`  { id: '2', image: { uri: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' }, title: 'Sunset Coast', subtitle: 'Relaxing beach vibes' },`);
+        lines.push(`  { id: '3', image: { uri: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05' }, title: 'Misty Forest', subtitle: 'Deep woods exploration' },`);
+        lines.push(`];`);
+        lines.push('');
+    }
+
     lines.push(`export default function ${screenName}() {`);
 
     // State variables
@@ -239,6 +250,7 @@ export function getRequiredFiles(nodes: CanvasNode[]): string[] {
         const def = getDefinition(node.type);
         if (def?.importName) {
             files.add(`${def.importName}.tsx`);
+            files.add(`${def.importName}.jsx`);
         }
     }
     return [...files];
