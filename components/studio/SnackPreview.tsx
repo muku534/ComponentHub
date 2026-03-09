@@ -220,7 +220,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 }}
                 src={webPreviewURL}
                 onLoad={handleIframeLoad}
-                allow="geolocation; camera; microphone; accelerometer; gyroscope"
+                allow="geolocation; camera; microphone; accelerometer; gyroscope; screen-wake-lock"
                 className="w-full h-full border-none"
                 style={{
                     background: '#fff',
