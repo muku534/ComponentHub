@@ -1,0 +1,39 @@
+{
+    "name": "nativecn-ui",
+    "version": "1.0.0",
+    "description": "CLI to add nativecn-ui components to your React Native project",
+    "type": "module",
+    "bin": {
+        "nativecn-ui": "./dist/index.js"
+    },
+    "scripts": {
+        "build": "tsup src/index.ts --format esm --dts --clean",
+        "dev": "tsup src/index.ts --format esm --watch"
+    },
+    "keywords": [
+        "react-native",
+        "components",
+        "ui",
+        "nativecn",
+        "cli"
+    ],
+    "author": "muku534",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/muku534/nativecn-ui.git",
+        "directory": "cli"
+    },
+    "dependencies": {
+        "chalk": "^5.3.0",
+        "commander": "^12.1.0",
+        "ora": "^8.1.0",
+        "prompts": "^2.4.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "@types/prompts": "^2.4.9",
+        "tsup": "^8.3.0",
+        "typescript": "^5.0.0"
+    }
+}

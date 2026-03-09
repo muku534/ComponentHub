@@ -158,7 +158,9 @@ const AnimatedCard = React.memo(({
 
 // ─── Pagination Dot ──────────────────────────────────────────────────────────
 
-const PaginationDot = React.memo(({ index, scrollOffset, itemSize }) => {
+const PaginationDot = React.memo(({ index, scrollOffset, itemSize, orientation }) => {
+    const isHorizontal = orientation === 'horizontal';
+
     const dotStyle = useAnimatedStyle(() => {
         const inputRange = [
             (index - 1) * itemSize,
@@ -181,7 +183,8 @@ const PaginationDot = React.memo(({ index, scrollOffset, itemSize }) => {
         );
 
         return {
-            width: size,
+            width: isHorizontal ? size : 6,
+            height: isHorizontal ? 6 : size,
             opacity,
             transform: [{ scale: interpolate(scrollOffset.value, inputRange, [0.8, 1.2, 0.8], Extrapolation.CLAMP) }],
         };
@@ -191,10 +194,10 @@ const PaginationDot = React.memo(({ index, scrollOffset, itemSize }) => {
         <Animated.View
             style={[
                 {
-                    height: 6,
                     borderRadius: 3,
                     backgroundColor: '#fff',
-                    marginHorizontal: 4,
+                    marginHorizontal: isHorizontal ? 4 : 0,
+                    marginVertical: isHorizontal ? 0 : 4,
                 },
                 dotStyle,
             ]}
@@ -226,9 +229,10 @@ const ImageCarousel = ({
     const isUserScrolling = useRef(false);
 
     const itemSize = (isHorizontal ? cardWidth : cardHeight) + cardGap;
+    const containerHeight = cardHeight + 100;
     const sideInset = isHorizontal
         ? (Dimensions.get('window').width - cardWidth) / 2 - cardGap / 2
-        : (Dimensions.get('window').width - cardWidth) / 2;
+        : (containerHeight - itemSize) / 2;
 
     const scrollHandler = useAnimatedScrollHandler({
         onScroll: (event) => {
@@ -277,7 +281,7 @@ const ImageCarousel = ({
     }, [startAutoPlay, stopAutoPlay]);
 
     return (
-        <View style={!isHorizontal && { height: cardHeight + 100 }}>
+        <View style={!isHorizontal && { height: containerHeight }}>
             <Animated.ScrollView
                 ref={scrollRef}
                 horizontal={isHorizontal}
@@ -286,7 +290,7 @@ const ImageCarousel = ({
                 contentContainerStyle={isHorizontal ? {
                     paddingHorizontal: sideInset,
                 } : {
-                    paddingVertical: (Dimensions.get('window').width * 0.2),
+                    paddingVertical: sideInset,
                     alignItems: 'center',
                 }}
                 snapToInterval={itemSize}
@@ -329,6 +333,7 @@ const ImageCarousel = ({
                             index={index}
                             scrollOffset={scrollOffset}
                             itemSize={itemSize}
+                            orientation={orientation}
                         />
                     ))}
                 </View>
@@ -392,9 +397,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         position: 'absolute',
         right: 20,
-        top: '50%',
-        marginTop: 0,
-        transform: [{ translateY: -100 }],
+        top: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 

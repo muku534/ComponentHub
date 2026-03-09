@@ -101,6 +101,12 @@ export function generateScreenCode(nodes: CanvasNode[], screenName: string = 'My
     lines.push(`import { ${[...rnImports].join(', ')} } from 'react-native';`);
     lines.push(`import { SafeAreaProvider } from 'react-native-safe-area-context';`);
 
+    // Check if gesture handler is needed (for carousel, drag, etc.)
+    const needsGestureHandler = imports.has('ImageCarousel');
+    if (needsGestureHandler) {
+        lines.push(`import { GestureHandlerRootView } from 'react-native-gesture-handler';`);
+    };
+
     if (imports.size > 0) {
         lines.push('');
         for (const imp of imports) {
@@ -186,18 +192,35 @@ export function generateScreenCode(nodes: CanvasNode[], screenName: string = 'My
         lines.push('');
     }
 
+    // Detect if layout is full-bleed (only carousel/media components, no forms)
+    const isFullBleed = sorted.every((n) => n.type === 'image-carousel');
+    const hasCarousel = imports.has('ImageCarousel');
+
     // JSX
     lines.push(`  return (`);
+    if (needsGestureHandler) {
+        lines.push(`    <GestureHandlerRootView style={{ flex: 1 }}>`);
+    }
     lines.push(`    <SafeAreaProvider>`);
-    lines.push(`      <KeyboardAvoidingView`);
-    lines.push(`        style={styles.keyboardAvoiding}`);
-    lines.push(`        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}`);
-    lines.push(`      >`);
-    lines.push(`        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">`);
-    lines.push(jsxLines.map(line => `          ${line}`).join('\n'));
-    lines.push(`        </ScrollView>`);
-    lines.push(`      </KeyboardAvoidingView>`);
+    if (isFullBleed && hasCarousel) {
+        // Full-bleed layout — no ScrollView, no padding, fills screen
+        lines.push(`      <View style={styles.fullBleedContainer}>`);
+        lines.push(jsxLines.map(line => `        ${line}`).join('\n'));
+        lines.push(`      </View>`);
+    } else {
+        lines.push(`      <KeyboardAvoidingView`);
+        lines.push(`        style={styles.keyboardAvoiding}`);
+        lines.push(`        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}`);
+        lines.push(`      >`);
+        lines.push(`        <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">`);
+        lines.push(jsxLines.map(line => `          ${line}`).join('\n'));
+        lines.push(`        </ScrollView>`);
+        lines.push(`      </KeyboardAvoidingView>`);
+    }
     lines.push(`    </SafeAreaProvider>`);
+    if (needsGestureHandler) {
+        lines.push(`    </GestureHandlerRootView>`);
+    }
     lines.push(`  );`);
     lines.push(`}`);
 
@@ -208,6 +231,12 @@ export function generateScreenCode(nodes: CanvasNode[], screenName: string = 'My
     lines.push(`    flex: 1,`);
     lines.push(`    backgroundColor: '#fff',`);
     lines.push(`  },`);
+    if (isFullBleed && hasCarousel) {
+        lines.push(`  fullBleedContainer: {`);
+        lines.push(`    flex: 1,`);
+        lines.push(`    backgroundColor: '#ffffffff',`);
+        lines.push(`  },`);
+    }
     lines.push(`  container: {`);
     lines.push(`    flex: 1,`);
     lines.push(`    padding: 20,`);

@@ -40,3 +40,8 @@ firestore.rules
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# cli
+cli/node_modules
+cli/dist
+cli/package-lock.json

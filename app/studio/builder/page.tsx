@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import {
     DndContext,
     DragOverlay,
@@ -28,6 +29,9 @@ import {
     getDefinition,
 } from '@/lib/studio/component-definitions';
 import { generateScreenCode, getRequiredFiles } from '@/lib/studio/code-generator';
+
+// Dynamic import of SnackPreview — heavy client-side SDK, no SSR
+const SnackPreview = dynamic(() => import('@/components/studio/SnackPreview'), { ssr: false });
 import { trackStudioBuilderView, trackStudioComponentAdded, trackStudioCodeExport, trackStudioCodeCopy, trackStudioPropsUpdated } from '@/lib/analytics';
 import { useStudio } from '@/lib/studio/context';
 
@@ -504,213 +508,264 @@ function PhoneMockup({
     isEmpty,
     deviceType,
     onDeviceChange,
+    previewMode,
+    onPreviewModeChange,
+    livePreviewCode,
+    livePreviewComponents,
 }: {
     children: React.ReactNode;
     isEmpty: boolean;
     deviceType: 'ios' | 'android';
     onDeviceChange: (device: 'ios' | 'android') => void;
+    previewMode: 'design' | 'live';
+    onPreviewModeChange: (mode: 'design' | 'live') => void;
+    livePreviewCode?: string;
+    livePreviewComponents?: string;
 }) {
     const { isOver, setNodeRef } = useDroppable({ id: 'canvas-drop' });
-
     const isIOS = deviceType === 'ios';
 
     return (
-        <div className="relative flex flex-col items-center min-h-full pt-14 lg:pt-0 w-full">
-            {/* Device Toggle - Absolute Top Right */}
-            <div className="absolute top-0 right-0 z-50 flex items-center gap-1 bg-white/60 dark:bg-zinc-800/80 rounded-xl p-1 border border-border/50 backdrop-blur-md shadow-sm">
-                <button
-                    onClick={() => onDeviceChange('ios')}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${isIOS
-                        ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-gray-100'
-                        : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
-                >
-                    iPhone 15 Pro
-                </button>
-                <button
-                    onClick={() => onDeviceChange('android')}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${!isIOS
-                        ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-gray-100'
-                        : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
-                >
-                    Pixel 8
-                </button>
+        <div className="relative flex flex-col items-center min-h-full lg:pt-0 w-full">
+            {/* Controls Header (Responsive) */}
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between sm:absolute sm:-top-2 lg:-top-4 sm:-left-2 lg:-left-6 sm:-right-2 lg:-right-6 gap-3 mb-6 sm:mb-0 px-4 sm:px-0 z-50 pointer-events-none">
+                {/* Device Toggle */}
+                <div className="flex items-center gap-1 bg-white/60 dark:bg-zinc-800/80 rounded-xl p-1 border border-border/50 backdrop-blur-md shadow-sm pointer-events-auto">
+                    <button
+                        onClick={() => onDeviceChange('ios')}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${isIOS
+                            ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-gray-100'
+                            : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'
+                            }`}
+                    >
+                        iPhone 15 Pro
+                    </button>
+                    <button
+                        onClick={() => onDeviceChange('android')}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${!isIOS
+                            ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-gray-100'
+                            : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'
+                            }`}
+                    >
+                        Pixel 8
+                    </button>
+                </div>
+
+                {/* Mode Toggle */}
+                <div className="flex items-center bg-white/60 dark:bg-zinc-800/80 backdrop-blur-md border border-border/50 rounded-xl p-1 shadow-sm transition-all duration-300 pointer-events-auto">
+                    <button
+                        onClick={() => onPreviewModeChange('design')}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${previewMode === 'design' ? 'bg-white dark:bg-zinc-700 shadow-sm text-gray-900 dark:text-gray-100' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'}`}
+                    >
+                        Design
+                    </button>
+                    <button
+                        onClick={() => !isEmpty && onPreviewModeChange('live')}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${isEmpty ? 'opacity-50 cursor-not-allowed text-gray-400' : previewMode === 'live' ? 'bg-blue-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'}`}
+                    >
+                        <span className={`w-1.5 h-1.5 rounded-full ${previewMode === 'live' ? 'bg-white animate-pulse' : 'bg-transparent'}`} />
+                        Live Test
+                    </button>
+                </div>
             </div>
 
             {/* ── Device Frame ── */}
-            <div ref={setNodeRef} className="relative" style={{ width: isIOS ? 340 : 330, height: 680 }}>
-
-                {/* Side buttons — iOS */}
-                {isIOS && (
-                    <>
-                        {/* Silent switch */}
-                        <div className="absolute -left-[3px] top-[100px] w-[3px] h-[28px] rounded-l-sm"
-                            style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
-                        {/* Volume Up */}
-                        <div className="absolute -left-[3px] top-[148px] w-[3px] h-[52px] rounded-l-sm"
-                            style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
-                        {/* Volume Down */}
-                        <div className="absolute -left-[3px] top-[210px] w-[3px] h-[52px] rounded-l-sm"
-                            style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
-                        {/* Power button */}
-                        <div className="absolute -right-[3px] top-[168px] w-[3px] h-[72px] rounded-r-sm"
-                            style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
-                    </>
-                )}
-
-                {/* Side buttons — Android */}
-                {!isIOS && (
-                    <>
-                        {/* Volume rocker */}
-                        <div className="absolute -right-[3px] top-[140px] w-[3px] h-[64px] rounded-r-sm"
-                            style={{ background: 'linear-gradient(to bottom, #1a1a1e, #0e0e10, #1a1a1e)' }} />
-                        {/* Power */}
-                        <div className="absolute -right-[3px] top-[220px] w-[3px] h-[44px] rounded-r-sm"
-                            style={{ background: 'linear-gradient(to bottom, #1a1a1e, #0e0e10, #1a1a1e)' }} />
-                    </>
-                )}
-
-                {/* Outer device body — metallic frame */}
+            <div className="relative w-full overflow-hidden flex justify-center py-4 sm:py-0 px-2 sm:px-0 sm:-mt-2 lg:-mt-4">
                 <div
-                    className="absolute inset-0 overflow-hidden"
+                    ref={setNodeRef}
+                    className="relative shrink-0 origin-top transition-transform duration-300 transform scale-[0.85] xs:scale-[0.9] sm:scale-100"
                     style={{
-                        borderRadius: isIOS ? 52 : 36,
-                        background: isIOS
-                            ? 'linear-gradient(145deg, #3a3a3e 0%, #1a1a1e 30%, #2a2a2e 50%, #1a1a1e 70%, #3a3a3e 100%)'
-                            : 'linear-gradient(145deg, #1c1c20 0%, #0c0c0e 40%, #1c1c20 60%, #0c0c0e 100%)',
-                        padding: isIOS ? 10 : 8,
-                        boxShadow: `
-                            0 0 0 1px rgba(255,255,255,0.08) inset,
-                            0 25px 60px -12px rgba(0,0,0,0.5),
-                            0 12px 28px -8px rgba(0,0,0,0.4),
-                            0 4px 12px rgba(0,0,0,0.2),
-                            0 0 80px -20px rgba(0,0,0,0.3)
-                        `,
+                        width: isIOS ? 340 : 330, height: 680,
+                        // Ensure it takes up less physical document height when scaled down on mobile
+                        marginBottom: 'auto'
                     }}
                 >
-                    {/* Inner bezel highlight */}
-                    <div
-                        className="absolute inset-[1px] pointer-events-none"
-                        style={{
-                            borderRadius: isIOS ? 51 : 35,
-                            background: 'linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 20%, transparent 80%, rgba(255,255,255,0.05) 100%)',
-                        }}
-                    />
 
-                    {/* Screen area */}
+                    {/* Side buttons — iOS */}
+                    {isIOS && (
+                        <>
+                            {/* Silent switch */}
+                            <div className="absolute -left-[3px] top-[115px] w-[3px] h-[28px] rounded-l-sm"
+                                style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
+                            {/* Volume Up */}
+                            <div className="absolute -left-[3px] top-[170px] w-[3px] h-[52px] rounded-l-sm"
+                                style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
+                            {/* Volume Down */}
+                            <div className="absolute -left-[3px] top-[240px] w-[3px] h-[52px] rounded-l-sm"
+                                style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
+                            {/* Power button */}
+                            <div className="absolute -right-[3px] top-[190px] w-[3px] h-[72px] rounded-r-sm"
+                                style={{ background: 'linear-gradient(to bottom, #2a2a2e, #1a1a1e, #2a2a2e)' }} />
+                        </>
+                    )}
+
+                    {/* Side buttons — Android */}
+                    {!isIOS && (
+                        <>
+                            {/* Volume rocker */}
+                            <div className="absolute -right-[3px] top-[160px] w-[3px] h-[64px] rounded-r-sm"
+                                style={{ background: 'linear-gradient(to bottom, #1a1a1e, #0e0e10, #1a1a1e)' }} />
+                            {/* Power */}
+                            <div className="absolute -right-[3px] top-[260px] w-[3px] h-[44px] rounded-r-sm"
+                                style={{ background: 'linear-gradient(to bottom, #1a1a1e, #0e0e10, #1a1a1e)' }} />
+                        </>
+                    )}
+
+                    {/* Outer device body — metallic frame */}
                     <div
-                        className="relative w-full h-full overflow-hidden flex flex-col"
+                        className="absolute inset-0 overflow-hidden"
                         style={{
-                            borderRadius: isIOS ? 42 : 28,
-                            background: '#000',
-                            boxShadow: '0 0 0 1px rgba(0,0,0,0.8) inset, 0 0 8px rgba(0,0,0,0.5) inset',
+                            borderRadius: isIOS ? 52 : 36,
+                            background: isIOS
+                                ? 'linear-gradient(145deg, #3a3a3e 0%, #1a1a1e 30%, #2a2a2e 50%, #1a1a1e 70%, #3a3a3e 100%)'
+                                : 'linear-gradient(145deg, #1c1c20 0%, #0c0c0e 40%, #1c1c20 60%, #0c0c0e 100%)',
+                            padding: isIOS ? 10 : 8,
+                            boxShadow: '0 0 0 1px rgba(255,255,255,0.08) inset',
                         }}
                     >
-                        {/* Status bar */}
-                        {isIOS ? (
-                            <div className="relative bg-white px-7 pt-3.5 pb-2 flex items-center justify-between z-10">
-                                <span className="text-[11px] font-semibold text-gray-900" style={{ fontFamily: '-apple-system, SF Pro Text, sans-serif' }}>9:41</span>
-                                {/* Dynamic Island */}
-                                <div className="absolute left-1/2 -translate-x-1/2 top-[10px] w-[100px] h-[28px] bg-black rounded-full flex items-center justify-end pr-2.5"
-                                    style={{ boxShadow: '0 0 4px rgba(0,0,0,0.3)' }}>
-                                    {/* Front camera lens */}
-                                    <div className="w-[10px] h-[10px] rounded-full"
-                                        style={{ background: 'radial-gradient(circle at 35% 35%, #1a1a3a, #0a0a0f)', boxShadow: '0 0 2px rgba(255,255,255,0.15) inset, 0 0 1px rgba(100,100,255,0.3)' }} />
-                                </div>
-                                <div className="flex items-center gap-[5px]">
-                                    {/* Signal bars */}
-                                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-                                        <rect x="0" y="9" width="3" height="3" rx="0.5" fill="#1d1d1f" />
-                                        <rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="#1d1d1f" />
-                                        <rect x="9" y="3" width="3" height="9" rx="0.5" fill="#1d1d1f" />
-                                        <rect x="13" y="0" width="3" height="12" rx="0.5" fill="#1d1d1f" />
-                                    </svg>
-                                    {/* WiFi */}
-                                    <svg width="14" height="11" viewBox="0 0 14 11" fill="#1d1d1f">
-                                        <path d="M7 9.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM7 6.5c1.66 0 3 .9 3 2l-.8-.8c-.6-.4-1.4-.7-2.2-.7s-1.6.3-2.2.7l-.8.8c0-1.1 1.34-2 3-2zm0-3c2.76 0 5 1.34 5 3l-1-.9C10 4.5 8.6 3.9 7 3.9S4 4.5 3 5.6l-1 .9c0-1.66 2.24-3 5-3zm0-3c4 0 7.2 1.8 7.2 4l-1-1C12 2.2 9.7 1 7 1S2 2.2.8 3.5l-1 1C-.2 2.3 3 .5 7 .5z" />
-                                    </svg>
-                                    {/* Battery */}
-                                    <svg width="22" height="11" viewBox="0 0 22 11" fill="none">
-                                        <rect x="0.5" y="0.5" width="18" height="10" rx="2" stroke="#1d1d1f" strokeWidth="1" />
-                                        <rect x="19.5" y="3" width="2" height="5" rx="1" fill="#1d1d1f" />
-                                        <rect x="2" y="2" width="13" height="7" rx="1" fill="#34c759" />
-                                    </svg>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="relative bg-white px-5 pt-2 pb-1.5 flex items-center justify-between z-10">
-                                <span className="text-[11px] font-medium text-gray-800" style={{ fontFamily: 'Roboto, sans-serif' }}>12:00</span>
-                                {/* Punch-hole camera */}
-                                <div className="absolute left-1/2 -translate-x-1/2 top-[8px] w-[14px] h-[14px] rounded-full bg-black"
-                                    style={{ boxShadow: '0 0 3px rgba(0,0,0,0.4)' }}>
-                                    <div className="absolute inset-[3px] rounded-full"
-                                        style={{ background: 'radial-gradient(circle at 35% 35%, #1a1a3a, #0a0a0f)', boxShadow: '0 0 1px rgba(100,100,255,0.2)' }} />
-                                </div>
-                                <div className="flex items-center gap-[5px]">
-                                    <svg width="14" height="11" viewBox="0 0 14 11" fill="#3c4043">
-                                        <path d="M7 9.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM7 6.5c1.66 0 3 .9 3 2l-.8-.8c-.6-.4-1.4-.7-2.2-.7s-1.6.3-2.2.7l-.8.8c0-1.1 1.34-2 3-2zm0-3c2.76 0 5 1.34 5 3l-1-.9C10 4.5 8.6 3.9 7 3.9S4 4.5 3 5.6l-1 .9c0-1.66 2.24-3 5-3z" />
-                                    </svg>
-                                    <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-                                        <rect x="0" y="9" width="3" height="3" rx="0.5" fill="#3c4043" />
-                                        <rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="#3c4043" />
-                                        <rect x="9" y="3" width="3" height="9" rx="0.5" fill="#3c4043" />
-                                        <rect x="13" y="0" width="3" height="12" rx="0.5" fill="#3c4043" />
-                                    </svg>
-                                    <svg width="22" height="11" viewBox="0 0 22 11" fill="none">
-                                        <rect x="0.5" y="0.5" width="18" height="10" rx="2" stroke="#3c4043" strokeWidth="1" />
-                                        <rect x="19.5" y="3" width="2" height="5" rx="1" fill="#3c4043" />
-                                        <rect x="2" y="2" width="13" height="7" rx="1" fill="#3c4043" />
-                                    </svg>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Screen content (scrollable drop zone) */}
+                        {/* Inner bezel highlight */}
                         <div
-                            className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] transition-colors ${isOver
-                                ? 'bg-blue-50/60'
-                                : 'bg-white'
-                                }`}
-                            style={{ paddingBottom: isIOS ? 34 : 16 }}
+                            className="absolute inset-[1px] pointer-events-none"
+                            style={{
+                                borderRadius: isIOS ? 51 : 35,
+                                background: 'linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 20%, transparent 80%, rgba(255,255,255,0.05) 100%)',
+                            }}
+                        />
+
+                        {/* Screen area */}
+                        <div
+                            className="relative w-full h-full overflow-hidden flex flex-col group/screen"
+                            style={{
+                                borderRadius: isIOS ? 42 : 28,
+                                background: '#000',
+                                boxShadow: '0 0 0 1px rgba(0,0,0,0.8) inset, 0 0 8px rgba(0,0,0,0.5) inset',
+                            }}
                         >
-                            {isEmpty ? (
-                                <div className="flex flex-col items-center justify-center h-full gap-2 text-gray-300">
-                                    <div className="text-3xl">📲</div>
-                                    <p className="text-[11px] font-medium text-gray-400">Drop components here</p>
-                                    <p className="text-[9px] text-gray-300">Build your screen visually</p>
+                            {/* Status bar */}
+                            {isIOS ? (
+                                <div className="relative bg-white px-7 pt-3.5 pb-2 flex items-center justify-between z-10">
+                                    <span className="text-[11px] font-semibold text-gray-900" style={{ fontFamily: '-apple-system, SF Pro Text, sans-serif' }}>9:41</span>
+                                    {/* Dynamic Island */}
+                                    <div className="absolute left-1/2 -translate-x-1/2 top-[10px] w-[100px] h-[28px] bg-black rounded-full flex items-center justify-end pr-2.5"
+                                        style={{ boxShadow: '0 0 4px rgba(0,0,0,0.3)' }}>
+                                        {/* Front camera lens */}
+                                        <div className="w-[10px] h-[10px] rounded-full"
+                                            style={{ background: 'radial-gradient(circle at 35% 35%, #1a1a3a, #0a0a0f)', boxShadow: '0 0 2px rgba(255,255,255,0.15) inset, 0 0 1px rgba(100,100,255,0.3)' }} />
+                                    </div>
+                                    <div className="flex items-center gap-[5px]">
+                                        {/* Signal bars */}
+                                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                                            <rect x="0" y="9" width="3" height="3" rx="0.5" fill="#1d1d1f" />
+                                            <rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="#1d1d1f" />
+                                            <rect x="9" y="3" width="3" height="9" rx="0.5" fill="#1d1d1f" />
+                                            <rect x="13" y="0" width="3" height="12" rx="0.5" fill="#1d1d1f" />
+                                        </svg>
+                                        {/* WiFi */}
+                                        <svg width="14" height="11" viewBox="0 0 14 11" fill="#1d1d1f">
+                                            <path d="M7 9.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM7 6.5c1.66 0 3 .9 3 2l-.8-.8c-.6-.4-1.4-.7-2.2-.7s-1.6.3-2.2.7l-.8.8c0-1.1 1.34-2 3-2zm0-3c2.76 0 5 1.34 5 3l-1-.9C10 4.5 8.6 3.9 7 3.9S4 4.5 3 5.6l-1 .9c0-1.66 2.24-3 5-3zm0-3c4 0 7.2 1.8 7.2 4l-1-1C12 2.2 9.7 1 7 1S2 2.2.8 3.5l-1 1C-.2 2.3 3 .5 7 .5z" />
+                                        </svg>
+                                        {/* Battery */}
+                                        <svg width="22" height="11" viewBox="0 0 22 11" fill="none">
+                                            <rect x="0.5" y="0.5" width="18" height="10" rx="2" stroke="#1d1d1f" strokeWidth="1" />
+                                            <rect x="19.5" y="3" width="2" height="5" rx="1" fill="#1d1d1f" />
+                                            <rect x="2" y="2" width="13" height="7" rx="1" fill="#34c759" />
+                                        </svg>
+                                    </div>
                                 </div>
                             ) : (
-                                <div className="py-2 space-y-0.5">{children}</div>
+                                <div className="relative bg-white px-5 pt-2 pb-1.5 flex items-center justify-between z-10">
+                                    <span className="text-[11px] font-medium text-gray-800" style={{ fontFamily: 'Roboto, sans-serif' }}>12:00</span>
+                                    {/* Punch-hole camera */}
+                                    <div className="absolute left-1/2 -translate-x-1/2 top-[8px] w-[14px] h-[14px] rounded-full bg-black"
+                                        style={{ boxShadow: '0 0 3px rgba(0,0,0,0.4)' }}>
+                                        <div className="absolute inset-[3px] rounded-full"
+                                            style={{ background: 'radial-gradient(circle at 35% 35%, #1a1a3a, #0a0a0f)', boxShadow: '0 0 1px rgba(100,100,255,0.2)' }} />
+                                    </div>
+                                    <div className="flex items-center gap-[5px]">
+                                        <svg width="14" height="11" viewBox="0 0 14 11" fill="#3c4043">
+                                            <path d="M7 9.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM7 6.5c1.66 0 3 .9 3 2l-.8-.8c-.6-.4-1.4-.7-2.2-.7s-1.6.3-2.2.7l-.8.8c0-1.1 1.34-2 3-2zm0-3c2.76 0 5 1.34 5 3l-1-.9C10 4.5 8.6 3.9 7 3.9S4 4.5 3 5.6l-1 .9c0-1.66 2.24-3 5-3z" />
+                                        </svg>
+                                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
+                                            <rect x="0" y="9" width="3" height="3" rx="0.5" fill="#3c4043" />
+                                            <rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="#3c4043" />
+                                            <rect x="9" y="3" width="3" height="9" rx="0.5" fill="#3c4043" />
+                                            <rect x="13" y="0" width="3" height="12" rx="0.5" fill="#3c4043" />
+                                        </svg>
+                                        <svg width="22" height="11" viewBox="0 0 22 11" fill="none">
+                                            <rect x="0.5" y="0.5" width="18" height="10" rx="2" stroke="#3c4043" strokeWidth="1" />
+                                            <rect x="19.5" y="3" width="2" height="5" rx="1" fill="#3c4043" />
+                                            <rect x="2" y="2" width="13" height="7" rx="1" fill="#3c4043" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Screen content (scrollable drop zone) */}
+                            <div
+                                className={`flex-[1] overflow-hidden transition-colors relative ${isOver
+                                    ? 'bg-blue-50/60'
+                                    : 'bg-white'
+                                    }`}
+                                style={{ paddingBottom: isIOS ? 34 : 16 }}
+                            >
+                                <div className={`w-full h-full overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${previewMode === 'live' ? 'hidden' : 'block'}`}>
+                                    {isEmpty ? (
+                                        <div className="flex flex-col items-center justify-center h-[90%] gap-2 text-gray-300">
+                                            <div className="text-3xl">📲</div>
+                                            <p className="text-[11px] font-medium text-gray-400">Drop components here</p>
+                                            <p className="text-[9px] text-gray-300">Build your screen visually</p>
+                                        </div>
+                                    ) : (
+                                        <div className="py-2 space-y-0.5">{children}</div>
+                                    )}
+                                </div>
+
+                                {/* Live Preview — Snack SDK web preview (emulator only, no code editor) */}
+                                {previewMode === 'live' && (
+                                    <div
+                                        className="w-full h-full"
+                                        style={{
+                                            transform: 'translateZ(0)',
+                                            touchAction: 'none',
+                                            contain: 'strict',
+                                        }}
+                                    >
+                                        <SnackPreview
+                                            code={livePreviewCode || ''}
+                                            componentNames={(livePreviewComponents || '').split(',').filter(Boolean)}
+                                            isActive={previewMode === 'live'}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Bottom bar */}
+                            {isIOS ? (
+                                <div className="bg-white pb-2 pt-1.5 flex justify-center">
+                                    <div className="w-[120px] h-[4px] bg-gray-900 rounded-full"
+                                        style={{ boxShadow: '0 0 2px rgba(0,0,0,0.1)' }} />
+                                </div>
+                            ) : (
+                                <div className="bg-white pb-2 pt-1 flex justify-center">
+                                    <div className="w-[100px] h-[3px] bg-gray-800 rounded-full opacity-60" />
+                                </div>
                             )}
                         </div>
-
-                        {/* Bottom bar */}
-                        {isIOS ? (
-                            <div className="bg-white pb-2 pt-1.5 flex justify-center">
-                                <div className="w-[120px] h-[4px] bg-gray-900 rounded-full"
-                                    style={{ boxShadow: '0 0 2px rgba(0,0,0,0.1)' }} />
-                            </div>
-                        ) : (
-                            <div className="bg-white pb-2 pt-1 flex justify-center">
-                                <div className="w-[100px] h-[3px] bg-gray-800 rounded-full opacity-60" />
-                            </div>
-                        )}
                     </div>
-                </div>
 
-                {/* Screen glass reflection overlay */}
-                <div
-                    className="absolute pointer-events-none z-20"
-                    style={{
-                        top: isIOS ? 10 : 8,
-                        left: isIOS ? 10 : 8,
-                        right: isIOS ? 10 : 8,
-                        bottom: isIOS ? 10 : 8,
-                        borderRadius: isIOS ? 42 : 28,
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 40%, transparent 100%)',
-                    }}
-                />
+                    {/* Screen glass reflection overlay */}
+                    <div
+                        className="absolute pointer-events-none z-20"
+                        style={{
+                            top: isIOS ? 10 : 8,
+                            left: isIOS ? 10 : 8,
+                            right: isIOS ? 10 : 8,
+                            bottom: isIOS ? 10 : 8,
+                            borderRadius: isIOS ? 42 : 28,
+                            background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 40%, transparent 100%)',
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );
@@ -822,6 +877,7 @@ export default function StudioBuilderPage() {
     const [activeId, setActiveId] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
     const [deviceType, setDeviceType] = useState<'ios' | 'android'>('ios');
+    const [previewMode, setPreviewMode] = useState<'design' | 'live'>('design');
     const [inputExpanded, setInputExpanded] = useState(false);
     const [buttonExpanded, setButtonExpanded] = useState(true);
     const [displayExpanded, setDisplayExpanded] = useState(true);
@@ -989,16 +1045,33 @@ export default function StudioBuilderPage() {
                                             {nodes.length} component{nodes.length !== 1 ? 's' : ''}
                                         </span>
                                     </div>
-                                    <button
-                                        onClick={handleCopyCode}
-                                        className={`px-3 py-1 text-xs font-medium rounded-md transition-all
-                                            ${copied
-                                                ? 'bg-green-500 text-white'
-                                                : 'bg-blue-600 text-white hover:bg-blue-700'
-                                            }`}
-                                    >
-                                        {copied ? '✓ Copied!' : 'Copy Code'}
-                                    </button>
+                                    <div className="flex items-center gap-2">
+                                        <form action="/api/studio/snack" method="POST" target="_blank" className="m-0 p-0">
+                                            <input type="hidden" name="code" value={code} />
+                                            <input type="hidden" name="components" value={getRequiredFiles(nodes).map(f => f.replace('.tsx', '').replace('.jsx', '')).join(',')} />
+                                            <button
+                                                type="submit"
+                                                className="px-3 py-1 text-xs font-medium rounded-md bg-zinc-800 text-white hover:bg-zinc-700 transition-all flex items-center gap-1.5"
+                                                onClick={() => {
+                                                    // Add analytics track for opening Snack from Studio
+                                                }}
+                                            >
+                                                <span>Try in Snack</span>
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                            </button>
+                                        </form>
+
+                                        <button
+                                            onClick={handleCopyCode}
+                                            className={`px-3 py-1 text-xs font-medium rounded-md transition-all
+                                                ${copied
+                                                    ? 'bg-green-500 text-white'
+                                                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                                                }`}
+                                        >
+                                            {copied ? '✓ Copied!' : 'Copy Code'}
+                                        </button>
+                                    </div>
                                 </div>
                                 <pre className="p-4 text-sm overflow-auto max-h-[70vh] font-mono leading-relaxed">
                                     <code>{code}</code>
@@ -1191,6 +1264,10 @@ export default function StudioBuilderPage() {
                                         isEmpty={nodes.length === 0}
                                         deviceType={deviceType}
                                         onDeviceChange={setDeviceType}
+                                        previewMode={previewMode}
+                                        onPreviewModeChange={setPreviewMode}
+                                        livePreviewCode={code}
+                                        livePreviewComponents={getRequiredFiles(nodes).map(f => f.replace('.tsx', '').replace('.jsx', '')).join(',')}
                                     >
                                         {nodes.map((node) => (
                                             <CanvasNodeItem
@@ -1226,9 +1303,10 @@ export default function StudioBuilderPage() {
                                                 studio?.setShowCode(true);
                                                 trackStudioCodeExport();
                                             }}
-                                            className="w-full py-2.5 bg-foreground text-background text-sm font-medium rounded-lg hover:opacity-90"
+                                            className="w-full py-2.5 bg-foreground text-background text-sm font-medium rounded-lg hover:opacity-90 flex items-center justify-center gap-2 group"
                                         >
-                                            Export Code →
+                                            <span>Export Code</span>
+                                            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                         </button>
                                         <p className="text-[10px] text-muted-foreground/50 text-center mt-2">
                                             Auto-saved • Resets in {TTL_MINUTES} min
