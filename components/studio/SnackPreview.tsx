@@ -23,6 +23,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
     const [webPreviewURL, setWebPreviewURL] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
     const [isReady, setIsReady] = useState(false);
+    const [debugError, setDebugError] = useState<string | null>(null);
 
     // Stable component name string to avoid unnecessary re-renders
     const componentKey = useMemo(() => componentNames.join(','), [componentNames]);
@@ -31,6 +32,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
     const fetchComponentData = useCallback(async (names: string[]): Promise<{
         sources: Record<string, string>;
         dependencies: string[];
+        error?: string;
     }> => {
         if (names.length === 0) return { sources: {}, dependencies: [] };
         try {
@@ -40,12 +42,23 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 body: JSON.stringify({ components: names }),
             });
             if (res.ok) {
-                return await res.json();
+                const data = await res.json();
+                if (data.error) {
+                    return { sources: {}, dependencies: [], error: data.error };
+                }
+
+                // Validate that all expected components were found
+                const missing = names.filter(n => !data.sources[n]);
+                if (missing.length > 0) {
+                    return { ...data, error: `Missing files from server: ${missing.join(', ')}` };
+                }
+                return data;
             }
-        } catch (err) {
+            return { sources: {}, dependencies: [], error: `Server returned status: ${res.status}` };
+        } catch (err: any) {
             console.error('Failed to fetch component sources:', err);
+            return { sources: {}, dependencies: [], error: err.message };
         }
-        return { sources: {}, dependencies: [] };
     }, []);
 
     // Initialize the Snack instance
@@ -58,6 +71,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
             setWebPreviewURL(undefined);
             setIsLoading(true);
             setIsReady(false);
+            setDebugError(null);
             return;
         }
 
@@ -66,10 +80,17 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
         const initSnack = async () => {
             setIsLoading(true);
             setIsReady(false);
+            setDebugError(null);
 
-            const { sources, dependencies } = await fetchComponentData(componentNames);
+            const { sources, dependencies, error } = await fetchComponentData(componentNames);
 
             if (cancelled) return;
+
+            if (error) {
+                setDebugError(`Live Preview API Error:\n${error}`);
+                setIsLoading(false);
+                return;
+            }
 
             // Build files object
             const files: Record<string, { type: 'CODE'; contents: string }> = {
@@ -210,6 +231,19 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-400/60 animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
             </div>
+
+            {/* Error State */}
+            {debugError && (
+                <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-6 bg-[#1a0f14]/95 backdrop-blur-md text-red-200 text-center">
+                    <svg className="w-10 h-10 mb-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h3 className="text-sm font-semibold text-red-100 mb-2">Preview Failed</h3>
+                    <pre className="text-[10px] w-full max-w-[280px] overflow-auto max-h-[40vh] bg-black/40 p-4 rounded-lg border border-red-500/20 whitespace-pre-wrap text-left font-mono leading-relaxed">
+                        {debugError}
+                    </pre>
+                </div>
+            )}
 
             {/* The actual preview iframe — renders ONLY the running app.
                 Performance optimizations applied for buttery smooth interaction. */}
