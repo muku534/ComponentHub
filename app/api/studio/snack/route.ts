@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { componentSourceMap } from '@/registry/source-map';
 
 export async function POST(request: Request) {
     try {
@@ -26,25 +25,10 @@ export async function POST(request: Request) {
 
         for (const compName of componentNames) {
             try {
-                // Safely search first-level subdirectories of registry/components directly
-                const registryDir = path.join(process.cwd(), 'registry', 'components');
-                let compPath = '';
+                // Read from statically bundled map instead of fs to prevent Vercel 500 errors
+                const contents = componentSourceMap[compName];
 
-                if (fs.existsSync(registryDir)) {
-                    const categories = fs.readdirSync(registryDir, { withFileTypes: true });
-                    for (const category of categories) {
-                        if (category.isDirectory()) {
-                            const possiblePath = path.join(registryDir, category.name, `${compName}.tsx`);
-                            if (fs.existsSync(possiblePath)) {
-                                compPath = possiblePath;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (compPath) {
-                    const contents = fs.readFileSync(compPath, 'utf8');
+                if (contents) {
                     files[`${compName}.tsx`] = { type: 'CODE', contents };
 
                     if (contents.includes('react-native-reanimated')) dependencies.add('react-native-reanimated');

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { componentSourceMap } from '@/registry/source-map';
 
 // Maps local RN packages to their Expo Snack-compatible equivalents
 const SNACK_DEPENDENCY_MAP: Record<string, string> = {
@@ -41,27 +40,11 @@ export async function POST(request: Request) {
 
         for (const compName of componentNames) {
             try {
-                // In Vercel, process.cwd() points to the root of the project, but complex 
-                // recursive readdirSync can sometimes crash or timeout in serverless functions.
-                // We'll search the first-level subdirectories of registry/components directly.
-                const registryDir = path.join(process.cwd(), 'registry', 'components');
-                let compPath = '';
+                // To guarantee file resolution on Vercel Serverless Functions without fs timeouts,
+                // we statically bundle the components into a generated map at build time.
+                let contents = componentSourceMap[compName];
 
-                if (fs.existsSync(registryDir)) {
-                    const categories = fs.readdirSync(registryDir, { withFileTypes: true });
-                    for (const category of categories) {
-                        if (category.isDirectory()) {
-                            const possiblePath = path.join(registryDir, category.name, `${compName}.tsx`);
-                            if (fs.existsSync(possiblePath)) {
-                                compPath = possiblePath;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (compPath) {
-                    let contents = fs.readFileSync(compPath, 'utf8');
+                if (contents) {
 
                     // Step 1: Apply special import rewrites first (handles default → named export changes)
                     for (const [pattern, replacement] of IMPORT_REWRITES) {
