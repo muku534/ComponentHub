@@ -41,21 +41,24 @@ export async function POST(request: Request) {
 
         for (const compName of componentNames) {
             try {
+                // In Vercel, process.cwd() points to the root of the project, but complex 
+                // recursive readdirSync can sometimes crash or timeout in serverless functions.
+                // We'll search the first-level subdirectories of registry/components directly.
                 const registryDir = path.join(process.cwd(), 'registry', 'components');
-
                 let compPath = '';
-                const findFile = (dir: string, targetName: string) => {
-                    const entries = fs.readdirSync(dir, { withFileTypes: true });
-                    for (const entry of entries) {
-                        if (entry.isDirectory()) {
-                            findFile(path.join(dir, entry.name), targetName);
-                        } else if (entry.isFile() && entry.name === `${targetName}.tsx`) {
-                            compPath = path.join(dir, entry.name);
+
+                if (fs.existsSync(registryDir)) {
+                    const categories = fs.readdirSync(registryDir, { withFileTypes: true });
+                    for (const category of categories) {
+                        if (category.isDirectory()) {
+                            const possiblePath = path.join(registryDir, category.name, `${compName}.tsx`);
+                            if (fs.existsSync(possiblePath)) {
+                                compPath = possiblePath;
+                                break;
+                            }
                         }
                     }
-                };
-
-                findFile(registryDir, compName);
+                }
 
                 if (compPath) {
                     let contents = fs.readFileSync(compPath, 'utf8');
