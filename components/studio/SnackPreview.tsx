@@ -115,13 +115,26 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 files,
                 dependencies: deps,
                 webPreviewRef,
+                sdkVersion: '51.0.0', // Force modern Expo SDK for Reanimated/Gesture Handler support
             });
 
             snackRef.current = snack;
 
-            // Listen for state changes to get the webPreviewURL
+            // Listen for state changes to get the webPreviewURL and track bundler errors
             const unsubscribe = snack.addStateListener((state) => {
                 if (cancelled) return;
+
+                // Track Expo Snackager / Bundler errors
+                const snackState = state as any;
+                if (snackState.errors && snackState.errors.length > 0) {
+                    const errorMessages = snackState.errors
+                        .map((e: any) => `[${e.fileName || 'Bundler'}] ${e.message}`)
+                        .join('\n');
+                    setDebugError(`Snack Bundler Error:\n${errorMessages}`);
+                    setIsLoading(false);
+                    return;
+                }
+
                 const url = state.webPreviewURL;
                 if (url) {
                     setWebPreviewURL(url);
@@ -132,8 +145,14 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
             snack.setOnline(true);
 
             // Check initial state
-            const initialState = snack.getState();
-            if (initialState.webPreviewURL) {
+            const initialState = snack.getState() as any;
+            if (initialState.errors && initialState.errors.length > 0) {
+                const errorMessages = initialState.errors
+                    .map((e: any) => `[${e.fileName || 'Bundler'}] ${e.message}`)
+                    .join('\n');
+                setDebugError(`Snack Bundler Error:\n${errorMessages}`);
+                setIsLoading(false);
+            } else if (initialState.webPreviewURL) {
                 setWebPreviewURL(initialState.webPreviewURL);
                 setIsLoading(false);
             }
