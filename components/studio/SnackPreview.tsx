@@ -217,15 +217,6 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
     return (
         <div
             className="w-full h-full relative overflow-hidden"
-            style={{
-                // GPU-accelerated container for smooth compositing
-                transform: 'translateZ(0)',
-                WebkitTransform: 'translateZ(0)',
-                backfaceVisibility: 'hidden',
-                WebkitBackfaceVisibility: 'hidden',
-                // Prevent any touch interference from parent
-                touchAction: 'none',
-            }}
         >
             {/* Loading State — fades out smoothly once iframe is ready */}
             <div
@@ -263,8 +254,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 </div>
             )}
 
-            {/* The actual preview iframe — renders ONLY the running app.
-                Performance optimizations applied for buttery smooth interaction. */}
+            {/* The actual preview iframe — renders ONLY the running app. */}
             <iframe
                 ref={(c) => {
                     iframeRef.current = c;
@@ -276,21 +266,6 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 className="w-full h-full border-none"
                 style={{
                     background: '#fff',
-                    // Force GPU layer for the iframe — critical for smooth scrolling/swiping
-                    transform: 'translate3d(0,0,0)',
-                    WebkitTransform: 'translate3d(0,0,0)',
-                    willChange: 'transform',
-                    // Prevent browser from trying to optimize away the layer
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                    // Allow touch passthrough to iframe content
-                    touchAction: 'manipulation',
-                    // Smooth scrolling within the iframe
-                    WebkitOverflowScrolling: 'touch',
-                    // Prevent any overflow clipping that might cause repaints
-                    contain: 'strict',
-                    // Isolate the iframe's rendering
-                    isolation: 'isolate',
                 }}
             />
         </div>

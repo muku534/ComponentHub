@@ -724,11 +724,6 @@ function PhoneMockup({
                                 {previewMode === 'live' && (
                                     <div
                                         className="w-full h-full"
-                                        style={{
-                                            transform: 'translateZ(0)',
-                                            touchAction: 'none',
-                                            contain: 'strict',
-                                        }}
                                     >
                                         <SnackPreview
                                             code={livePreviewCode || ''}
