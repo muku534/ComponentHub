@@ -115,7 +115,6 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 files,
                 dependencies: deps,
                 webPreviewRef,
-                sdkVersion: '51.0.0', // Force modern Expo SDK for Reanimated/Gesture Handler support
             });
 
             snackRef.current = snack;
