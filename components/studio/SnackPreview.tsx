@@ -14,7 +14,6 @@ interface SnackPreviewProps {
 
 /**
  * Renders a live React Native Web preview using the Snack SDK.
- * Optimized for buttery smooth 60fps touch interactions.
  */
 export default function SnackPreview({ code, componentNames, isActive }: SnackPreviewProps) {
     const webPreviewRef = useRef<Window | null>(null);
@@ -24,6 +23,13 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
     const [isLoading, setIsLoading] = useState(true);
     const [isReady, setIsReady] = useState(false);
     const [debugError, setDebugError] = useState<string | null>(null);
+    const [debugLog, setDebugLog] = useState<string[]>([]);
+
+    const addLog = useCallback((msg: string) => {
+        const ts = new Date().toISOString().split('T')[1].split('.')[0];
+        console.log(`[SnackPreview ${ts}] ${msg}`);
+        setDebugLog(prev => [...prev.slice(-30), `[${ts}] ${msg}`]);
+    }, []);
 
     // Stable component name string to avoid unnecessary re-renders
     const componentKey = useMemo(() => componentNames.join(','), [componentNames]);
@@ -46,8 +52,6 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 if (data.error) {
                     return { sources: {}, dependencies: [], error: data.error };
                 }
-
-                // Validate that all expected components were found
                 const missing = names.filter(n => !data.sources[n]);
                 if (missing.length > 0) {
                     return { ...data, error: `Missing files from server: ${missing.join(', ')}` };
@@ -61,6 +65,24 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
         }
     }, []);
 
+    // Monitor postMessage traffic for debugging
+    useEffect(() => {
+        if (!isActive) return;
+
+        const handler = (event: MessageEvent) => {
+            const origin = event.origin;
+            const dataPreview = typeof event.data === 'string'
+                ? event.data.substring(0, 80)
+                : JSON.stringify(event.data).substring(0, 80);
+            addLog(`MSG from ${origin}: ${dataPreview}`);
+        };
+
+        window.addEventListener('message', handler);
+        addLog(`postMessage listener attached on window (origin: ${window.location.origin})`);
+
+        return () => window.removeEventListener('message', handler);
+    }, [isActive, addLog]);
+
     // Initialize the Snack instance
     useEffect(() => {
         if (!isActive) {
@@ -72,6 +94,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
             setIsLoading(true);
             setIsReady(false);
             setDebugError(null);
+            setDebugLog([]);
             return;
         }
 
@@ -82,6 +105,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
             setIsReady(false);
             setDebugError(null);
 
+            addLog(`Fetching sources for: ${componentNames.join(', ') || '(none)'}`);
             const { sources, dependencies, error } = await fetchComponentData(componentNames);
 
             if (cancelled) return;
@@ -91,6 +115,8 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 setIsLoading(false);
                 return;
             }
+
+            addLog(`Got ${Object.keys(sources).length} sources, ${dependencies.length} deps`);
 
             // Build files object
             const files: Record<string, { type: 'CODE'; contents: string }> = {
@@ -111,6 +137,9 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 snackRef.current.setOnline(false);
             }
 
+            addLog(`Creating Snack with webPreviewRef...`);
+            addLog(`window type: ${typeof window}, window === globalThis: ${window === globalThis}`);
+
             const snack = new Snack({
                 files,
                 dependencies: deps,
@@ -119,11 +148,10 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
 
             snackRef.current = snack;
 
-            // Listen for state changes to get the webPreviewURL and track bundler errors
+            // Listen for state changes
             const unsubscribe = snack.addStateListener((state) => {
                 if (cancelled) return;
 
-                // Track Expo Snackager / Bundler errors
                 const snackState = state as any;
                 if (snackState.errors && snackState.errors.length > 0) {
                     const errorMessages = snackState.errors
@@ -135,23 +163,21 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 }
 
                 const url = state.webPreviewURL;
-                if (url) {
+                if (url && !webPreviewURL) {
+                    addLog(`webPreviewURL: ${url.substring(0, 100)}...`);
                     setWebPreviewURL(url);
                     setIsLoading(false);
                 }
             });
 
             snack.setOnline(true);
+            addLog('Snack online=true');
 
-            // Check initial state
             const initialState = snack.getState() as any;
-            if (initialState.errors && initialState.errors.length > 0) {
-                const errorMessages = initialState.errors
-                    .map((e: any) => `[${e.fileName || 'Bundler'}] ${e.message}`)
-                    .join('\n');
-                setDebugError(`Snack Bundler Error:\n${errorMessages}`);
-                setIsLoading(false);
-            } else if (initialState.webPreviewURL) {
+            addLog(`Initial state — webPreviewURL: ${initialState.webPreviewURL ? 'YES' : 'NO'}, online: ${initialState.online}`);
+
+            if (initialState.webPreviewURL) {
+                addLog(`Initial webPreviewURL: ${initialState.webPreviewURL.substring(0, 100)}...`);
                 setWebPreviewURL(initialState.webPreviewURL);
                 setIsLoading(false);
             }
@@ -200,7 +226,6 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
             snackRef.current.updateDependencies(deps);
         };
 
-        // Debounce updates
         const timeout = window.setTimeout(updateFiles, 600);
         return () => {
             cancelled = true;
@@ -208,17 +233,21 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
         };
     }, [code, componentKey, isActive, fetchComponentData]);
 
-    // Handle iframe load event for smooth transition
+    // Handle iframe load and log ref status
     const handleIframeLoad = useCallback(() => {
-        // Small delay to let the web player fully render before showing
-        window.setTimeout(() => setIsReady(true), 500);
-    }, []);
+        addLog(`Iframe onLoad — webPreviewRef.current: ${webPreviewRef.current ? 'SET' : 'NULL'}`);
+        addLog(`Iframe contentWindow: ${iframeRef.current?.contentWindow ? 'EXISTS' : 'NULL'}`);
+        // Ensure ref is set after load
+        if (iframeRef.current?.contentWindow) {
+            webPreviewRef.current = iframeRef.current.contentWindow;
+            addLog('webPreviewRef forced update after iframe load');
+        }
+        window.setTimeout(() => setIsReady(true), 1500);
+    }, [addLog]);
 
     return (
-        <div
-            className="w-full h-full relative overflow-hidden"
-        >
-            {/* Loading State — fades out smoothly once iframe is ready */}
+        <div className="w-full h-full relative overflow-hidden">
+            {/* Loading State */}
             <div
                 className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-20 bg-gradient-to-b from-[#0f0f23] to-[#1a1a2e]"
                 style={{
@@ -239,6 +268,15 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-400/60 animate-bounce" style={{ animationDelay: '150ms' }} />
                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-400/60 animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
+
+                {/* Debug log visible in loading state */}
+                {debugLog.length > 0 && (
+                    <div className="absolute bottom-2 left-2 right-2 max-h-[40vh] overflow-auto">
+                        <pre className="text-[7px] text-white/30 font-mono leading-tight whitespace-pre-wrap">
+                            {debugLog.join('\n')}
+                        </pre>
+                    </div>
+                )}
             </div>
 
             {/* Error State */}
@@ -254,7 +292,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 </div>
             )}
 
-            {/* The actual preview iframe — renders ONLY the running app. */}
+            {/* Preview iframe */}
             <iframe
                 ref={(c) => {
                     iframeRef.current = c;
@@ -264,9 +302,7 @@ export default function SnackPreview({ code, componentNames, isActive }: SnackPr
                 onLoad={handleIframeLoad}
                 allow="geolocation; camera; microphone; accelerometer; gyroscope; screen-wake-lock"
                 className="w-full h-full border-none"
-                style={{
-                    background: '#fff',
-                }}
+                style={{ background: '#fff' }}
             />
         </div>
     );
