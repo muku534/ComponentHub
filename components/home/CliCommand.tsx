@@ -13,6 +13,9 @@ export function CliCommand({
     command = 'npx nativecn add animated-tab-bar',
     compact = false
 }: CliCommandProps) {
+    // Commented out for now as npm package is not available
+    return null;
+
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {

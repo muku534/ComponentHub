@@ -43,7 +43,7 @@ export default function Hero() {
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl leading-[1.6] font-light tracking-[-0.01em]"
                 >
-                    Zero dependencies. Zero lock-in. A curated collection of meticulously designed components you can copy-paste or pull via CLI.
+                    Zero dependencies. Zero lock-in. A curated collection of meticulously designed components you can copy and paste directly into your project.
                 </motion.p>
 
                 {/* CTA Buttons */}
@@ -67,15 +67,15 @@ export default function Hero() {
                     </Link>
                 </motion.div>
 
-                {/* CLI Command Preview */}
-                <motion.div
+                {/* CLI Command Preview - Commented out for now as npm package is not available */}
+                {/* <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.35 }}
                     className="mt-12"
                 >
                     <CliCommand />
-                </motion.div>
+                </motion.div> */}
 
 
                 {/* Visual Anchor: The Component Showcase */}

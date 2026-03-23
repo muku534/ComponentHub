@@ -87,20 +87,20 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
         }
     };
 
-    const handleCopyCli = async (component: any) => {
-        try {
-            const command = `npx nativecn add ${component.slug || component.id}`;
-            await navigator.clipboard.writeText(command);
-            setCopiedId(component.id);
-            trackCopyCode(component.id, component.name, 'cli_grid');
-            setTimeout(() => setCopiedId(null), 2000);
-        } catch (error) {
-            console.error('Failed to copy CLI command:', error);
-            // Fallback: still show feedback so user knows something happened
-            setCopiedId(component.id);
-            setTimeout(() => setCopiedId(null), 2000);
-        }
-    };
+    // const handleCopyCli = async (component: any) => {
+    //     try {
+    //         const command = `npx nativecn add ${component.slug || component.id}`;
+    //         await navigator.clipboard.writeText(command);
+    //         setCopiedId(component.id);
+    //         trackCopyCode(component.id, component.name, 'cli_grid');
+    //         setTimeout(() => setCopiedId(null), 2000);
+    //     } catch (error) {
+    //         console.error('Failed to copy CLI command:', error);
+    //         // Fallback: still show feedback so user knows something happened
+    //         setCopiedId(component.id);
+    //         setTimeout(() => setCopiedId(null), 2000);
+    //     }
+    // };
 
     const handleCardClick = (component: ComponentMetadata, index: number) => {
         trackCardClick(component.id, component.name, index);
@@ -286,7 +286,7 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
 
                                             {/* Action Buttons */}
                                             <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
-                                                <button
+                                                {/* <button
                                                     onClick={() => handleCopyCli(component)}
                                                     className="flex-1 px-4 py-2.5 bg-foreground text-background hover:bg-foreground/90 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all shadow-sm group/btn active:scale-[0.98]"
                                                     title="Copies source directly into your project — nothing installed"
@@ -296,7 +296,7 @@ export default function ComponentsPageClient({ initialComponents }: ComponentsPa
                                                     ) : (
                                                         <><Terminal className="w-4 h-4 group-hover/btn:text-blue-400 transition-colors" />Copy CLI</>
                                                     )}
-                                                </button>
+                                                </button> */}
                                                 <Link
                                                     href={`/components/${(component as any).slug}`}
                                                     className="px-4 py-2.5 bg-muted hover:bg-muted/80 text-foreground rounded-lg transition-colors flex items-center justify-center border border-border/50 shadow-sm group/link active:scale-[0.98]"

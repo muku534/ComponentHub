@@ -559,13 +559,13 @@ function PhoneMockup({
                     >
                         Design
                     </button>
-                    <button
+                    {/* <button
                         onClick={() => !isEmpty && onPreviewModeChange('live')}
                         className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 ${isEmpty ? 'opacity-50 cursor-not-allowed text-gray-400' : previewMode === 'live' ? 'bg-blue-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-black/5 dark:hover:bg-white/5'}`}
                     >
                         <span className={`w-1.5 h-1.5 rounded-full ${previewMode === 'live' ? 'bg-white animate-pulse' : 'bg-transparent'}`} />
                         Live Test
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -721,7 +721,7 @@ function PhoneMockup({
                                 </div>
 
                                 {/* Live Preview — Snack SDK web preview (emulator only, no code editor) */}
-                                {previewMode === 'live' && (
+                                {/* {previewMode === 'live' && (
                                     <div
                                         className="w-full h-full"
                                     >
@@ -731,7 +731,7 @@ function PhoneMockup({
                                             isActive={previewMode === 'live'}
                                         />
                                     </div>
-                                )}
+                                )} */}
                             </div>
 
                             {/* Bottom bar */}
@@ -1041,7 +1041,7 @@ export default function StudioBuilderPage() {
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <form action="/api/studio/snack" method="POST" target="_blank" className="m-0 p-0">
+                                        {/* <form action="/api/studio/snack" method="POST" target="_blank" className="m-0 p-0">
                                             <input type="hidden" name="code" value={code} />
                                             <input type="hidden" name="components" value={getRequiredFiles(nodes).map(f => f.replace('.tsx', '').replace('.jsx', '')).join(',')} />
                                             <button
@@ -1054,7 +1054,7 @@ export default function StudioBuilderPage() {
                                                 <span>Try in Snack</span>
                                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                             </button>
-                                        </form>
+                                        </form> */}
 
                                         <button
                                             onClick={handleCopyCode}
