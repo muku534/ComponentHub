@@ -673,11 +673,167 @@ const TimePickerThumbnail = () => {
     );
 };
 
+const ExpandableCardThumbnail = () => {
+    return (
+        <div className="relative w-full h-full flex items-center justify-center p-6 perspective-1000">
+            <div className="w-full max-w-[140px] h-36 rounded-xl bg-zinc-800 shadow-2xl overflow-hidden relative transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.1] group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]">
+                {/* Image Placeholder */}
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop')] bg-cover bg-center opacity-80" />
+                
+                {/* Gradient Overlay for Text */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                
+                {/* Text Overlay */}
+                <div className="absolute bottom-3 left-3 right-3 flex flex-col">
+                    <div className="w-16 h-1.5 rounded-full bg-white/70 mb-1.5" />
+                    <div className="w-24 h-2.5 rounded-full bg-white" />
+                </div>
+                
+                {/* Expanded State Hint (Fades in on hover) */}
+                <div className="absolute inset-0 bg-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col z-10">
+                    <div className="w-full h-24 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop')] bg-cover bg-center relative">
+                        {/* Close button hint */}
+                        <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                            <div className="w-2 h-[1px] bg-white/80 rotate-45 absolute" />
+                            <div className="w-2 h-[1px] bg-white/80 -rotate-45 absolute" />
+                        </div>
+                    </div>
+                    <div className="p-3 bg-zinc-900 flex-1 flex flex-col justify-start">
+                        <div className="space-y-1.5 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                            <div className="w-full h-1.5 rounded-full bg-zinc-700" />
+                            <div className="w-5/6 h-1.5 rounded-full bg-zinc-700" />
+                            <div className="w-4/5 h-1.5 rounded-full bg-zinc-700" />
+                            <div className="w-full h-1.5 rounded-full bg-zinc-700" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const DynamicOtpThumbnail = () => {
+    const [status, setStatus] = useState<'idle' | 'typing' | 'loading' | 'success'>('idle');
+    const timer1 = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const timer2 = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const handleMouseEnter = () => {
+        setStatus('typing');
+        timer1.current = setTimeout(() => {
+            setStatus('loading');
+            timer2.current = setTimeout(() => {
+                setStatus('success');
+            }, 1800);
+        }, 400);
+    };
+
+    const handleMouseLeave = () => {
+            if (timer1.current) clearTimeout(timer1.current);
+        if (timer2.current) clearTimeout(timer2.current);
+        setStatus('idle');
+    };
+
+    const getBoxStyle = (index: number) => {
+        if (status === 'idle' || status === 'typing') {
+            const x = (index - 1.5) * 36;
+            return { x, y: 0, scale: 1, borderRadius: 8, width: 32, height: 40 };
+        }
+        if (status === 'loading') {
+            // Box 0: Left, Box 1: Right, Box 2: Top, Box 3: Bottom
+            const pos = [
+                { x: -30, y: 0 },
+                { x: 30, y: 0 },
+                { x: 0, y: -30 },
+                { x: 0, y: 30 }
+            ];
+            return {
+                x: pos[index].x,
+                y: pos[index].y,
+                scale: 0.7,
+                borderRadius: 20, // perfect circle
+                width: 32,
+                height: 32,
+            };
+        }
+        // success
+        return { x: 0, y: 0, scale: 1.25, borderRadius: 24, width: 32, height: 32 };
+    };
+
+    return (
+        <div 
+            className="relative w-full h-full flex items-center justify-center p-6 bg-zinc-50 dark:bg-zinc-950 overflow-hidden cursor-pointer"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <motion.div 
+                className="relative flex items-center justify-center w-40 h-40"
+                animate={{ rotate: status === 'loading' ? 360 : 0 }}
+                transition={{ 
+                    rotate: status === 'loading' ? { duration: 2, ease: "linear", repeat: Infinity } : { duration: 0.5 }
+                }}
+            >
+                {/* Dashed Square for Loading */}
+                <motion.div 
+                    className="absolute w-[60px] h-[60px] border-[1.5px] border-zinc-300 dark:border-zinc-700 border-dashed rounded-[10px]"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ 
+                        opacity: status === 'loading' ? 0.6 : 0, 
+                        scale: status === 'loading' ? 1 : 0.5 
+                    }}
+                    transition={{ duration: 0.5 }}
+                />
+
+                {[0, 1, 2, 3].map((i) => (
+                    <motion.div
+                        key={i}
+                        className={`absolute border-[1.5px] flex items-center justify-center shadow-sm overflow-hidden
+                            ${status === 'success' 
+                                ? 'border-emerald-500 bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.3)]' 
+                                : (i === 3 && status === 'idle' ? 'border-[#FF5500] bg-[#FF5500]/5 dark:bg-[#FF5500]/10 shadow-[0_0_12px_rgba(255,85,0,0.2)]' : 'border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900')
+                            }
+                        `}
+                        animate={getBoxStyle(i)}
+                        transition={{ type: "spring", stiffness: 120, damping: 14 }}
+                    >
+                        <motion.span 
+                            className={`text-base font-semibold ${i === 3 ? 'text-zinc-900 dark:text-white' : 'text-zinc-700 dark:text-zinc-300'}`}
+                            animate={{ opacity: (status === 'idle' || status === 'typing') ? 1 : 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            {i === 0 ? '4' : i === 1 ? '8' : i === 2 ? '2' : (status === 'typing' ? '9' : '')}
+                        </motion.span>
+                        
+                        {/* Blinking Cursor in 4th box */}
+                        {status === 'idle' && i === 3 && (
+                            <div className="absolute bottom-2 w-3 h-0.5 bg-[#FF5500] rounded-full animate-pulse" />
+                        )}
+                    </motion.div>
+                ))}
+
+                {/* Success Checkmark */}
+                <motion.div
+                    className="absolute z-20 text-white font-bold text-xl"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ 
+                        opacity: status === 'success' ? 1 : 0,
+                        scale: status === 'success' ? 1 : 0,
+                    }}
+                    transition={{ delay: status === 'success' ? 0.3 : 0, type: "spring" }}
+                >
+                    ✓
+                </motion.div>
+            </motion.div>
+        </div>
+    );
+};
+
 const getThumbnailComponent = (id: string) => {
     switch (id) {
         case 'animated-tab-bar': return <AnimatedTabBarThumbnail />;
         case 'liquid-action-tab-bar': return <LiquidActionTabBarThumbnail />;
         case 'time-picker': return <TimePickerThumbnail />;
+        case 'expandable-card': return <ExpandableCardThumbnail />;
+        case 'dynamic-otp': return <DynamicOtpThumbnail />;
         case 'switch-toggle': return <SwitchToggleThumbnail />;
         case 'bottom-navigation': return <AnimatedBottomNavThumbnail />;
         case 'floating-speed-dial': return <FloatingSpeedDialThumbnail />;

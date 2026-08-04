@@ -1,0 +1,58 @@
+{
+  "id": "dynamic-otp",
+  "name": "Dynamic OTP",
+  "description": "A dynamic OTP input that transitions directly into a loading spinner.",
+  "longDescription": "An experimental OTP input built with react-native-reanimated. Instead of navigating to a separate screen or showing a standard loader, the input boxes themselves rearrange into a spinning loader when the code is submitted. It includes spring-based animations for both error and success states.",
+  "category": "Forms",
+  "author": "tripookie",
+  "gradient": "from-orange-500 to-amber-500",
+  "snackId": "@mr.mukesh/dynamic-otp",
+  "emoji": "🔐",
+  "dependencies": {
+    "required": [
+      "react-native-reanimated"
+    ],
+    "optional": []
+  },
+  "features": [
+    "Radial arm physics engine for perfect morphing",
+    "Endless loader spinning state",
+    "Stiff physical spring error shake",
+    "Success state with animated checkmark",
+    "Seamless color interpolation",
+    "Drop shadows and glowing effects"
+  ],
+  "props": [
+    {
+      "name": "onComplete",
+      "type": "(otp: string) => void",
+      "required": false,
+      "description": "Callback triggered when all 4 digits are entered"
+    },
+    {
+      "name": "status",
+      "type": "'idle' | 'loading' | 'success' | 'error'",
+      "required": false,
+      "default": "'idle'",
+      "description": "Controls the current animated state of the component"
+    }
+  ],
+  "usage": [
+    {
+      "title": "Basic Usage",
+      "description": "Handle OTP state transitions",
+      "code": "const [status, setStatus] = useState<OtpStatus>('idle');\n\nconst handleOtp = (code: string) => {\n  setStatus('loading');\n  // Verify API...\n  setTimeout(() => setStatus('success'), 2000);\n};\n\n<DynamicOtp \n  status={status} \n  onComplete={handleOtp} \n/>"
+    }
+  ],
+  "version": "1.0.0",
+  "lastUpdated": "2026-08-01",
+  "difficulty": "Advanced",
+  "codePreview": "<DynamicOtp \n  status={status} \n  onComplete={(code) => setStatus('loading')} \n/>",
+  "installation": {
+    "steps": [
+      "Copy DynamicOtp.tsx to your components folder",
+      "Install react-native-reanimated",
+      "Import and use"
+    ]
+  }
+}

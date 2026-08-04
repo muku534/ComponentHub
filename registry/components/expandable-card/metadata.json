@@ -1,0 +1,50 @@
+{
+  "id": "expandable-card",
+  "name": "Expandable Card",
+  "description": "An ultra-smooth, scroll-aware card expansion layout inspired by the App Store.",
+  "longDescription": "A highly coveted App Store style expandable card transition. Built entirely on the UI thread with React Native Reanimated, it dynamically tracks the background list scroll position to ensure flawlessly smooth expansion and collapse physics.",
+  "category": "Layout",
+  "author": "nativecn-ui",
+  "gradient": "from-zinc-500 to-zinc-900",
+  "emoji": "🗂",
+  "dependencies": {
+    "required": [
+      "react-native-reanimated",
+      "react-native-safe-area-context"
+    ],
+    "optional": []
+  },
+  "features": [
+    "Flawless 60fps UI thread animations",
+    "App Store style scroll-aware expansion",
+    "Physics-based spring transitions",
+    "Dynamic full-screen image overlay",
+    "Built-in absolute coordinate tracking"
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "CardData[]",
+      "required": true,
+      "description": "An array of objects containing id, category, title, image, and content for each card."
+    }
+  ],
+  "usage": [
+    {
+      "title": "Basic Usage",
+      "description": "Render a scrollable list of expandable cards.",
+      "code": "import { ExpandableCardList } from './ExpandableCard';\n\nconst CARDS = [\n  {\n    id: '1',\n    category: 'Featured',\n    title: 'The Great Outdoors',\n    image: 'https://...', \n    content: 'Long description...'\n  }\n];\n\nexport default function App() {\n  return <ExpandableCardList data={CARDS} />;\n}"
+    }
+  ],
+  "version": "1.0.0",
+  "lastUpdated": "2026-08-04",
+  "difficulty": "Advanced",
+  "codePreview": "<ExpandableCardList data={CARDS} />",
+  "installation": {
+    "steps": [
+      "Copy ExpandableCard.tsx to your components folder",
+      "Install react-native-reanimated and react-native-safe-area-context",
+      "Import and provide your array of cards"
+    ]
+  }
+}

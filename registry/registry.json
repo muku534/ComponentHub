@@ -24,6 +24,13 @@
             "version": "1.0.0"
         },
         {
+            "id": "dynamic-otp",
+            "path": "components/dynamic-otp",
+            "category": "Forms",
+            "difficulty": "Advanced",
+            "version": "1.0.0"
+        },
+        {
             "id": "skeleton-loader",
             "path": "components/skeleton-loader",
             "category": "Loading",
@@ -110,6 +117,13 @@
             "id": "time-picker",
             "path": "components/time-picker",
             "category": "Input",
+            "difficulty": "Advanced",
+            "version": "1.0.0"
+        },
+        {
+            "id": "expandable-card",
+            "path": "components/expandable-card",
+            "category": "Layout",
             "difficulty": "Advanced",
             "version": "1.0.0"
         }
