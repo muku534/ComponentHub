@@ -1,0 +1,62 @@
+{
+    "id": "dynamic-upload",
+    "name": "Dynamic Upload",
+    "category": "Forms",
+    "description": "A dynamic file upload component with progress, pause, and cancel actions.",
+    "longDescription": "A sleek, animated file upload card component that displays real-time progress, allows pausing and resuming uploads, and supports dark mode.",
+    "gradient": "from-blue-500 to-indigo-600",
+    "emoji": "📤",
+    "snackId": "@mr.mukesh/dynamic-upload",
+    "dependencies": {
+        "required": ["react-native-reanimated"],
+        "optional": []
+    },
+    "features": [
+        "Real-time upload progress animation",
+        "Play, pause, and cancel controls",
+        "Smooth color transitions with Reanimated",
+        "Light and dark mode support",
+        "Premium glassmorphism aesthetics"
+    ],
+    "props": [
+        {
+            "name": "fileName",
+            "type": "string",
+            "required": false,
+            "default": "create-ui.xlsx",
+            "description": "Name of the uploaded file"
+        },
+        {
+            "name": "fileSize",
+            "type": "string",
+            "required": false,
+            "default": "2.2MB",
+            "description": "Total file size"
+        },
+        {
+            "name": "totalSize",
+            "type": "string",
+            "required": false,
+            "default": "2.3MB",
+            "description": "Size text representation"
+        }
+    ],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Render the dynamic upload component",
+            "code": "<DynamicUpload fileName=\"document.pdf\" totalSize=\"4.5MB\" />"
+        }
+    ],
+    "version": "1.0.0",
+    "lastUpdated": "2026-08-04",
+    "difficulty": "Medium",
+    "codePreview": "<DynamicUpload\n  fileName=\"design-assets.zip\"\n  totalSize=\"12.4MB\"\n/>",
+    "installation": {
+        "steps": [
+            "Copy DynamicUpload.tsx to your components folder",
+            "Install react-native-reanimated if you haven't already",
+            "Import and use"
+        ]
+    }
+}

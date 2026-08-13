@@ -126,6 +126,13 @@
             "category": "Layout",
             "difficulty": "Advanced",
             "version": "1.0.0"
+        },
+        {
+            "id": "dynamic-upload",
+            "path": "components/dynamic-upload",
+            "category": "Forms",
+            "difficulty": "Medium",
+            "version": "1.0.0"
         }
     ]
 }

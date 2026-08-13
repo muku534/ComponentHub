@@ -827,6 +827,133 @@ const DynamicOtpThumbnail = () => {
     );
 };
 
+const DynamicUploadThumbnail = () => {
+    const [status, setStatus] = useState<'uploading' | 'paused' | 'success'>('uploading');
+    const [progress, setProgress] = useState(2);
+
+    useEffect(() => {
+        let interval: ReturnType<typeof setInterval>;
+        if (status === 'uploading') {
+            interval = setInterval(() => {
+                setProgress((prev) => {
+                    if (prev >= 100) {
+                        setStatus('success');
+                        return 100;
+                    }
+                    return prev + 1;
+                });
+            }, 30);
+        }
+        return () => clearInterval(interval);
+    }, [status]);
+
+    const handlePauseResume = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setStatus(s => s === 'uploading' ? 'paused' : 'uploading');
+    };
+
+    const handleCancel = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setProgress(2);
+        setStatus('uploading');
+    };
+
+    return (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
+            <div className="relative w-full max-w-[260px] bg-white dark:bg-[#18181B] rounded-[18px] p-3 flex items-center shadow-sm border border-black/5 dark:border-white/10 overflow-hidden text-left">
+                {/* Background Fill */}
+                <motion.div 
+                    initial={false}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ ease: "linear", duration: 0.1 }}
+                    className={`absolute left-0 top-0 bottom-0 z-0 transition-colors duration-300 ${
+                        status === 'success' ? 'bg-[#DCFCE7] dark:bg-[#064E3B]/40' : 
+                        status === 'paused' ? 'bg-[#F3F4F6] dark:bg-[#27272A]/40' : 
+                        'bg-[#E0F2FE] dark:bg-[#1E3A8A]/40'
+                    }`}
+                />
+
+                {/* Content */}
+                <div className="relative z-10 flex items-center w-full">
+                    {/* Icon */}
+                    <div className="w-10 h-10 rounded-[10px] bg-[#107C41] flex items-center justify-center relative overflow-hidden shrink-0 shadow-sm">
+                        {/* Fold */}
+                        <div className="absolute top-0 right-0 w-3 h-3 bg-white dark:bg-[#18181B] rounded-bl-sm" />
+                        
+                        <div className="absolute top-[6px] right-[6px] grid grid-cols-2 gap-[2px]">
+                            <div className="w-[3px] h-[3px] bg-white/90 rounded-[1px]" />
+                            <div className="w-[3px] h-[3px] bg-white/90 rounded-[1px]" />
+                            <div className="w-[3px] h-[3px] bg-white/90 rounded-[1px]" />
+                            <div className="w-[3px] h-[3px] bg-white/90 rounded-[1px]" />
+                        </div>
+                        <span className="text-white text-[8px] font-bold mt-3 tracking-wider">XLSX</span>
+                    </div>
+
+                    {/* Text */}
+                    <div className="ml-3 flex-1 min-w-0">
+                        <p className="text-[13px] font-medium text-zinc-900 dark:text-[#FAFAFA] truncate">create-ui.xlsx</p>
+                        <div className="flex items-center text-[10px] mt-0.5 whitespace-nowrap">
+                            {status === 'success' && (
+                                <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-3 h-3 rounded-full bg-[#10B981] text-white flex items-center justify-center text-[7px] mr-1 shrink-0">
+                                    ✓
+                                </motion.span>
+                            )}
+                            <span className={status === 'paused' ? 'text-[#A1A1AA]' : 'text-[#605BFF] dark:text-[#818CF8]'}>
+                                {status === 'success' ? '100%' : `${progress}%`}
+                            </span>
+                            <span className="text-[#71717A] ml-1 truncate">
+                                • {status === 'success' ? '2.3MB' : `${(2.3 * (progress / 100)).toFixed(1)} MB of 2.3MB`}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Controls */}
+                    <div className="flex items-center gap-1.5 ml-2 shrink-0">
+                        {status !== 'success' && (
+                            <>
+                                <button 
+                                    onClick={handlePauseResume}
+                                    className="w-6 h-6 rounded-full bg-[#F4F4F5] dark:bg-[#27272A] hover:bg-[#E4E4E7] dark:hover:bg-[#3F3F46] flex items-center justify-center border border-transparent dark:border-[#3F3F46] transition-colors cursor-pointer"
+                                >
+                                    {status === 'paused' ? (
+                                        <div className="w-0 h-0 border-t-[3px] border-t-transparent border-l-[4px] border-l-[#52525B] dark:border-l-[#E4E4E7] border-b-[3px] border-b-transparent ml-[1.5px]" />
+                                    ) : (
+                                        <div className="flex gap-[2px]">
+                                            <div className="w-[2px] h-[8px] bg-[#52525B] dark:bg-[#E4E4E7] rounded-full" />
+                                            <div className="w-[2px] h-[8px] bg-[#52525B] dark:bg-[#E4E4E7] rounded-full" />
+                                        </div>
+                                    )}
+                                </button>
+                                <button 
+                                    onClick={handleCancel}
+                                    className="w-6 h-6 rounded-full bg-[#F4F4F5] dark:bg-[#27272A] hover:bg-[#E4E4E7] dark:hover:bg-[#3F3F46] flex items-center justify-center border border-transparent dark:border-[#3F3F46] transition-colors cursor-pointer"
+                                >
+                                    <span className="text-[10px] font-medium text-[#52525B] dark:text-[#E4E4E7] mb-[1px]">✕</span>
+                                </button>
+                            </>
+                        )}
+                        {status === 'success' && (
+                            <button 
+                                onClick={handleCancel}
+                                className="w-6 h-6 rounded-full bg-[#FEE2E2] dark:bg-[#450A0A] hover:bg-[#FECACA] dark:hover:bg-[#7F1D1D] flex flex-col items-center justify-center border border-[#FEE2E2] dark:border-[#7F1D1D] gap-[1px] transition-colors cursor-pointer"
+                            >
+                                <div className="w-[8px] h-[1.5px] bg-[#EF4444] dark:bg-[#FCA5A5] rounded-full" />
+                                <div className="w-[6px] h-[6px] border border-[#EF4444] dark:border-[#FCA5A5] rounded-sm border-t-0 flex justify-evenly pt-[1px]">
+                                    <div className="w-[1px] h-[3px] bg-[#EF4444] dark:bg-[#FCA5A5]" />
+                                    <div className="w-[1px] h-[3px] bg-[#EF4444] dark:bg-[#FCA5A5]" />
+                                </div>
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    );
+};
+
 const getThumbnailComponent = (id: string) => {
     switch (id) {
         case 'animated-tab-bar': return <AnimatedTabBarThumbnail />;
@@ -847,6 +974,7 @@ const getThumbnailComponent = (id: string) => {
         case 'gradient-button': return <GradientButtonThumbnail />;
         case 'image-carousel': return <ImageCarouselThumbnail />;
         case 'image-skeleton': return <ImageSkeletonThumbnail />;
+        case 'dynamic-upload': return <DynamicUploadThumbnail />;
         default: return <MinimalistPlaceholder title={id} />;
     }
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import {
     DndContext,
     DragOverlay,
@@ -198,8 +199,13 @@ function ComponentPreview({ node }: { node: CanvasNode }) {
                     onClick={(e) => { e.stopPropagation(); setSwitchChecked(!switchChecked); }}
                 >
                     <span className="text-[11px] font-medium text-gray-700">{node.props.label || 'Toggle'}</span>
-                    <div className={`w-10 h-[22px] rounded-full relative transition-colors duration-200 ease-in-out ${switchChecked ? 'bg-blue-500' : 'bg-gray-300 group-hover:bg-gray-400'}`}>
-                        <div className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full shadow-sm transition-all duration-200 ease-in-out ${switchChecked ? 'left-[20px]' : 'left-[2px]'}`} />
+                    <div className={`w-10 h-[22px] rounded-full relative transition-colors duration-300 ${switchChecked ? 'bg-[#34C759]' : 'bg-[#E9E9EA]'}`}>
+                        <motion.div 
+                            className="absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full shadow-[0_3px_8px_rgba(0,0,0,0.15),0_1px_1px_rgba(0,0,0,0.16)]"
+                            initial={false}
+                            animate={{ left: switchChecked ? 20 : 2 }}
+                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
                     </div>
                 </div>
             </div>
@@ -335,70 +341,150 @@ function ComponentPreview({ node }: { node: CanvasNode }) {
         const w = Number(node.props.cardWidth || 200);
         const h = Number(node.props.cardHeight || 280);
 
+        const previewW = w * 0.75;
+        const previewH = h * 0.75;
+        const gap = 12;
+        const itemSize = (isHorizontal ? previewW : previewH) + gap;
+
+        const MOCK_CARDS = [
+            { img: 'https://images.unsplash.com/photo-1464822759023-fea092410814', title: 'Alpine Peaks', subtitle: 'Chamonix, France' },
+            { img: 'https://images.unsplash.com/photo-1511497584788-876760111969', title: 'Misty Forest', subtitle: 'Vancouver, Canada' },
+            { img: 'https://images.unsplash.com/photo-1506744626753-143d41f3e74b', title: 'Yosemite Valley', subtitle: 'California, USA' },
+        ];
+
+        // Smooth scroll offset state (like event.contentOffset in React Native)
+        const scrollOffset = useMotionValue(0);
+        const [activeIndex, setActiveIndex] = useState(0);
+
+        // Auto-play effect
+        useEffect(() => {
+            const interval = setInterval(() => {
+                setActiveIndex((prev) => {
+                    const next = prev + 1 >= MOCK_CARDS.length ? 0 : prev + 1;
+                    animate(scrollOffset, -next * itemSize, { type: "spring", stiffness: 200, damping: 25 });
+                    return next;
+                });
+            }, 3000);
+            return () => clearInterval(interval);
+        }, [itemSize, scrollOffset]);
+
+        // Snap to nearest item after drag ends
+        const handleDragEnd = (e: any, info: any) => {
+            const velocity = isHorizontal ? info.velocity.x : info.velocity.y;
+            const currentOffset = scrollOffset.get();
+            let targetIndex = Math.round(-currentOffset / itemSize);
+            
+            // Add velocity influence (momentum)
+            if (velocity < -500) targetIndex += 1;
+            else if (velocity > 500) targetIndex -= 1;
+            
+            targetIndex = Math.max(0, Math.min(MOCK_CARDS.length - 1, targetIndex));
+            setActiveIndex(targetIndex);
+            
+            animate(scrollOffset, -targetIndex * itemSize, { type: "spring", stiffness: 300, damping: 30 });
+        };
+
         return (
-            <div className={`px-4 py-3 flex ${isHorizontal ? 'flex-row overflow-x-hidden' : 'flex-col items-center overflow-y-hidden'} gap-3 w-full h-full min-h-[300px] bg-zinc-50/50 rounded-xl relative`}>
-                <div className="absolute top-2 left-4 text-[9px] font-bold text-zinc-400 uppercase tracking-widest z-10">
+            <div className={`flex flex-col w-full h-full min-h-[420px] bg-zinc-50/50 rounded-xl relative overflow-hidden`}
+                 onPointerDown={(e) => e.stopPropagation()}
+            >
+                <div className="absolute top-3 left-4 text-[9px] font-bold text-zinc-400 uppercase tracking-widest z-10 pointer-events-none">
                     {orientation} • {layout}
                 </div>
 
-                {[1, 2, 3].map((i) => {
-                    const isCenter = i === 2;
-                    let style: any = {
-                        width: isHorizontal ? w * 0.7 : w * 0.8,
-                        height: isHorizontal ? h * 0.7 : h * 0.6,
-                        borderRadius: 16,
-                        background: `linear-gradient(135deg, ${i === 1 ? '#6366f1' : i === 2 ? '#a855f7' : '#ec4899'}, ${i === 1 ? '#4f46e5' : i === 2 ? '#9333ea' : '#db2777'})`,
-                        flexShrink: 0,
-                        transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                        boxShadow: isCenter ? '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                        display: 'flex',
-                        alignItems: 'flex-end',
-                        padding: '12px',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                    };
+                <div className="relative w-full flex-1 flex items-center justify-center mt-8 mb-10 overflow-visible">
+                    <motion.div 
+                        className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing z-20"
+                        drag={isHorizontal ? "x" : "y"}
+                        dragConstraints={isHorizontal ? { left: -(MOCK_CARDS.length - 1) * itemSize, right: 0 } : { top: -(MOCK_CARDS.length - 1) * itemSize, bottom: 0 }}
+                        dragElastic={0.2}
+                        onDragEnd={handleDragEnd}
+                        style={{ x: isHorizontal ? scrollOffset : 0, y: isHorizontal ? 0 : scrollOffset, touchAction: 'none' }}
+                    >
+                        {MOCK_CARDS.map((item, index) => {
+                            const position = index * itemSize;
+                            const inputRange = [-position - itemSize, -position, -position + itemSize];
 
-                    // Simulate 3D layouts with CSS
-                    if (layout === 'depth') {
-                        if (!isCenter) {
-                            style.transform = isHorizontal
-                                ? `scale(0.8) rotateY(${i === 1 ? 25 : -25}deg)`
-                                : `scale(0.8) rotateX(${i === 1 ? -25 : 25}deg)`;
-                            style.opacity = 0.5;
-                        } else {
-                            style.zIndex = 10;
-                        }
-                    } else if (layout === 'stack') {
-                        if (i === 1) {
-                            style.transform = isHorizontal ? 'translateX(40px) scale(0.9)' : 'translateY(40px) scale(0.9)';
-                            style.opacity = 0.4;
-                            style.zIndex = 1;
-                        } else if (i === 2) {
-                            style.zIndex = 10;
-                        } else {
-                            style.display = 'none'; // Only show 2 for stack preview
-                        }
-                    } else if (layout === 'perspective') {
-                        if (!isCenter) {
-                            style.transform = isHorizontal ? `rotateY(${i === 1 ? 90 : -90}deg)` : `rotateX(${i === 1 ? -90 : 90}deg)`;
-                            style.opacity = 0;
-                        }
-                    }
+                            // Interpolate values based on scrollOffset
+                            const scale = useTransform(scrollOffset, inputRange, [0.85, 1, 0.85]);
+                            const opacity = useTransform(scrollOffset, inputRange, [0.4, 1, 0.4]);
+                            const zIndex = useTransform(scrollOffset, inputRange, [1, 10, 1]);
+                            
+                            let rotateY: any = 0;
+                            let rotateX: any = 0;
+                            let translateX: any = 0;
+                            let translateY: any = 0;
 
-                    return (
-                        <div key={i} style={style}>
-                            <div className="w-full">
-                                <div className="h-1.5 w-2/3 bg-white/30 rounded-full mb-1" />
-                                <div className="h-1 w-1/2 bg-white/20 rounded-full" />
-                            </div>
-                        </div>
-                    );
-                })}
+                            if (layout === 'depth') {
+                                rotateY = isHorizontal ? useTransform(scrollOffset, inputRange, [45, 0, -45]) : 0;
+                                rotateX = !isHorizontal ? useTransform(scrollOffset, inputRange, [-45, 0, 45]) : 0;
+                                translateX = isHorizontal ? useTransform(scrollOffset, inputRange, [previewW * 0.25, 0, -previewW * 0.25]) : 0;
+                                translateY = !isHorizontal ? useTransform(scrollOffset, inputRange, [previewH * 0.25, 0, -previewH * 0.25]) : 0;
+                            } else if (layout === 'stack') {
+                                scale.set(0.85); // override scale for stack if needed
+                                // Implementation can be added for stack, but let's keep depth standard
+                            }
 
-                {/* Pagination indicator simulation */}
-                <div className={`absolute ${isHorizontal ? 'bottom-2 left-1/2 -translate-x-1/2 flex-row' : 'right-2 top-1/2 -translate-y-1/2 flex-col'} flex gap-1`}>
-                    {[1, 2, 3].map(j => (
-                        <div key={j} className={`rounded-full bg-zinc-300 ${j === 2 ? (isHorizontal ? 'w-4 h-1' : 'w-1 h-4 bg-zinc-600') : 'w-1 h-1'}`} />
-                    ))}
+                            // Parallax effect on image
+                            const imgTranslateX = isHorizontal ? useTransform(scrollOffset, inputRange, [previewW * 0.25, 0, -previewW * 0.25]) : 0;
+                            const imgTranslateY = !isHorizontal ? useTransform(scrollOffset, inputRange, [previewH * 0.25, 0, -previewH * 0.25]) : 0;
+
+                            return (
+                                <motion.div
+                                    key={index}
+                                    style={{
+                                        position: 'absolute',
+                                        left: isHorizontal ? position + (previewW / 2) - previewW : 'auto',
+                                        top: !isHorizontal ? position + (previewH / 2) - previewH : 'auto',
+                                        width: previewW,
+                                        height: previewH,
+                                        borderRadius: 32,
+                                        overflow: 'hidden',
+                                        scale,
+                                        rotateX,
+                                        rotateY,
+                                        x: translateX,
+                                        y: translateY,
+                                        opacity,
+                                        zIndex,
+                                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2)',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'flex-end',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        perspective: 1200,
+                                        backgroundColor: '#121212',
+                                    }}
+                                >
+                                    <motion.div 
+                                        className="absolute inset-0"
+                                        style={{
+                                            backgroundImage: `url(${item.img})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                            scale: 1.3,
+                                            x: imgTranslateX,
+                                            y: imgTranslateY,
+                                        }}
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                                    <div className="relative z-10 p-5">
+                                        <h3 className="text-white font-bold text-lg leading-tight">{item.title}</h3>
+                                        <p className="text-white/80 text-[10px] mt-1 font-medium">{item.subtitle}</p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </motion.div>
+                </div>
+
+                {/* Pagination indicator */}
+                <div className={`absolute ${isHorizontal ? 'bottom-6 left-1/2 -translate-x-1/2 flex-row' : 'right-6 top-1/2 -translate-y-1/2 flex-col'} flex gap-2 pointer-events-none`}>
+                    {MOCK_CARDS.map((_, j) => {
+                        return (
+                            <div key={j} className={`rounded-full transition-all duration-300 ${j === activeIndex ? (isHorizontal ? 'w-5 h-1.5 bg-zinc-700' : 'w-1.5 h-5 bg-zinc-700') : 'w-1.5 h-1.5 bg-zinc-300'}`} />
+                        );
+                    })}
                 </div>
             </div>
         );
@@ -408,21 +494,16 @@ function ComponentPreview({ node }: { node: CanvasNode }) {
     if (node.type === 'image-skeleton') {
         const w = node.props.width || 300;
         const h = node.props.height || 300;
-        const br = node.props.borderRadius || 16;
+        const br = node.props.borderRadius || 32;
         const baseColor = node.props.baseColor || '#171717';
         const accentColor = node.props.accentColor || '#ffffff';
         const dotColor = node.props.dotColor || '#ffffff';
         
-        // Generate a static CSS grid pattern background to mimic the points
-        const bgPattern = `
-          radial-gradient(${dotColor}20 1px, transparent 1px)
-        `;
-        
         return (
-            <div
-                className="flex items-center justify-center w-full"
-                style={{ padding: '16px' }}
-            >
+            <div className="flex items-center justify-center w-full min-h-[350px] bg-zinc-50/50 rounded-xl relative">
+                <div className="absolute top-3 left-4 text-[9px] font-bold text-zinc-400 uppercase tracking-widest z-10 pointer-events-none">
+                    Skeleton Loader
+                </div>
                 <div
                     className="relative overflow-hidden"
                     style={{
@@ -430,44 +511,55 @@ function ComponentPreview({ node }: { node: CanvasNode }) {
                         height: Math.min(h, 320),
                         borderRadius: br,
                         background: baseColor,
+                        border: '1px solid rgba(255,255,255,0.1)'
                     }}
                 >
                     {/* Grid pattern layer */}
                     <div 
-                        className="absolute inset-0"
+                        className="absolute inset-0 opacity-20"
                         style={{
-                            backgroundImage: bgPattern,
+                            backgroundImage: `radial-gradient(${dotColor} 2px, transparent 2px)`,
                             backgroundSize: '16px 16px',
-                            backgroundPosition: 'center center',
+                            backgroundPosition: '0 0',
                         }}
                     />
                     
-                    {/* Highlighted sweeping pattern */}
-                    <div
-                        className="absolute inset-0 animate-pulse"
+                    {/* Orbiting Spotlight 1 */}
+                    <motion.div
+                        className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%]"
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
                         style={{
-                            backgroundImage: bgPattern,
-                            backgroundSize: '16px 16px',
-                            backgroundPosition: 'center center',
-                            maskImage: 'radial-gradient(ellipse at 70% 30%, black 10%, transparent 60%)',
-                            WebkitMaskImage: 'radial-gradient(ellipse at 70% 30%, black 10%, transparent 60%)',
-                            opacity: 0.8
-                        }}
-                    />
-                    
-                    {/* Soft ambient glow */}
-                    <div
-                        className="absolute inset-0 animate-pulse"
-                        style={{
-                            background: `radial-gradient(circle at 30% 70%, ${accentColor}10 0%, transparent 50%)`,
-                            animationDuration: '3s'
+                            background: `radial-gradient(circle at 70% 30%, ${accentColor}15 0%, transparent 40%)`,
                         }}
                     />
 
-                    {/* Label */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <span className="text-3xl opacity-20">🖼️</span>
-                    </div>
+                    {/* Orbiting Spotlight 2 (Offset Phase) */}
+                    <motion.div
+                        className="absolute w-[200%] h-[200%] -top-[50%] -left-[50%]"
+                        animate={{ rotate: -360 }}
+                        transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+                        style={{
+                            background: `radial-gradient(circle at 30% 70%, ${accentColor}1A 0%, transparent 40%)`,
+                        }}
+                    />
+
+                    {/* Highlighted Grid Dots Masking - Exactly matching the native Skia Points mask */}
+                    <motion.div
+                        className="absolute inset-0 opacity-100 mix-blend-overlay"
+                        animate={{ 
+                            backgroundPosition: ['0% 0%', '100% 100%']
+                        }}
+                        transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+                        style={{
+                            backgroundImage: `radial-gradient(circle at center, ${accentColor} 0%, transparent 60%)`,
+                            backgroundSize: '200% 200%',
+                            maskImage: `radial-gradient(black 2px, transparent 2px)`,
+                            maskSize: '16px 16px',
+                            WebkitMaskImage: `radial-gradient(black 2px, transparent 2px)`,
+                            WebkitMaskSize: '16px 16px'
+                        }}
+                    />
                 </div>
             </div>
         );
@@ -686,10 +778,10 @@ function PhoneMockup({
                         style={{
                             borderRadius: isIOS ? 52 : 36,
                             background: isIOS
-                                ? 'linear-gradient(145deg, #3a3a3e 0%, #1a1a1e 30%, #2a2a2e 50%, #1a1a1e 70%, #3a3a3e 100%)'
+                                ? 'linear-gradient(145deg, #444448 0%, #1a1a1e 15%, #2a2a2e 50%, #1a1a1e 85%, #444448 100%)'
                                 : 'linear-gradient(145deg, #1c1c20 0%, #0c0c0e 40%, #1c1c20 60%, #0c0c0e 100%)',
-                            padding: isIOS ? 10 : 8,
-                            boxShadow: '0 0 0 1px rgba(255,255,255,0.08) inset',
+                            padding: isIOS ? 12 : 8,
+                            boxShadow: '0 0 0 2px rgba(255,255,255,0.1) inset, 0 20px 40px -10px rgba(0,0,0,0.6)',
                         }}
                     >
                         {/* Inner bezel highlight */}
@@ -697,7 +789,7 @@ function PhoneMockup({
                             className="absolute inset-[1px] pointer-events-none"
                             style={{
                                 borderRadius: isIOS ? 51 : 35,
-                                background: 'linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, transparent 20%, transparent 80%, rgba(255,255,255,0.05) 100%)',
+                                background: 'linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, transparent 10%, transparent 90%, rgba(255,255,255,0.1) 100%)',
                             }}
                         />
 
@@ -705,39 +797,52 @@ function PhoneMockup({
                         <div
                             className="relative w-full h-full overflow-hidden flex flex-col group/screen"
                             style={{
-                                borderRadius: isIOS ? 42 : 28,
+                                borderRadius: isIOS ? 40 : 28,
                                 background: '#000',
-                                boxShadow: '0 0 0 1px rgba(0,0,0,0.8) inset, 0 0 8px rgba(0,0,0,0.5) inset',
+                                boxShadow: '0 0 0 2px rgba(0,0,0,1) inset, 0 0 12px rgba(0,0,0,0.8) inset',
                             }}
                         >
+                            {/* Screen glare (subtle reflection) */}
+                            <div className="absolute top-0 right-0 w-[150%] h-[100%] pointer-events-none z-20"
+                                 style={{
+                                     background: 'linear-gradient(105deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.08) 15%, transparent 16%)',
+                                     transform: 'translate(10%, -10%)'
+                                 }}
+                            />
+
                             {/* Status bar */}
                             {isIOS ? (
                                 <div className="relative bg-white px-7 pt-3.5 pb-2 flex items-center justify-between z-10">
-                                    <span className="text-[11px] font-semibold text-gray-900" style={{ fontFamily: '-apple-system, SF Pro Text, sans-serif' }}>9:41</span>
+                                    <span className="text-[12px] font-semibold text-gray-900 tracking-tight" style={{ fontFamily: '-apple-system, SF Pro Text, sans-serif' }}>9:41</span>
                                     {/* Dynamic Island */}
-                                    <div className="absolute left-1/2 -translate-x-1/2 top-[10px] w-[100px] h-[28px] bg-black rounded-full flex items-center justify-end pr-2.5"
-                                        style={{ boxShadow: '0 0 4px rgba(0,0,0,0.3)' }}>
+                                    <div className="absolute left-1/2 -translate-x-1/2 top-[10px] w-[110px] h-[32px] bg-black rounded-[16px] flex items-center justify-end pr-2.5 z-50"
+                                        style={{ boxShadow: '0 0 4px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.1)' }}>
+                                        {/* Sensors / FaceID array simulation */}
+                                        <div className="absolute left-3 w-[12px] h-[12px] rounded-full"
+                                            style={{ background: 'radial-gradient(circle at 40% 40%, rgba(25,25,45,1), rgba(10,10,20,1))' }} />
                                         {/* Front camera lens */}
-                                        <div className="w-[10px] h-[10px] rounded-full"
-                                            style={{ background: 'radial-gradient(circle at 35% 35%, #1a1a3a, #0a0a0f)', boxShadow: '0 0 2px rgba(255,255,255,0.15) inset, 0 0 1px rgba(100,100,255,0.3)' }} />
+                                        <div className="w-[12px] h-[12px] rounded-full relative overflow-hidden"
+                                            style={{ background: 'radial-gradient(circle at 35% 35%, #1a1a3a, #0a0a0f)', boxShadow: '0 0 2px rgba(255,255,255,0.15) inset, 0 0 1px rgba(100,100,255,0.3)' }}>
+                                            <div className="absolute top-[3px] left-[3px] w-[3px] h-[3px] rounded-full bg-blue-400/30 blur-[0.5px]" />
+                                        </div>
                                     </div>
                                     <div className="flex items-center gap-[5px]">
                                         {/* Signal bars */}
-                                        <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
-                                            <rect x="0" y="9" width="3" height="3" rx="0.5" fill="#1d1d1f" />
-                                            <rect x="4.5" y="6" width="3" height="6" rx="0.5" fill="#1d1d1f" />
-                                            <rect x="9" y="3" width="3" height="9" rx="0.5" fill="#1d1d1f" />
-                                            <rect x="13" y="0" width="3" height="12" rx="0.5" fill="#1d1d1f" />
+                                        <svg width="17" height="11" viewBox="0 0 17 11" fill="none">
+                                            <rect x="0" y="8" width="3" height="3" rx="1" fill="#1d1d1f" />
+                                            <rect x="4.5" y="5" width="3" height="6" rx="1" fill="#1d1d1f" />
+                                            <rect x="9" y="2" width="3" height="9" rx="1" fill="#1d1d1f" />
+                                            <rect x="13.5" y="0" width="3" height="11" rx="1" fill="#1d1d1f" />
                                         </svg>
                                         {/* WiFi */}
-                                        <svg width="14" height="11" viewBox="0 0 14 11" fill="#1d1d1f">
-                                            <path d="M7 9.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zM7 6.5c1.66 0 3 .9 3 2l-.8-.8c-.6-.4-1.4-.7-2.2-.7s-1.6.3-2.2.7l-.8.8c0-1.1 1.34-2 3-2zm0-3c2.76 0 5 1.34 5 3l-1-.9C10 4.5 8.6 3.9 7 3.9S4 4.5 3 5.6l-1 .9c0-1.66 2.24-3 5-3zm0-3c4 0 7.2 1.8 7.2 4l-1-1C12 2.2 9.7 1 7 1S2 2.2.8 3.5l-1 1C-.2 2.3 3 .5 7 .5z" />
+                                        <svg width="15" height="11" viewBox="0 0 15 11" fill="#1d1d1f">
+                                            <path d="M7.5 9.5a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5zm0-3c1.66 0 3 .9 3 2l-.8.8c-.6-.4-1.4-.7-2.2-.7s-1.6.3-2.2.7l-.8.8c0-1.1 1.34-2 3-2zm0-3c2.76 0 5 1.34 5 3l-1-.9c-1-1.1-2.4-1.7-4-1.7s-3 .6-4 1.7l-1 .9c0-1.66 2.24-3 5-3zm0-3c4 0 7.2 1.8 7.2 4l-1-1C12.5 2.2 10.2 1 7.5 1S2.5 2.2 1.3 3.5l-1 1C.3 2.3 3.5.5 7.5.5z" />
                                         </svg>
                                         {/* Battery */}
-                                        <svg width="22" height="11" viewBox="0 0 22 11" fill="none">
-                                            <rect x="0.5" y="0.5" width="18" height="10" rx="2" stroke="#1d1d1f" strokeWidth="1" />
-                                            <rect x="19.5" y="3" width="2" height="5" rx="1" fill="#1d1d1f" />
-                                            <rect x="2" y="2" width="13" height="7" rx="1" fill="#34c759" />
+                                        <svg width="24" height="11.5" viewBox="0 0 24 11.5" fill="none">
+                                            <rect x="0.5" y="0.5" width="20" height="10.5" rx="2.5" stroke="#1d1d1f" strokeWidth="1" />
+                                            <path d="M22 4h1a1 1 0 011 1v1.5a1 1 0 01-1 1h-1V4z" fill="#1d1d1f" />
+                                            <rect x="2" y="2" width="15" height="7.5" rx="1.5" fill="#1d1d1f" />
                                         </svg>
                                     </div>
                                 </div>
