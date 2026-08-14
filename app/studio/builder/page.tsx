@@ -176,15 +176,99 @@ function ComponentPreview({ node }: { node: CanvasNode }) {
 
     // ─── Date Picker
     if (node.type === 'date-picker') {
+        const [expanded, setExpanded] = useState(false);
+        
         return (
-            <div className="px-4 py-1">
-                <label className="block text-[10px] font-medium text-gray-600 mb-1">{node.props.label || 'Select Date'}</label>
-                <div className="border border-gray-300 bg-white rounded-lg px-3 py-2 flex items-center justify-between focus-within:ring-2 focus-within:ring-blue-500 transition-shadow">
-                    <input
-                        type="date"
-                        className="flex-1 text-[11px] bg-transparent outline-none text-gray-900 w-full cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 [&::-webkit-calendar-picker-indicator]:hover:opacity-100 transition-opacity"
-                        onClick={(e) => e.stopPropagation()}
-                    />
+            <div className="w-full flex justify-center py-2 px-4 relative" onClick={(e) => e.stopPropagation()}>
+                <div className="w-full flex flex-col items-start gap-1 cursor-pointer" onClick={(e) => {
+                    e.stopPropagation();
+                    setExpanded(!expanded);
+                }}>
+                    <span className="block text-[10px] font-medium text-gray-600 ml-1">{node.props.label || 'Select Date'}</span>
+                    <motion.div 
+                        layout
+                        className="relative bg-white dark:bg-zinc-900 border overflow-hidden flex flex-col items-center justify-start w-full shadow-sm"
+                        style={{
+                            borderRadius: expanded ? 24 : 16,
+                            height: expanded ? 370 : 56,
+                            borderColor: '#e5e5e5',
+                            backgroundColor: '#ffffff',
+                        }}
+                        transition={{ type: "spring", damping: 24, stiffness: 200, mass: 0.8 }}
+                    >
+                        {/* Collapsed Input State */}
+                        <div 
+                            className="flex items-center justify-between px-4 w-full cursor-pointer h-14 absolute top-0 left-0"
+                            onClick={() => {
+                                setExpanded(!expanded);
+                            }}
+                        >
+                            <div className="flex items-center">
+                                <div className="w-5 h-5 rounded-[4px] border-[1.5px] border-zinc-900 dark:border-zinc-100 overflow-hidden mr-3 flex flex-col items-center">
+                                    <div className="w-full h-1 bg-zinc-900 dark:bg-zinc-100"></div>
+                                    <div className="flex gap-[2px] mt-[3px]">
+                                        <div className="w-[2px] h-[2px] rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                                        <div className="w-[2px] h-[2px] rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                                        <div className="w-[2px] h-[2px] rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                                    </div>
+                                </div>
+                                <span className="text-[16px] font-medium text-zinc-900 dark:text-zinc-100 tracking-wide">August 18, 2026</span>
+                            </div>
+                            <motion.div 
+                                animate={{ rotate: expanded ? 180 : 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="w-2.5 h-2.5 border-b-2 border-r-2 border-zinc-400 rotate-45 mr-1"
+                                style={{ transformOrigin: 'center' }}
+                            />
+                        </div>
+
+                        {/* Expanded Calendar State */}
+                        <motion.div
+                            className="absolute inset-0 pt-[60px] px-5 flex flex-col pointer-events-none"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: expanded ? 1 : 0 }}
+                            transition={{ duration: 0.2, delay: expanded ? 0.1 : 0 }}
+                            style={{ pointerEvents: expanded ? 'auto' : 'none' }}
+                        >
+                            {/* Header */}
+                            <div className="flex items-center justify-between mb-5 w-full px-1">
+                                <div className="w-[34px] h-[34px] rounded-[10px] border border-zinc-200 bg-white flex items-center justify-center text-[15px] font-semibold text-zinc-800">{'<'}</div>
+                                <div className="flex items-center gap-1.5">
+                                    <span className="text-[16px] font-bold text-zinc-900 dark:text-zinc-100">August</span>
+                                    <span className="text-[16px] font-medium text-zinc-900 dark:text-zinc-100">2026</span>
+                                </div>
+                                <div className="w-[34px] h-[34px] rounded-[10px] border border-zinc-200 bg-white flex items-center justify-center text-[15px] font-semibold text-zinc-800">{'>'}</div>
+                            </div>
+                            {/* Days row */}
+                            <div className="flex w-full justify-between mb-3">
+                                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                                    <span key={i} className="text-[12px] font-bold text-zinc-400 w-8 text-center">{d}</span>
+                                ))}
+                            </div>
+                            {/* Grid */}
+                            <div className="flex flex-wrap gap-y-1.5 w-full justify-between">
+                                {Array.from({ length: 28 }).map((_, i) => (
+                                    <div 
+                                        key={i} 
+                                        className={`w-[36px] h-[36px] flex items-center justify-center rounded-full text-[15px] font-medium ${i === 16 ? 'bg-black text-white dark:bg-white dark:text-black shadow-md' : 'text-zinc-700 dark:text-zinc-300'}`}
+                                    >
+                                        {i + 1}
+                                    </div>
+                                ))}
+                            </div>
+                            {/* Confirm Button */}
+                            <div 
+                                className="mt-auto mb-5 w-full h-12 rounded-full bg-black dark:bg-white flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setExpanded(false);
+                                }}
+                                style={{ pointerEvents: expanded ? 'auto' : 'none' }}
+                            >
+                                <span className="text-[15px] font-semibold text-white dark:text-black">Confirm</span>
+                            </div>
+                        </motion.div>
+                    </motion.div>
                 </div>
             </div>
         );

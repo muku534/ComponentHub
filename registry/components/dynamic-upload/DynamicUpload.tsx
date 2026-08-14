@@ -6,8 +6,9 @@ import {
   Pressable,
   Dimensions,
   Platform,
-  useColorScheme,
 } from 'react-native';
+// @ts-ignore
+import { useColorScheme } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,

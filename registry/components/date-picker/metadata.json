@@ -2,20 +2,20 @@
     "id": "date-picker",
     "name": "Date Picker",
     "category": "Input",
-    "description": "Modal calendar picker with custom styling",
-    "longDescription": "A beautiful modal date picker with calendar view, date range constraints, and custom theming. Built on react-native-calendars with additional styling improvements.",
+    "description": "An expandable date picker with smooth in-place layout transitions.",
+    "longDescription": "A beautiful date picker that starts as a pill-shaped input and seamlessly expands into a full calendar grid using React Native Reanimated. Features date range constraints, custom theming, and premium modern aesthetics.",
     "gradient": "from-pink-500 to-rose-500",
     "emoji": "📅",
     "snackId": "@mr.mukesh/date-picker",
     "dependencies": {
-        "required": [],
+        "required": ["react-native-reanimated"],
         "optional": []
     },
     "features": [
-        "Modal calendar interface",
+        "Expandable in-place calendar interface",
+        "Smooth layout transitions with Reanimated",
         "Date range constraints (min/max)",
         "Custom color theming",
-        "Error state support",
         "Required field indicator",
         "Formatted date display"
     ],

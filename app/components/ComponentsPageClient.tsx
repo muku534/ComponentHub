@@ -242,41 +242,90 @@ const BottomSheetThumbnail = () => {
 };
 
 const DatePickerThumbnail = () => {
+    const [expanded, setExpanded] = useState(false);
+    
     return (
-        <div className="group/picker w-full h-full flex flex-col justify-center items-center bg-zinc-50 dark:bg-zinc-950 p-6">
-            <div className="w-full max-w-[180px] space-y-1.5 relative">
-                <span className="text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">Date of Birth</span>
-                <div className="w-full h-9 border border-zinc-200 dark:border-zinc-800 rounded-lg flex items-center justify-between px-3 bg-white dark:bg-zinc-900 cursor-pointer shadow-sm">
-                    <span className="text-[11px] text-zinc-950 dark:text-zinc-50">08/17/2026</span>
-                    <span className="text-xs">📅</span>
-                </div>
-
-                <div className="absolute top-16 left-0 right-0 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-lg overflow-hidden z-20 scale-90 origin-top opacity-0 group-hover/picker:opacity-100 group-hover/picker:scale-100 transition-all duration-300 pointer-events-none">
-                    <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-zinc-100 dark:border-zinc-850 bg-zinc-50/50 dark:bg-zinc-900/30">
-                        <span className="text-[9px] font-semibold text-zinc-500">Select Date</span>
-                    </div>
-                    <div className="relative h-20 flex items-center justify-center overflow-hidden bg-zinc-50/30 dark:bg-zinc-950/10">
-                        <div className="absolute left-1 right-1 h-6 bg-zinc-100 dark:bg-zinc-800/40 rounded-lg border border-zinc-200/50 dark:border-zinc-700/30" />
-                        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white dark:from-zinc-900 via-transparent to-white dark:to-zinc-900 opacity-95" />
-                        <div className="flex justify-around w-full px-1.5 z-10 font-mono text-[9px]">
-                            <div className="flex flex-col items-center">
-                                <span className="text-[7.5px] text-zinc-400 dark:text-zinc-650">July</span>
-                                <span className="font-semibold text-zinc-900 dark:text-zinc-100">August</span>
-                                <span className="text-[7.5px] text-zinc-400 dark:text-zinc-650">Sept</span>
+        <div 
+            className="w-full h-full flex flex-col justify-center items-center bg-zinc-50 dark:bg-zinc-950 p-6"
+        >
+            <div className="w-full max-w-[280px] flex flex-col items-start gap-1.5 cursor-pointer" onClick={() => setExpanded(!expanded)}>
+                <span className="text-[12px] font-semibold text-zinc-600 dark:text-zinc-400 pl-1">Date of Birth</span>
+                <motion.div 
+                    layout
+                    className="relative bg-white dark:bg-zinc-900 border overflow-hidden flex flex-col items-center justify-start w-full shadow-sm"
+                    style={{
+                        borderRadius: expanded ? 24 : 16,
+                        height: expanded ? 370 : 56,
+                        borderColor: '#e5e5e5',
+                        backgroundColor: '#ffffff',
+                    }}
+                    transition={{ type: "spring", damping: 24, stiffness: 200, mass: 0.8 }}
+                >
+                    {/* Collapsed Input State */}
+                    <div 
+                        className="flex items-center justify-between px-4 w-full cursor-pointer h-14"
+                        onClick={() => {
+                            setExpanded(!expanded);
+                        }}
+                    >
+                        <div className="flex items-center">
+                            <div className="w-5 h-5 rounded-[4px] border-[1.5px] border-zinc-900 dark:border-zinc-100 overflow-hidden mr-3 flex flex-col items-center">
+                                <div className="w-full h-1 bg-zinc-900 dark:bg-zinc-100"></div>
+                                <div className="flex gap-[2px] mt-[3px]">
+                                    <div className="w-[2px] h-[2px] rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                                    <div className="w-[2px] h-[2px] rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                                    <div className="w-[2px] h-[2px] rounded-full bg-zinc-900 dark:bg-zinc-100"></div>
+                                </div>
                             </div>
-                            <div className="flex flex-col items-center">
-                                <span className="text-[7.5px] text-zinc-400 dark:text-zinc-650">16</span>
-                                <span className="font-semibold text-zinc-900 dark:text-zinc-100">17</span>
-                                <span className="text-[7.5px] text-zinc-400 dark:text-zinc-650">18</span>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <span className="text-[7.5px] text-zinc-400 dark:text-zinc-650">2025</span>
-                                <span className="font-semibold text-zinc-900 dark:text-zinc-100">2026</span>
-                                <span className="text-[7.5px] text-zinc-400 dark:text-zinc-650">2027</span>
-                            </div>
+                            <span className="text-[16px] font-medium text-zinc-900 dark:bg-zinc-100 tracking-wide">August 18, 2026</span>
                         </div>
+                        <motion.div 
+                            animate={{ rotate: expanded ? 180 : 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="w-2.5 h-2.5 border-b-2 border-r-2 border-zinc-400 rotate-45 mr-1"
+                            style={{ transformOrigin: 'center' }}
+                        />
                     </div>
-                </div>
+
+                    {/* Expanded Calendar State */}
+                    <motion.div
+                        className="absolute inset-0 pt-[60px] px-4 flex flex-col pointer-events-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: expanded ? 1 : 0 }}
+                        transition={{ duration: 0.2, delay: expanded ? 0.1 : 0 }}
+                    >
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-4 w-full px-1">
+                            <div className="w-8 h-8 rounded-[10px] border border-zinc-200 bg-white flex items-center justify-center text-[14px] font-semibold text-zinc-800">{'<'}</div>
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[15px] font-bold text-zinc-900 dark:text-zinc-100">August</span>
+                                <span className="text-[15px] font-medium text-zinc-900 dark:text-zinc-100">2026</span>
+                            </div>
+                            <div className="w-8 h-8 rounded-[10px] border border-zinc-200 bg-white flex items-center justify-center text-[14px] font-semibold text-zinc-800">{'>'}</div>
+                        </div>
+                        {/* Days row */}
+                        <div className="flex w-full justify-between mb-2">
+                            {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                                <span key={i} className="text-[10px] font-bold text-zinc-400 w-8 text-center">{d}</span>
+                            ))}
+                        </div>
+                        {/* Grid */}
+                        <div className="flex flex-wrap gap-y-1 w-full justify-between">
+                            {Array.from({ length: 28 }).map((_, i) => (
+                                <div 
+                                    key={i} 
+                                    className={`w-[32px] h-[32px] flex items-center justify-center rounded-full text-[13px] font-medium ${i === 16 ? 'bg-black text-white dark:bg-white dark:text-black' : 'text-zinc-700 dark:text-zinc-300'}`}
+                                >
+                                    {i + 1}
+                                </div>
+                            ))}
+                        </div>
+                        {/* Confirm Button */}
+                        <div className="mt-auto mb-3 w-full h-10 rounded-full bg-black dark:bg-white flex items-center justify-center">
+                            <span className="text-[13px] font-semibold text-white dark:text-black">Confirm</span>
+                        </div>
+                    </motion.div>
+                </motion.div>
             </div>
         </div>
     );
