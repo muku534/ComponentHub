@@ -1,0 +1,39 @@
+{
+    "id": "expandable-action-menu",
+    "name": "Expandable Action Menu",
+    "category": "Navigation",
+    "description": "An expanding tab bar with a rotating FAB and cascading menu items",
+    "longDescription": "A fluid tab bar that expands vertically when the center FAB is pressed. It features a sliding pill indicator for active tabs, a smoothly rotating floating action button, and a frosted-glass-like action menu with cascading entry animations.",
+    "gradient": "from-zinc-900 to-zinc-700",
+    "emoji": "📱",
+    "snackId": "@mr.mukesh/expandable-action-menu",
+    "dependencies": {
+        "required": [
+            "react-native-reanimated",
+            "lucide-react-native"
+        ],
+        "optional": []
+    },
+    "features": [
+        "Liquid sliding pill indicator for active tab",
+        "Fluid morphing layout expanding vertically",
+        "Perfectly centered FAB that spins into an 'X'",
+        "Cascading staggered menu item entrance animations",
+        "Fully powered by react-native-reanimated spring physics"
+    ],
+    "props": [],
+    "usage": [
+        {
+            "title": "Basic Usage",
+            "description": "Render the expandable action menu at the bottom of your screen.",
+            "code": "import ExpandableActionMenu from '@/components/ExpandableActionMenu';\n\nexport default function App() {\n  return (\n    <View style={{ flex: 1 }}>\n      {/* Main Content */}\n      <ExpandableActionMenu />\n    </View>\n  );\n}"
+        }
+    ],
+    "installation": {
+        "steps": [
+            "npm install react-native-reanimated lucide-react-native",
+            "Copy ExpandableActionMenu.tsx to your components folder",
+            "Import and use in your layout"
+        ]
+    }
+}

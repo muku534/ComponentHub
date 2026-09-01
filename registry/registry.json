@@ -24,6 +24,13 @@
             "version": "1.0.0"
         },
         {
+            "id": "expandable-action-menu",
+            "path": "components/expandable-action-menu",
+            "category": "Navigation",
+            "difficulty": "Advanced",
+            "version": "1.0.0"
+        },
+        {
             "id": "dynamic-otp",
             "path": "components/dynamic-otp",
             "category": "Forms",

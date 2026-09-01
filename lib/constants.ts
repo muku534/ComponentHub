@@ -119,6 +119,7 @@ export const docsNavigation = [
         items: [
             { name: 'Animated Tab Bar', href: '/components/animated-tab-bar' },
             { name: 'Liquid Action Tab Bar', href: '/components/liquid-action-tab-bar' },
+            { name: 'Expandable Action Menu', href: '/components/expandable-action-menu' },
             { name: 'Animated Bottom Navigation', href: '/components/animated-bottom-navigation' },
         ],
     },

@@ -554,6 +554,67 @@ const MinimalistPlaceholder = ({ title }: { title: string }) => {
     );
 }
 
+const ExpandableActionMenuThumbnail = () => {
+    return (
+        <div className="w-full h-full flex flex-col items-center justify-end bg-zinc-50 dark:bg-zinc-950 p-4 relative overflow-hidden group">
+            {/* The expanded background container */}
+            <div className="absolute bottom-4 w-[260px] h-[52px] group-hover:h-[180px] bg-white dark:bg-[#1C1C1E] shadow-sm rounded-t-3xl rounded-b-[26px] border border-zinc-200/50 dark:border-white/5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex flex-col justify-end">
+                
+                {/* Menu Items (Fade in on hover) */}
+                <div className="flex-1 flex flex-col px-4 pt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 justify-start">
+                    <div className="w-full h-8 flex items-center gap-3">
+                        <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center">
+                            <div className="w-3 h-3 bg-blue-500 rounded-sm" />
+                        </div>
+                        <div className="flex-1 space-y-1.5">
+                            <div className="w-24 h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+                            <div className="w-16 h-1 rounded-full bg-zinc-100 dark:bg-zinc-800" />
+                        </div>
+                    </div>
+                    <div className="w-full h-[1px] bg-zinc-100 dark:bg-white/5 my-2.5" />
+                    <div className="w-full h-8 flex items-center gap-3">
+                        <div className="w-7 h-7 rounded-full bg-green-100 dark:bg-green-900/40 flex items-center justify-center">
+                            <div className="w-3 h-3 bg-green-500 rounded-full" />
+                        </div>
+                        <div className="flex-1 space-y-1.5">
+                            <div className="w-28 h-1.5 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+                            <div className="w-14 h-1 rounded-full bg-zinc-100 dark:bg-zinc-800" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Bar Icons */}
+                <div className="absolute bottom-0 left-0 right-0 h-[52px] w-full flex items-center justify-between px-2">
+                    {/* Active Pill Indicator */}
+                    <div className="absolute left-[14px] top-1/2 -translate-y-1/2 w-[46px] h-[36px] bg-zinc-100 dark:bg-zinc-800 rounded-[14px] transition-all duration-500 group-hover:opacity-0" />
+                    
+                    <div className="flex-1 flex items-center justify-center z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                        <Home className="w-[18px] h-[18px] text-black dark:text-white" strokeWidth={2.5} />
+                    </div>
+                    <div className="flex-1 flex items-center justify-center z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                        <Search className="w-[18px] h-[18px] text-zinc-500 dark:text-zinc-400" strokeWidth={2} />
+                    </div>
+                    
+                    {/* Center gap for FAB */}
+                    <div className="flex-1 max-w-[48px]" />
+                    
+                    <div className="flex-1 flex items-center justify-center z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                        <Bell className="w-[18px] h-[18px] text-zinc-500 dark:text-zinc-400" strokeWidth={2} />
+                    </div>
+                    <div className="flex-1 flex items-center justify-center z-10 opacity-100 group-hover:opacity-0 transition-opacity duration-300">
+                        <User className="w-[18px] h-[18px] text-zinc-500 dark:text-zinc-400" strokeWidth={2} />
+                    </div>
+                </div>
+            </div>
+
+            {/* The Floating FAB */}
+            <div className="absolute bottom-[40px] group-hover:bottom-5 w-[46px] h-[46px] rounded-full bg-[#18181b] dark:bg-white shadow-lg flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] z-20 group-hover:rotate-45">
+                <Plus className="w-[22px] h-[22px] text-white dark:text-black" strokeWidth={2.5} />
+            </div>
+        </div>
+    );
+};
+
 const LiquidActionTabBarThumbnail = () => {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -1007,6 +1068,7 @@ const getThumbnailComponent = (id: string) => {
     switch (id) {
         case 'animated-tab-bar': return <AnimatedTabBarThumbnail />;
         case 'liquid-action-tab-bar': return <LiquidActionTabBarThumbnail />;
+        case 'expandable-action-menu': return <ExpandableActionMenuThumbnail />;
         case 'time-picker': return <TimePickerThumbnail />;
         case 'expandable-card': return <ExpandableCardThumbnail />;
         case 'dynamic-otp': return <DynamicOtpThumbnail />;
